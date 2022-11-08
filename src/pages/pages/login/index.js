@@ -38,6 +38,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import axios from 'src/pages/api/axios'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -62,7 +63,8 @@ const LoginPage = () => {
   const [values, setValues] = useState({
     password: '',
     showPassword: false
-  })
+  });
+  const [email, setEmail] = useState('');
 
   // ** Hook
   const theme = useTheme()
@@ -78,6 +80,25 @@ const LoginPage = () => {
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+  
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const data = {
+      email,
+      password: values.password
+    }
+
+    // const res = await axios.post('/login', {
+    //   email,
+    //   password: values.password
+    // });
+
+
+    // console.log(res.data);
+
+    // router.push('/')
   }
 
   return (
@@ -106,13 +127,14 @@ const LoginPage = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} defaultValue={email} onChange={e => setEmail(e.target.value)} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
                 value={values.password}
                 id='auth-login-password'
+                name='password'
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
@@ -142,7 +164,7 @@ const LoginPage = () => {
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
+              onClick={handleLogin}
             >
               Login
             </Button>
