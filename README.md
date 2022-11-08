@@ -2,8 +2,6 @@
 
 Aplikasi berbasis web dengan system antarmuka yang efisien dan mudah digunakan oleh segala kalangan (Work Management System).
 
-Test
-
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
