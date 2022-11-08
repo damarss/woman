@@ -38,6 +38,8 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
+import axios from 'src/pages/api/axios'
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -62,7 +64,10 @@ const RegisterPage = () => {
   // ** States
   const [values, setValues] = useState({
     password: '',
-    showPassword: false
+    showPassword: false,
+    email: '',
+    name: '',
+    nip: ''
   })
 
   // ** Hook
@@ -78,6 +83,20 @@ const RegisterPage = () => {
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    const data = {
+      name: values.name,
+      nip: values.nip,
+      email: values.email,
+      password: values.password
+    }
+
+    const res = await axios.post('user', data);
+    console.log(res.data);
   }
 
   return (
@@ -164,8 +183,9 @@ const RegisterPage = () => {
             <Typography variant='body2'>Make your app management easy and fun!</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} />
-            <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField autoFocus fullWidth id='name' label='Name' sx={{ marginBottom: 4 }} defaultValue={values.name} onChange={handleChange('name')} />
+            <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} defaultValue={values.email} onChange={handleChange('email')} />
+            <TextField autoFocus fullWidth id='nip' label='NIP' sx={{ marginBottom: 4 }} defaultValue={values.nip} onChange={handleChange('nip')} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
               <OutlinedInput
@@ -199,7 +219,7 @@ const RegisterPage = () => {
                 </Fragment>
               }
             />
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
+            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }} onClick={handleRegister}>
               Sign up
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>

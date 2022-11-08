@@ -61,10 +61,10 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const LoginPage = () => {
   // ** State
   const [values, setValues] = useState({
+    email: '',
     password: '',
     showPassword: false
   });
-  const [email, setEmail] = useState('');
 
   // ** Hook
   const theme = useTheme()
@@ -85,20 +85,23 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const data = {
-      email,
-      password: values.password
+    try {
+
+      const res = await axios.post('/login', {
+        email: values.email,
+        password: values.password
+      });
+
+      if (res.status === 200) {
+        // nanti ubah tampilannya
+        alert("Login successful");
+        router.push('/');
+      }
+    } catch (error) {
+      // nanti ubah nampilin errornya
+      alert("Login failed");
     }
 
-    // const res = await axios.post('/login', {
-    //   email,
-    //   password: values.password
-    // });
-
-
-    // console.log(res.data);
-
-    // router.push('/')
   }
 
   return (
@@ -127,7 +130,7 @@ const LoginPage = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} defaultValue={email} onChange={e => setEmail(e.target.value)} />
+            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} defaultValue={values.email} onChange={handleChange('email')} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
