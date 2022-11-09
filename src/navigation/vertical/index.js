@@ -9,6 +9,7 @@ import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
+import CalendarCheckOutline  from 'mdi-material-ui/CalendarCheckOutline'
 
 const navigation = () => {
   return [
@@ -21,6 +22,11 @@ const navigation = () => {
       title: 'Account Settings',
       icon: AccountCogOutline,
       path: '/account-settings'
+    },
+    {
+      title: 'Task',
+      icon: CalendarCheckOutline,
+      path: '/task'
     },
     {
       sectionTitle: 'Pages'
