@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import argon2 from 'argon2'
+import jwt from 'jsonwebtoken'
 
 const prisma = new PrismaClient();
 
@@ -23,6 +24,8 @@ export default async function handle(req, res) {
             return res.status(400).json({ message: 'Invalid email or password' });
         }
 
-        return res.status(200).json(user);
+        let token = jwt.sign({uid: user.id, name: user.name, iat: Math.floor(Date.now() / 1000) - 30, exp: Math.floor(Date.now() / 1000) + (60 * 60)}, process.env.JWT_SECRET, {algorithm: 'HS256'});
+
+        return res.status(200).json({ message: 'Logged in successfully', token: token });
     }
 }

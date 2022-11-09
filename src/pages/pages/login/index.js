@@ -95,7 +95,9 @@ const LoginPage = () => {
       if (res.status === 200) {
         // nanti ubah tampilannya
         alert("Login successful");
-        router.push('/');
+        console.log(res.data);
+        
+        // router.push('/');
       }
     } catch (error) {
       // nanti ubah nampilin errornya

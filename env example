@@ -5,3 +5,5 @@
 # See the documentation for all the connection string options: https://pris.ly/d/connection-strings
 
 DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+BASE_URL="http://localhost:3000"
+JWT_SECRET="JaWASDf$SDRLVDWQRMR!!AWKOK"
