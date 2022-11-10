@@ -12,85 +12,77 @@ import TableContainer from '@mui/material/TableContainer'
 
 const rows = [
   {
-    age: 27,
     status: 'current',
     date: '09/27/2018',
-    name: 'Sally Quinn',
+    title: 'Sally Quinn',
     salary: '$19586.23',
-    email: 'eebsworth2m@sbwire.com',
-    designation: 'Human Resources Assistant'
+    priority: 'High',
+    project: 'Human Resources Assistant',
   },
   {
-    age: 61,
     date: '09/23/2016',
     salary: '$23896.35',
-    status: 'professional',
-    name: 'Margaret Bowers',
-    email: 'kocrevy0@thetimes.co.uk',
-    designation: 'Nuclear Power Engineer'
+    status: 'done',
+    title: 'Margaret Bowers',
+    priority: 'High',
+    project: 'Nuclear Power Engineer'
   },
   {
-    age: 59,
     date: '10/15/2017',
-    name: 'Minnie Roy',
-    status: 'rejected',
+    title: 'Minnie Roy',
+    status: 'revision',
     salary: '$18991.67',
-    email: 'ediehn6@163.com',
-    designation: 'Environmental Specialist'
+    priority: 'Medium',
+    project: 'Environmental Specialist'
   },
   {
-    age: 30,
     date: '06/12/2018',
-    status: 'resigned',
+    status: 'empty',
     salary: '$19252.12',
-    name: 'Ralph Leonard',
-    email: 'dfalloona@ifeng.com',
-    designation: 'Sales Representative'
+    title: 'Ralph Leonard',
+    priority: 'High',
+    project: 'Sales Representative'
   },
   {
-    age: 66,
     status: 'applied',
     date: '03/24/2018',
     salary: '$13076.28',
-    name: 'Annie Martin',
-    designation: 'Operator',
-    email: 'sganderton2@tuttocitta.it'
+    title: 'Annie Martin',
+    project: 'Operator',
+    priority: 'Low'
   },
   {
-    age: 33,
     date: '08/25/2017',
     salary: '$10909.52',
-    name: 'Adeline Day',
-    status: 'professional',
-    email: 'hnisius4@gnu.org',
-    designation: 'Senior Cost Accountant'
+    title: 'Adeline Day',
+    status: 'done',
+    priority: 'High',
+    project: 'Senior Cost Accountant'
   },
   {
-    age: 61,
     status: 'current',
     date: '06/01/2017',
     salary: '$17803.80',
-    name: 'Lora Jackson',
-    designation: 'Geologist',
-    email: 'ghoneywood5@narod.ru'
+    title: 'Lora Jackson',
+    project: 'Geologist',
+    priority: 'High'
   },
   {
-    age: 22,
     date: '12/03/2017',
     salary: '$12336.17',
-    name: 'Rodney Sharp',
-    status: 'professional',
-    designation: 'Cost Accountant',
-    email: 'dcrossman3@google.co.jp'
+    title: 'Rodney Sharp',
+    status: 'done',
+    project: 'Cost Accountant',
+    priority: 'High'
   }
 ]
 
 const statusObj = {
   applied: { color: 'info' },
-  rejected: { color: 'error' },
+  empty: { color: 'error' },
   current: { color: 'primary' },
-  resigned: { color: 'warning' },
-  professional: { color: 'success' }
+  revision: { color: 'warning' },
+  done: { color: 'success' }
 }
 
 const DashboardTable = () => {
@@ -100,29 +92,29 @@ const DashboardTable = () => {
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Salary</TableCell>
-              <TableCell>Age</TableCell>
+              <TableCell>Task Title</TableCell>
+              <TableCell>Project</TableCell>
+              <TableCell>Priority</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>Deadline</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
+            {/* <TableRow>
+              <TableCell>
+              Tugas Hari Ini
+              </TableCell>
+            </TableRow> */}
             {rows.map(row => (
-              <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+              <TableRow hover key={row.title} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.name}</Typography>
-                    <Typography variant='caption'>{row.designation}</Typography>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
                   </Box>
                 </TableCell>
-                <TableCell>{row.email}</TableCell>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.salary}</TableCell>
-                <TableCell>{row.age}</TableCell>
-                <TableCell>
-                  <Chip
+                <TableCell>{row.project}</TableCell>
+                <TableCell>{row.priority}</TableCell>
+                <TableCell><Chip
                     label={row.status}
                     color={statusObj[row.status].color}
                     sx={{
@@ -131,8 +123,8 @@ const DashboardTable = () => {
                       textTransform: 'capitalize',
                       '& .MuiChip-label': { fontWeight: 500 }
                     }}
-                  />
-                </TableCell>
+                  /></TableCell>
+                <TableCell>{row.date}</TableCell>
               </TableRow>
             ))}
           </TableBody>
