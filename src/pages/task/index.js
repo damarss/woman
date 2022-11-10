@@ -29,7 +29,7 @@ import Tugas from 'src/views/dashboard/Tugas'
 const Dashboard = () => {
     return (
         <ApexChartWrapper>
-        <Grid container md={14}>
+        <Grid container>
             <Grid item xs={12} mb={5}>
                 <Card>
                     <CardHeader title="Today's Task"  titleTypographyProps={{ variant: 'h6' }} />
