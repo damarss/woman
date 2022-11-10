@@ -10,6 +10,9 @@ import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 import CalendarCheckOutline  from 'mdi-material-ui/CalendarCheckOutline'
+import ClipboardFileOutline from 'mdi-material-ui/ClipboardFileOutline'
+import TextBoxMultipleOutline from 'mdi-material-ui/TextBoxMultipleOutline'
+import MessageVideo from 'mdi-material-ui/MessageVideo'
 
 const navigation = () => {
   return [
@@ -19,14 +22,23 @@ const navigation = () => {
       path: '/'
     },
     {
+      title: 'Task',
+      icon: ClipboardFileOutline,
+      path: '/task'
+    },
+    {
+      title: 'Project',
+      icon: TextBoxMultipleOutline,
+      path: '/project'
+    },{
+      title: 'Meeting Scedule',
+      icon: MessageVideo,
+      path: '/meeting'
+    },
+    {
       title: 'Account Settings',
       icon: AccountCogOutline,
       path: '/account-settings'
-    },
-    {
-      title: 'Task',
-      icon: CalendarCheckOutline,
-      path: '/task'
     },
     {
       sectionTitle: 'Pages'
