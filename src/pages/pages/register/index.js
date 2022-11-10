@@ -185,7 +185,7 @@ const RegisterPage = () => {
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
             <TextField autoFocus fullWidth id='name' label='Name' sx={{ marginBottom: 4 }} defaultValue={values.name} onChange={handleChange('name')} />
             <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} defaultValue={values.email} onChange={handleChange('email')} />
-            <TextField autoFocus fullWidth id='nip' label='NIP' sx={{ marginBottom: 4 }} defaultValue={values.nip} onChange={handleChange('nip')} />
+            <TextField fullWidth id='nip' label='NIP' sx={{ marginBottom: 4 }} defaultValue={values.nip} onChange={handleChange('nip')} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
               <OutlinedInput
