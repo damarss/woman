@@ -36,11 +36,6 @@ const navigation = () => {
       path: '/meeting'
     },
     {
-      title: 'Account Settings',
-      icon: AccountCogOutline,
-      path: '/account-settings'
-    },
-    {
       sectionTitle: 'Pages'
     },
     {
