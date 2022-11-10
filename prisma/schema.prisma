@@ -47,7 +47,7 @@ model Project {
   startdate   DateTime      @db.Date
   enddate     DateTime      @db.Date
   description String        @db.LongText
-  archived    Boolean       @db.TinyInt()
+  isArchived  Boolean       @db.TinyInt()
   UserProject UserProject[]
   Task        Task[]
 }
