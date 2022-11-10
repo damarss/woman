@@ -43,12 +43,18 @@
     "format": "prettier --write \"src/**/*.{js,jsx}\""
   },
   "dependencies": {
+    "@devexpress/dx-react-core": "^3.0.6",
+    "@devexpress/dx-react-scheduler": "^3.0.6",
+    "@devexpress/dx-react-scheduler-material-ui": "^3.0.6",
     "@emotion/cache": "^11.6.0",
-    "@emotion/react": "^11.7.0",
+    "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.4.0",
-    "@emotion/styled": "^11.6.0",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.9",
     "@mui/lab": "^5.0.0-alpha.70",
-    "@mui/material": "^5.4.3",
+    "@mui/material": "^5.10.13",
+    "@mui/styled-engine-sc": "^5.10.6",
+    "@mui/x-date-pickers": "^5.0.8",
     "@popperjs/core": "^2.11.2",
     "@prisma/client": "^4.5.0",
     "apexcharts-clevision": "3.28.5",
@@ -66,7 +72,8 @@
     "react-datepicker": "^4.5.0",
     "react-dom": "17.0.2",
     "react-perfect-scrollbar": "^1.5.8",
-    "react-popper": "^2.2.5"
+    "react-popper": "^2.2.5",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

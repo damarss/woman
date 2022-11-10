@@ -26,7 +26,7 @@ import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 import Tugas from 'src/views/dashboard/Tugas'
 
-const Dashboard = () => {
+const Task = () => {
     return (
         <ApexChartWrapper>
         <Grid container>
@@ -47,4 +47,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+export default Task
