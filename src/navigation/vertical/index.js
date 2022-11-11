@@ -13,9 +13,22 @@ import CalendarCheckOutline  from 'mdi-material-ui/CalendarCheckOutline'
 import ClipboardFileOutline from 'mdi-material-ui/ClipboardFileOutline'
 import TextBoxMultipleOutline from 'mdi-material-ui/TextBoxMultipleOutline'
 import MessageVideo from 'mdi-material-ui/MessageVideo'
+import Plus from 'mdi-material-ui/Plus'
+import AccountGroupOutline from 'mdi-material-ui/AccountGroupOutline'
+import VideoOutline from 'mdi-material-ui/VideoOutline'
 
 const navigation = () => {
   return [
+    {
+      title: 'Buat Proyek',
+      icon: Plus,
+      path: '/create-project'
+    },
+    {
+      title: 'Buat Rapat',
+      icon: Plus,
+      path: '/create-meeting'
+    },
     {
       title: 'Dashboard',
       icon: HomeOutline,
@@ -30,10 +43,21 @@ const navigation = () => {
       title: 'Project',
       icon: TextBoxMultipleOutline,
       path: '/project'
-    },{
+    },
+    {
+      title: 'People',
+      icon: AccountGroupOutline,
+      path: '/people'
+    },
+    {
       title: 'Meeting Scedule',
       icon: MessageVideo,
       path: '/meeting'
+    },
+    {
+      title: 'Meeting Admin',
+      icon: VideoOutline,
+      path: '/meeting-aris'
     },
     {
       sectionTitle: 'Pages'
