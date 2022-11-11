@@ -6,6 +6,7 @@ import Divider from '@mui/material/Divider'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
+import Link from '@mui/material/Link'
 import CardContent from '@mui/material/CardContent'
 
 // ** Icons Imports
@@ -23,6 +24,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 const CardMembership = () => {
   return (
+
     <Card>
       <Grid container spacing={6}>
         <Grid item xs={12} sm={7}>
@@ -87,7 +89,9 @@ const CardMembership = () => {
                 <span>Arfiandys</span>
                 <span>Team Leader</span>
               </Typography>
-              <Button variant='contained'>View More</Button>
+              <Link href='/projectdetail'>
+                <Button variant='contained'>View More</Button>
+              </Link>
             </Box>
           </CardContent>
         </Grid>
