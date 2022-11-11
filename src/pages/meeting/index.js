@@ -24,6 +24,8 @@ const schedulerData = [
   { startDate: '2022-11-12T12:00', endDate: '2022-11-12T13:30', title: 'Meeting Keempat' },
   { startDate: '2022-11-10T15:00', endDate: '2022-11-10T18:00', title: 'Meeting Kedua' },
   { startDate: '2022-11-09T14:00', endDate: '2022-11-09T16:00', title: 'Meeting Perdana' },
+  { startDate: '2022-11-07T11:00', endDate: '2022-11-07T15:00', title: 'Rencana Proyek' },
+  { startDate: '2022-11-08T10:00', endDate: '2022-11-08T16:00', title: 'Inisiasi Proyek' },
 ];
 
 const Meeting = () => {
