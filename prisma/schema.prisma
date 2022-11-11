@@ -11,16 +11,16 @@ datasource db {
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
-  email       String        @unique
-  name        String        @db.VarChar(64)
-  nip         String        @db.Char(18)
-  password    String        @db.VarChar(255)
-  role        String        @default("employee") @db.VarChar(64)
-  UserMeet    UserMeet[]
-  UserProject UserProject[]
-  Task        Task[]
-  UserTask    UserTask[]
+  id              Int           @id @default(autoincrement())
+  email           String        @unique
+  name            String        @db.VarChar(64)
+  nip             String        @db.Char(18)
+  password        String        @db.VarChar(255)
+  role            String        @default("employee") @db.VarChar(64)
+  UserMeet        UserMeet[]
+  UserProject     UserProject[]
+  taskToDo        Task[]        @relation("taskToDo")
+  taskToSupervise Task[]        @relation("taskToSupervise")
 }
 
 model Meet {
@@ -29,7 +29,7 @@ model Meet {
   start       DateTime   @db.DateTime
   duration    Int        @db.Int
   link        String     @db.VarChar(255)
-  description String     @db.LongText
+  description String?    @db.LongText
   UserMeet    UserMeet[]
 }
 
@@ -46,7 +46,7 @@ model Project {
   title       String        @db.VarChar(128)
   startdate   DateTime      @db.Date
   enddate     DateTime      @db.Date
-  description String        @db.LongText
+  description String?       @db.LongText
   isArchived  Boolean       @db.TinyInt()
   UserProject UserProject[]
   Task        Task[]
@@ -61,24 +61,17 @@ model UserProject {
 }
 
 model Task {
-  id                Int        @id @default(autoincrement())
-  title             String     @db.VarChar(128)
-  duedate           DateTime   @db.Date
-  priority          Int        @db.Int
-  description       String     @db.LongText
-  status            Int        @db.Int
-  taskfile          String     @db.VarChar(255)
-  project           Project    @relation(fields: [projectId], references: [id])
-  projectId         Int
-  penanggungJawab   User       @relation(fields: [penanggungJawabId], references: [id])
-  penanggungJawabId Int
-  UserTask          UserTask[]
-}
-
-model UserTask {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
-  task   Task @relation(fields: [taskId], references: [id])
-  taskId Int
+  id           Int      @id @default(autoincrement())
+  title        String   @db.VarChar(128)
+  duedate      DateTime @db.Date
+  priority     Int      @db.Int
+  description  String?  @db.LongText
+  status       Int      @db.Int
+  taskfile     String?  @db.VarChar(255)
+  project      Project  @relation(fields: [projectId], references: [id])
+  projectId    Int
+  user         User     @relation("taskToDo", fields: [userId], references: [id])
+  userId       Int
+  supervisor   User     @relation("taskToSupervise", fields: [supervisorId], references: [id])
+  supervisorId Int
 }
