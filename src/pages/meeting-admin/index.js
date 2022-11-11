@@ -12,9 +12,9 @@ import BodyMeetingTable from 'src/views/meeting-aris/meeting-table/BodyMeetingTa
 const MeetingPage = () => {
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+      {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
         <h2>Jadwal Rapat</h2>
-      </Box>
+      </Box> */}
       <HeadMeetingTable />
       <br></br>
       <BodyMeetingTable />

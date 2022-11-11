@@ -11,9 +11,9 @@ import BodyPeopleTable from 'src/views/people/BodyPeopleTable'
 const PeoplePage = () => {
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
+      {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
         <h1>Anggota</h1>
-      </Box>
+      </Box> */}
       <HeadPeopleTable />
       <br></br>
       <BodyPeopleTable />

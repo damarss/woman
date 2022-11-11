@@ -20,12 +20,12 @@ import VideoOutline from 'mdi-material-ui/VideoOutline'
 const navigation = () => {
   return [
     {
-      title: 'Buat Proyek',
+      title: 'Create Project',
       icon: Plus,
       path: '/create-project'
     },
     {
-      title: 'Buat Rapat',
+      title: 'Create Meeting',
       icon: Plus,
       path: '/create-meeting'
     },
@@ -57,7 +57,7 @@ const navigation = () => {
     {
       title: 'Meeting Admin',
       icon: VideoOutline,
-      path: '/meeting-aris'
+      path: '/meeting-admin'
     },
     {
       sectionTitle: 'Pages'

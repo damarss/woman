@@ -73,16 +73,20 @@ const MeetingTable = () => {
     <Card>
       <TableContainer>
         <Table sx={{ minWidth: 50 }} aria-label='table in dashboard'>
-        <TableHead>
+          <TableHead>
             <TableRow>
-              <TableCell align='left' style={{width:'16rem'}}>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Judul Rapat</Typography></TableCell>
-              <TableCell align='center' style={{width:'16rem'}}>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Tanggal</Typography></TableCell>
-              <TableCell align='center' style={{width:'16rem'}}>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Waktu Mulai</Typography></TableCell>
+              <TableCell align='left' style={{ width: '16rem' }}>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Meeting Title</Typography>
+              </TableCell>
+              <TableCell align='center' style={{ width: '16rem' }}>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Date</Typography>
+              </TableCell>
+              <TableCell align='center' style={{ width: '16rem' }}>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Start Time</Typography>
+              </TableCell>
               <TableCell align='center'>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Link Rapat</Typography></TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Meeting Link</Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

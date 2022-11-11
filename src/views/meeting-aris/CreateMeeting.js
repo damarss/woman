@@ -35,7 +35,7 @@ import Swal from 'sweetalert2'
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'// ** Icons Imports
+import EyeOffOutline from 'mdi-material-ui/EyeOffOutline' // ** Icons Imports
 import Alert from 'mdi-material-ui/Alert'
 
 const datas = [
@@ -74,13 +74,14 @@ const datas = [
 ]
 
 const CustomInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Waktu Rapat' autoComplete='off' />
+  return <TextField fullWidth {...props} inputRef={ref} label='Meeting Time' autoComplete='off' />
 })
 
 const CreateMeeting = () => {
   // ** States
   const [language, setLanguage] = useState([])
   const [date, setDate] = useState(null)
+  const [Time, setTime] = useState(null)
 
   // Handle Select
   const handleSelectChange = event => {
@@ -91,51 +92,62 @@ const CreateMeeting = () => {
     <Card>
       <form onSubmit={e => e.preventDefault()}>
         <CardContent>
-          <Typography variant='h6'>Deskripsi Rapat</Typography>
+          <Typography variant='h6'>Meeting Title</Typography>
           <br></br>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={12} lg={6}>
-              <TextField fullWidth label='Judul Rapat' placeholder='Rapat IT' />
+              <TextField fullWidth label='Meeting Title' placeholder='Rapat IT' />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
                 selected={date}
                 showYearDropdown
                 showMonthDropdown
+                showTimeSelect
+                dateFormat="Pp"
                 placeholderText='MM-DD-YYYY'
                 customInput={<CustomInput />}
-                id='form-layouts-separator-date'
+                id='form-layouts-separator-meet'
                 onChange={date => setDate(date)}
               />
             </Grid>
-            {/* time-picker */}
-            <Grid item xs={12} sm={6} lg={6}>
+            {/* <Grid item xs={12} sm={12} lg={6}>
+              <DatePicker
+                selected={Time}
+                showTimeSelect
+                placeholderText='hh:mm:ss'
+                customInput={<CustomInput />}
+                id='form-layouts-separator-meet'
+                onChange={Time => setTime(Time)}
+              />
+            </Grid> */}
+            <Grid item xs={12} sm={12} lg={6}>
               <FormControl fullWidth>
-                <InputLabel id='form-layouts-separator-select-label'>Durasi Rapat</InputLabel>
+                <InputLabel id='form-layouts-separator-select-label'>Meeting Duration</InputLabel>
                 <Select
                   label='Durasi Rapat'
                   defaultValue=''
                   id='form-layouts-separator-select'
                   labelId='form-layouts-separator-select-label'
                 >
-                  <MenuItem value='1'>1 Jam</MenuItem>
-                  <MenuItem value='1.5'>1 Jam 30 Menit</MenuItem>
-                  <MenuItem value='2'>2 Jam</MenuItem>
-                  <MenuItem value='2.5'>2 Jam 30 Menit</MenuItem>
+                  <MenuItem value='1'>1 Hour</MenuItem>
+                  <MenuItem value='1.5'>1 Our and Half</MenuItem>
+                  <MenuItem value='2'>2 Hour</MenuItem>
+                  <MenuItem value='2.5'>2 Hour and Half</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6} lg={6}>
-              <TextField fullWidth label='Link Rapat' placeholder='zoom/' />
+            <Grid item xs={12} sm={12} lg={6}>
+              <TextField fullWidth label='Meeting Place' placeholder='zoom/' />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-              <TextField fullWidth multiline minRows={3} label='Deskripsi Rapat' placeholder='Bio...' />
+              <TextField fullWidth multiline minRows={3} label='Meeting Description' placeholder='Bio...' />
             </Grid>
           </Grid>
           <br></br>
 
           {/* Daftar Peserta */}
-          <Typography variant='h6'>Peserta Rapat</Typography>
+          <Typography variant='h6'>Meeting Participant</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 50 }} aria-label='simple table'>
               <TableHead>
@@ -143,7 +155,7 @@ const CreateMeeting = () => {
                   <TableCell align='left'>
                     <FormControlLabel control={<Checkbox defaultChecked />} label='All' />
                   </TableCell>
-                  <TableCell align='left'>Nama</TableCell>
+                  <TableCell align='left'>Name</TableCell>
                   <TableCell align='left'>NIP</TableCell>
                 </TableRow>
               </TableHead>
@@ -187,18 +199,14 @@ const CreateMeeting = () => {
                 confirmButtonColor: '#68B92E',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ya, Buat Rapat'
-              }).then((result) => {
+              }).then(result => {
                 if (result.isConfirmed) {
-                  Swal.fire(
-                    '',
-                    'Rapat berhasil dibuat. Tekan "OK" untuk melanjutkan.',
-                    'success'
-                  )
+                  Swal.fire('', 'Rapat berhasil dibuat. Tekan "OK" untuk melanjutkan.', 'success')
                 }
               })
             }}
           >
-            Buat Rapat
+            Create Meeting
           </Button>
         </CardActions>
       </form>

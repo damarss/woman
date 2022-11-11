@@ -88,8 +88,8 @@ const BodyTable = () => {
                 <TableCell align='left' style={{width:'16rem'}}>
                   <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.name}</Typography>
                 </TableCell>
-                <TableCell align='center' style={{width:'16rem'}}>{row.tugas}</TableCell>
                 <TableCell align='center' style={{width:'16rem'}}>{row.proyek}</TableCell>
+                <TableCell align='center' style={{width:'16rem'}}>{row.tugas}</TableCell>
                 <TableCell align='center'>
                   {row.role}
                 </TableCell>

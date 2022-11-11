@@ -89,27 +89,28 @@ const datas = [
 ]
 
 const CustomInputStart = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Tanggal Mulai' autoComplete='off' />
+  return <TextField fullWidth {...props} inputRef={ref} label='Start Date' autoComplete='on' />
 })
 
 const CustomInputEnd = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Tanggal Berakhir' autoComplete='off' />
+  return <TextField fullWidth {...props} inputRef={ref} label='End Date' autoComplete='off' />
 })
 
 const CreateProject = () => {
   // ** States
   const [language, setLanguage] = useState([])
   const [date, setDate] = useState(null)
+  const [tanggal, setDateTwo] = useState(null)
 
   return (
     <Card>
       <form onSubmit={e => e.preventDefault()}>
         <CardContent>
-          <Typography variant='h6'>Deskripsi Proyek</Typography>
+          <Typography variant='h6'>Project Title</Typography>
           <br></br>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={12} lg={8}>
-              <TextField fullWidth label='Judul Proyek' placeholder='Proyek A' />
+              <TextField fullWidth label='Project Title' placeholder='Proyek A' />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
@@ -118,28 +119,28 @@ const CreateProject = () => {
                 showMonthDropdown
                 placeholderText='DD-MM-YYYY'
                 customInput={<CustomInputStart />}
-                id='form-layouts-separator-date'
+                id='tanggal-mulai'
                 onChange={date => setDate(date)}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
-                selected={date}
+                selected={tanggal}
                 showYearDropdown
                 showMonthDropdown
                 placeholderText='DD-MM-YYYY'
                 customInput={<CustomInputEnd />}
-                id='form-layouts-separator-date'
-                onChange={date => setDate(date)}
+                id='tanggal-berakhir'
+                onChange={tanggal => setDateTwo(tanggal)}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-              <TextField fullWidth multiline minRows={3} label='Deskripsi Proyek' placeholder='Bio...' />
+              <TextField fullWidth multiline minRows={3} label='Project Description' placeholder='Bio...' />
             </Grid>
           </Grid>
           <br></br>
           {/* Daftar Peserta */}
-          <Typography variant='h6'>Anggota Proyek</Typography>
+          <Typography variant='h6'>Project Participant</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 50 }} aria-label='simple table'>
               <TableHead>
@@ -148,9 +149,9 @@ const CreateProject = () => {
                     <FormControlLabel control={<Checkbox defaultChecked />} label='All' />
                   </TableCell>
                   <TableCell align='center'>NIP</TableCell>
-                  <TableCell align='center'>Nama</TableCell>
-                  <TableCell align='center'>Jumlah Projek</TableCell>
-                  <TableCell align='center'>Jumlah Tugas</TableCell>
+                  <TableCell align='center'>Name</TableCell>
+                  <TableCell align='center'>Number of Projek</TableCell>
+                  <TableCell align='center'>Number of Task</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -204,7 +205,7 @@ const CreateProject = () => {
               })
             }}
           >
-            Buat Proyek
+            Create Project
           </Button>
         </CardActions>
       </form>

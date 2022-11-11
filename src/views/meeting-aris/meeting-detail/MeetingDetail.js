@@ -25,7 +25,7 @@ const CardSupport = () => {
         }}
       >
         <Typography variant='h4' sx={{ marginBottom: 10 }}>
-          Judul Rapat
+          Meeting Title
         </Typography>
         <Box sx={{display:'flex', alignItems:'center'}}>
           <Typography variant='body1' sx={{ marginBottom: 2 }}>
@@ -78,7 +78,7 @@ const CardSupport = () => {
         <CardActions style={{display:'flex', justifyContent:'end'}}>
           <Link href='/edit-meeting'>
             <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
-              Ubah
+              Edit
             </Button>
           </Link>
           <Button
@@ -135,7 +135,7 @@ const CardSupport = () => {
               })
             }}
           >
-            Hapus 
+            Delete 
           </Button>
         </CardActions>
       </CardContent>
