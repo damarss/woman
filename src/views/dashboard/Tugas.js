@@ -17,7 +17,7 @@ const TriangleImg = styled('img')({
 const TaskImg = styled('img')({
   right: 32,
   bottom: 20,
-  height: 120,
+  height: 150,
   position: 'absolute'
 })
 
@@ -28,12 +28,12 @@ const Trophy = () => {
 
   return (
     <Card sx={{ position: 'relative' }}>
-      <CardContent>
+      <CardContent sx={{minHeight: 300}}>
         <Typography variant='h6'>Jumlah Tugas</Typography>
         <Typography variant='body2' sx={{ letterSpacing: '0.25px' }}>
           yang belum selesai
         </Typography>
-        <Typography variant='h2' sx={{ my: 4, color: 'primary.main' }}>
+        <Typography variant='h2' sx={{ my: 10, color: 'primary.main' }}>
           4
         </Typography>
         <Button size='small' variant='contained'>

@@ -17,7 +17,7 @@ import CardNavigation from 'src/views/cards/CardNavigation'
 import CardWithCollapse from 'src/views/cards/CardWithCollapse'
 import CardVerticalRatings from 'src/views/cards/CardVerticalRatings'
 import CardNavigationCenter from 'src/views/cards/CardNavigationCenter'
-import CardHorizontalRatings from 'src/views/cards/CardHorizontalRatings'
+import CardProject from 'src/views/cards/CardProject'
 
 const Project = () => {
   return (
@@ -26,22 +26,16 @@ const Project = () => {
         <Typography variant='h5'>My Project</Typography>
       </Grid>
       <Grid item xs={12} md={6}>
-        <CardMembership />
+        <CardProject />
       </Grid>
       <Grid item xs={12} md={6}>
-        <CardMembership />
+        <CardProject />
       </Grid>
       <Grid item xs={12} md={6}>
-        <CardMembership />
+        <CardProject />
       </Grid>
       <Grid item xs={12} md={6}>
-        <CardMembership />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <CardMembership />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <CardMembership />
+        <CardProject />
       </Grid>
     </Grid>
   )
