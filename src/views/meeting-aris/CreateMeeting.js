@@ -44,31 +44,31 @@ const datas = [
     nip: '220129129012'
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn1',
     nip: '220129129012'
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn2',
     nip: '220129129012'
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn3',
     nip: '220129129012'
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn4',
     nip: '220129129012'
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn5',
     nip: '220129129012'
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn6',
     nip: '220129129012'
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn7',
     nip: '220129129012'
   }
 ]

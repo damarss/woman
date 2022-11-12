@@ -39,49 +39,49 @@ import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
 const datas = [
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn1',
     nip: '220129129012',
     projek: 4,
     tugas: 7
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn2',
     nip: '220129129012',
     projek: 4,
     tugas: 7
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn3',
     nip: '220129129012',
     projek: 4,
     tugas: 7
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn4',
     nip: '220129129012',
     projek: 4,
     tugas: 7
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn5',
     nip: '220129129012',
     projek: 4,
     tugas: 7
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn6',
     nip: '220129129012',
     projek: 4,
     tugas: 7
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn7',
     nip: '220129129012',
     projek: 4,
     tugas: 7
   },
   {
-    name: 'Sally Quinn',
+    name: 'Sally Quinn8',
     nip: '220129129012',
     projek: 4,
     tugas: 7

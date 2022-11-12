@@ -11,49 +11,49 @@ import TableContainer from '@mui/material/TableContainer'
 
 const rows = [
   {
-    judul: 'Sally Quinn',
+    judul: 'Sally Quinn1',
     tanggal: '220129129012',
     waktu: 'Sally Quinn',
     link: '220129129012'
   },
   {
-    judul: 'Sally Quinn',
+    judul: 'Sally Quinn2',
     tanggal: '220129129012',
     waktu: 'Sally Quinn',
     link: '220129129012'
   },
   {
-    judul: 'Sally Quinn',
+    judul: 'Sally Quinn3',
     tanggal: '220129129012',
     waktu: 'Sally Quinn',
     link: '220129129012'
   },
   {
-    judul: 'Sally Quinn',
+    judul: 'Sally Quinn4',
     tanggal: '220129129012',
     waktu: 'Sally Quinn',
     link: '220129129012'
   },
   {
-    judul: 'Sally Quinn',
+    judul: 'Sally Quinn5',
     tanggal: '220129129012',
     waktu: 'Sally Quinn',
     link: '220129129012'
   },
   {
-    judul: 'Sally Quinn',
+    judul: 'Sally Quinn6',
     tanggal: '220129129012',
     waktu: 'Sally Quinn',
     link: '220129129012'
   },
   {
-    judul: 'Sally Quinn',
+    judul: 'Sally Quinn7',
     tanggal: '220129129012',
     waktu: 'Sally Quinn',
     link: '220129129012'
   },
   {
-    judul: 'Sally Quinn',
+    judul: 'Sally Quinn8',
     tanggal: '220129129012',
     waktu: 'Sally Quinn',
     link: '220129129012'
