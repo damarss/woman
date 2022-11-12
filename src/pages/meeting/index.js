@@ -17,6 +17,7 @@ import {
   Appointments,
   AppointmentTooltip,
   TodayButton,
+  AppointmentForm,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 // ** Demo Components Imports
@@ -51,7 +52,13 @@ const Meeting = () => {
         <DateNavigator />
         <TodayButton />
         <Appointments />
-        <AppointmentTooltip />
+        <AppointmentTooltip
+          showCloseButton
+          showOpenButton
+        />
+        <AppointmentForm
+          readOnly
+        />
       </Scheduler>
     </Paper>
   )
