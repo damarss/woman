@@ -91,7 +91,7 @@ const CreateMeeting = () => {
     <Card>
       <form onSubmit={e => e.preventDefault()}>
         <CardContent>
-          <Typography variant='h6'>Meeting Title</Typography>
+          <Typography variant='h6'>Meeting Description</Typography>
           <br></br>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={12} lg={6}>

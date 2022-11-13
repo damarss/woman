@@ -106,7 +106,7 @@ const CreateProject = () => {
     <Card>
       <form onSubmit={e => e.preventDefault()}>
         <CardContent>
-          <Typography variant='h6'>Project Title</Typography>
+          <Typography variant='h6'>Project Description</Typography>
           <br></br>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={12} lg={8}>

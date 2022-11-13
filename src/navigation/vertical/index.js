@@ -55,7 +55,7 @@ const navigation = () => {
       path: '/meeting'
     },
     {
-      title: 'Meeting Admin',
+      title: 'Meeting Setting',
       icon: VideoOutline,
       path: '/meeting-admin'
     },
