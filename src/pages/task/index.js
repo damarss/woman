@@ -16,8 +16,7 @@ import CardStatisticsVerticalComponent from 'src/@core/components/card-statistic
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
-import TodayTask from 'src/views/task/TodayTask'
-import OtherTask from 'src/views/task/TodayTask'
+import TaskHome from 'src/views/task/TaskHome'
 import Trophy from 'src/views/dashboard/Trophy'
 import TotalEarning from 'src/views/dashboard/TotalEarning'
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
@@ -33,13 +32,13 @@ const Task = () => {
             <Grid item xs={12} mb={5}>
                 <Card>
                     <CardHeader title="Today's Task"  titleTypographyProps={{ variant: 'h6' }} />
-                    <TodayTask />
+                    <TaskHome />
                 </Card>
             </Grid>
             <Grid item xs={12}>
                 <Card>
                     <CardHeader title="Other's Task"  titleTypographyProps={{ variant: 'h6' }} />
-                    <OtherTask />
+                    <TaskHome />
                 </Card>
             </Grid>
         </Grid>

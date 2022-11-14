@@ -9,10 +9,12 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
+import Link from '@mui/material/Link'
+
 
 const rows = [
   {
-    status: 'current',
+    status: 'on_progress',
     date: '09/27/2018',
     title: 'Sally Quinn',
     salary: '$19586.23',
@@ -37,14 +39,14 @@ const rows = [
   },
   {
     date: '06/12/2018',
-    status: 'empty',
+    status: 'late',
     salary: '$19252.12',
     title: 'Ralph Leonard',
     priority: 'High',
     project: 'Sales Representative'
   },
   {
-    status: 'applied',
+    status: 'assigned',
     date: '03/24/2018',
     salary: '$13076.28',
     title: 'Annie Martin',
@@ -55,12 +57,12 @@ const rows = [
     date: '08/25/2017',
     salary: '$10909.52',
     title: 'Adeline Day',
-    status: 'done',
+    status: 'turned_in',
     priority: 'High',
     project: 'Senior Cost Accountant'
   },
   {
-    status: 'current',
+    status: 'on_progress',
     date: '06/01/2017',
     salary: '$17803.80',
     title: 'Lora Jackson',
@@ -69,23 +71,56 @@ const rows = [
   },
   {
     date: '12/03/2017',
-    salary: '$12336.17',
     title: 'Rodney Sharp',
-    status: 'done',
+    status: 'turned_in_late',
     project: 'Cost Accountant',
     priority: 'High'
   }
 ]
 
-const statusObj = {
-  applied: { color: 'info' },
-  empty: { color: 'error' },
-  current: { color: 'primary' },
-  revision: { color: 'warning' },
-  done: { color: 'success' }
+function getLabelStatus(status){
+  switch (status) {
+    case 'assigned':
+      return 'Assigned'
+      break;
+    case 'on_progress':
+      return 'On Progress'
+      break;
+    case 'turned_in':
+      return 'Turned In'
+      break;
+    case 'revision':
+      return 'Revision'
+      break;
+    case 'done':
+      return 'Done'
+      break;
+    case 'late':
+      return 'Late'
+      break;
+    case 'turned_in_late':
+      return 'Turned In Late'
+      break;
+    case 'done_late':
+      return 'Done Late'
+      break;
+    default:
+      break;
+  }
 }
 
-const DashboardTable = () => {
+const statusObj = {
+  assigned: { color: 'info' },
+  on_progress: { color: 'info' },
+  turned_in:{color: 'warning'},
+  revision: { color: 'primary' },
+  done: { color: 'success' },
+  late: { color: 'error' },
+  turned_in_late: {color:'warning'},
+  done_late: {color:"success"}
+}
+
+const TaskHome = () => {
   return (
     <Card>
       <TableContainer>
@@ -115,7 +150,7 @@ const DashboardTable = () => {
                 <TableCell>{row.project}</TableCell>
                 <TableCell>{row.priority}</TableCell>
                 <TableCell><Chip
-                    label={row.status}
+                    label={getLabelStatus(row.status)}
                     color={statusObj[row.status].color}
                     sx={{
                       height: 24,
@@ -134,4 +169,4 @@ const DashboardTable = () => {
   )
 }
 
-export default DashboardTable
+export default TaskHome
