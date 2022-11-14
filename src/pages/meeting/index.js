@@ -15,7 +15,9 @@ import {
   Toolbar,
   DateNavigator,
   Appointments,
+  AppointmentTooltip,
   TodayButton,
+  AppointmentForm,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 // ** Demo Components Imports
@@ -31,27 +33,34 @@ const schedulerData = [
 const Meeting = () => {
   const [currentDate, setCurrentDate] = useState('2022-11-11');
   const currentDateChange = (currentDate) => { setCurrentDate(currentDate); };
-  
+
   return (
     <Paper>
-        <Scheduler
-          data={schedulerData}
-          height={660}
-        >
-          <ViewState
-            currentDate={currentDate}
-            onCurrentDateChange={currentDateChange}
-          />
-          <WeekView
-            startDayHour={9}
-            endDayHour={19}
-          />
-          <Toolbar />
-          <DateNavigator />
-          <TodayButton />
-          <Appointments />
-        </Scheduler>
-      </Paper>
+      <Scheduler
+        data={schedulerData}
+        height={660}
+      >
+        <ViewState
+          currentDate={currentDate}
+          onCurrentDateChange={currentDateChange}
+        />
+        <WeekView
+          startDayHour={9}
+          endDayHour={19}
+        />
+        <Toolbar />
+        <DateNavigator />
+        <TodayButton />
+        <Appointments />
+        <AppointmentTooltip
+          showCloseButton
+          showOpenButton
+        />
+        <AppointmentForm
+          readOnly
+        />
+      </Scheduler>
+    </Paper>
   )
 }
 

@@ -1,6 +1,12 @@
 // ** React Imports
 import { useState } from 'react'
 
+// ** Styled Component
+import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+
+// ** Third Party Styles Imports
+import 'react-datepicker/dist/react-datepicker.css'
+
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -11,10 +17,12 @@ import EditMeeting from 'src/views/meeting-aris/EditMeeting'
 const EditMeetingPage = () => {
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
-        <h2>Edit Rapat</h2>
-      </Box>
-      <EditMeeting />
+      <DatePickerWrapper>
+        {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+        <h2>Edit Meeting</h2>
+      </Box> */}
+        <EditMeeting />
+      </DatePickerWrapper>
     </>
   )
 }

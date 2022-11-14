@@ -82,29 +82,35 @@ const PeopleTable = () => {
     <Card>
       <TableContainer>
         <Table sx={{ minWidth: 50 }} aria-label='table in dashboard'>
-        <TableHead>
+          <TableHead>
             <TableRow>
-              <TableCell align='left' style={{width:'16rem'}}>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Nama</Typography></TableCell>
-              <TableCell align='center' style={{width:'16rem'}}>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Jumlah Tugas</Typography></TableCell>
-              <TableCell align='center' style={{width:'16rem'}}>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Jumlah Proyek</Typography></TableCell>
+              <TableCell align='left' style={{ width: '16rem' }}>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Name</Typography>
+              </TableCell>
+              <TableCell align='center' style={{ width: '16rem' }}>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Number of Project</Typography>
+              </TableCell>
+              <TableCell align='center' style={{ width: '16rem' }}>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Number of Task</Typography>
+              </TableCell>
               <TableCell align='center'>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Role</Typography></TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Role</Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map(row => (
               <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                <TableCell align='left' style={{width:'16rem'}}>
+                <TableCell align='left' style={{ width: '16rem' }}>
                   <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.name}</Typography>
                 </TableCell>
-                <TableCell align='center' style={{width:'16rem'}}>{row.tugas}</TableCell>
-                <TableCell align='center' style={{width:'16rem'}}>{row.proyek}</TableCell>
-                <TableCell align='center'>
-                  {row.role}
+                <TableCell align='center' style={{ width: '16rem' }}>
+                  {row.proyek}
                 </TableCell>
+                <TableCell align='center' style={{ width: '16rem' }}>
+                  {row.tugas}
+                </TableCell>
+                <TableCell align='center'>{row.role}</TableCell>
               </TableRow>
             ))}
           </TableBody>

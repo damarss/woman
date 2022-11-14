@@ -19,11 +19,11 @@ const HeadTable = () => {
           <TableHead>
             <TableRow>
               <TableCell align='left' style={{width:'16rem'}}>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Nama</Typography></TableCell>
+                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Name</Typography></TableCell>
               <TableCell align='center' style={{width:'16rem'}}>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Jumlah Tugas</Typography></TableCell>
+                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Number of Project</Typography></TableCell>
               <TableCell align='center' style={{width:'16rem'}}>
-                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Jumlah Proyek</Typography></TableCell>
+                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Number of Task</Typography></TableCell>
               <TableCell align='center'>
                   <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Role</Typography></TableCell>
             </TableRow>
