@@ -1,5 +1,7 @@
 // ** React Imports
 import { useState, Fragment } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 // ** Next Import
 import { useRouter } from 'next/router'
@@ -45,6 +47,7 @@ const UserDropdown = () => {
 
   const handleDropdownClose = url => {
     if (url) {
+      AsyncStorage.clear();
       router.push(url)
     }
     setAnchorEl(null)

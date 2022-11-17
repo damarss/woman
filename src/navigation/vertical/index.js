@@ -1,3 +1,8 @@
+// ** react imports
+import { useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 // ** Icon imports
 import Login from 'mdi-material-ui/Login'
 import Table from 'mdi-material-ui/Table'
@@ -17,86 +22,172 @@ import Plus from 'mdi-material-ui/Plus'
 import AccountGroupOutline from 'mdi-material-ui/AccountGroupOutline'
 import VideoOutline from 'mdi-material-ui/VideoOutline'
 
+
+// ** for employ
+
 const navigation = () => {
-  return [
-    {
-      title: 'Create Project',
-      icon: Plus,
-      path: '/create-project'
-    },
-    {
-      title: 'Create Meeting',
-      icon: Plus,
-      path: '/create-meeting'
-    },
-    {
-      title: 'Dashboard',
-      icon: HomeOutline,
-      path: '/'
-    },
-    {
-      title: 'Task',
-      icon: ClipboardFileOutline,
-      path: '/task'
-    },
-    {
-      title: 'Project',
-      icon: TextBoxMultipleOutline,
-      path: '/project'
-    },
-    {
-      title: 'People',
-      icon: AccountGroupOutline,
-      path: '/people'
-    },
-    {
-      title: 'Meeting Scedule',
-      icon: MessageVideo,
-      path: '/meeting'
-    },
-    {
-      title: 'Meeting Setting',
-      icon: VideoOutline,
-      path: '/meeting-admin'
-    },
-    {
-      sectionTitle: 'Pages'
-    },
-    {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
-    },
-    {
-      sectionTitle: 'User Interface'
-    },
-    {
-      title: 'Typography',
-      icon: FormatLetterCase,
-      path: '/typography'
-    },
-    {
-      title: 'Icons',
-      path: '/icons',
-      icon: GoogleCirclesExtended
-    },
-    {
-      title: 'Cards',
-      icon: CreditCardOutline,
-      path: '/cards'
-    },
-    {
-      title: 'Tables',
-      icon: Table,
-      path: '/tables'
-    },
-    {
-      icon: CubeOutline,
-      title: 'Form Layouts',
-      path: '/form-layouts'
-    }
-  ]
+
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    userDetail();
+  }, [])
+
+  const userDetail = async () => {
+    setUserRole(await AsyncStorage.getItem('@roleUser'));
+  }
+
+
+
+  if (userRole == 'employee') {
+    return [
+      {
+        title: 'Dashboard',
+        icon: HomeOutline,
+        path: '/'
+      },
+      {
+        title: 'Task',
+        icon: ClipboardFileOutline,
+        path: '/task'
+      },
+      {
+        title: 'Project',
+        icon: TextBoxMultipleOutline,
+        path: '/project'
+      },
+      {
+        title: 'Meeting Scedule',
+        icon: MessageVideo,
+        path: '/meeting'
+      },
+    ]
+  } else {
+    return [
+      {
+        title: 'Dashboard',
+        icon: HomeOutline,
+        path: '/'
+      },
+      {
+        title: 'Create Project',
+        icon: Plus,
+        path: '/create-project'
+      },
+      {
+        title: 'Create Meeting',
+        icon: Plus,
+        path: '/create-meeting'
+      },
+      {
+        title: 'Task',
+        icon: ClipboardFileOutline,
+        path: '/task'
+      },
+      {
+        title: 'Project',
+        icon: TextBoxMultipleOutline,
+        path: '/project'
+      },
+      {
+        title: 'People',
+        icon: AccountGroupOutline,
+        path: '/people'
+      },
+      {
+        title: 'Meeting Scedule',
+        icon: MessageVideo,
+        path: '/meeting'
+      },
+      {
+        title: 'Meeting Setting',
+        icon: VideoOutline,
+        path: '/meeting-admin'
+      },
+    ]
+  }
+
+  
 }
 
 export default navigation
+
+// return [
+  // {
+  //   title: 'Create Project',
+  //   icon: Plus,
+  //   path: '/create-project'
+  // },
+  // {
+  //   title: 'Create Meeting',
+  //   icon: Plus,
+  //   path: '/create-meeting'
+  // },
+  // {
+  //   title: 'Dashboard',
+  //   icon: HomeOutline,
+  //   path: '/'
+  // },
+  // {
+  //   title: 'Task',
+  //   icon: ClipboardFileOutline,
+  //   path: '/task'
+  // },
+  // {
+  //   title: 'Project',
+  //   icon: TextBoxMultipleOutline,
+  //   path: '/project'
+  // },
+  // {
+  //   title: 'People',
+  //   icon: AccountGroupOutline,
+  //   path: '/people'
+  // },
+  // {
+  //   title: 'Meeting Scedule',
+  //   icon: MessageVideo,
+  //   path: '/meeting'
+  // },
+  // {
+  //   title: 'Meeting Setting',
+  //   icon: VideoOutline,
+  //   path: '/meeting-admin'
+  // },
+  // {
+  //   sectionTitle: 'Pages'
+  // },
+  // {
+  //   title: 'Error',
+  //   icon: AlertCircleOutline,
+  //   path: '/pages/error',
+  //   openInNewTab: true
+  // },
+  // {
+  //   sectionTitle: 'User Interface'
+  // },
+  // {
+  //   title: 'Typography',
+  //   icon: FormatLetterCase,
+  //   path: '/typography'
+  // },
+  // {
+  //   title: 'Icons',
+  //   path: '/icons',
+  //   icon: GoogleCirclesExtended
+  // },
+  // {
+  //   title: 'Cards',
+  //   icon: CreditCardOutline,
+  //   path: '/cards'
+  // },
+  // {
+  //   title: 'Tables',
+  //   icon: Table,
+  //   path: '/tables'
+  // },
+  // {
+  //   icon: CubeOutline,
+  //   title: 'Form Layouts',
+  //   path: '/form-layouts'
+  // }
+// ]

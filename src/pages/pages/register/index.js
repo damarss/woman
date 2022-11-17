@@ -1,8 +1,9 @@
 // ** React Imports
-import { useState, Fragment } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -72,6 +73,7 @@ const RegisterPage = () => {
 
   // ** Hook
   const theme = useTheme()
+  const router = useRouter()
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
@@ -95,8 +97,14 @@ const RegisterPage = () => {
       password: values.password
     }
 
-    const res = await axios.post('user', data);
-    console.log(res.data);
+    try {
+      const res = await axios.post('user', data);
+      console.log(res.data);
+      router.push('/pages/login');
+    } catch (error) {
+      alert("Register failed");
+    }
+
   }
 
   return (

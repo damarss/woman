@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // ** Next Imports
 import Link from 'next/link'
@@ -81,7 +82,7 @@ const LoginPage = () => {
   const handleMouseDownPassword = event => {
     event.preventDefault()
   }
-  
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -96,8 +97,15 @@ const LoginPage = () => {
         // nanti ubah tampilannya
         alert("Login successful");
         console.log(res.data);
-        
-        // router.push('/');
+
+        // ** mengambil data user
+        const url_gets = '/user/'
+        const url_get = url_gets.concat(res.data.id)
+        const getting_data = await axios.get(url_get)
+        console.log(getting_data.data)
+        await AsyncStorage.setItem('@roleUser', getting_data.data.role)
+
+        router.push('/');
       }
     } catch (error) {
       // nanti ubah nampilin errornya
