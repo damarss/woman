@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, Fragment } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -37,7 +37,16 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 const UserDropdown = () => {
   // ** States
   const [anchorEl, setAnchorEl] = useState(null)
+  const [userName, setUserName] = useState('');
 
+  useEffect(() => {
+    userDetail();
+  }, [])
+
+  // ** Get User datails
+  const userDetail = async () => {
+    setUserName(await AsyncStorage.getItem('@nameUser'));
+  }
   // ** Hooks
   const router = useRouter()
 
@@ -101,7 +110,7 @@ const UserDropdown = () => {
               <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{userName}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
                 Admin
               </Typography>
