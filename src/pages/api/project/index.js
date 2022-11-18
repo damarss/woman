@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import Gmail, { mailOptions } from 'src/services/Gmail'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -23,6 +24,20 @@ export default async function handler(req, res) {
           enddate,
           description,
           isArchived: false
+        }
+      })
+
+      mailOptions.to = '222011829@stis.ac.id'
+      mailOptions.subject = title
+      mailOptions.text = `Anda telah ditambahkan ke dalam project ${title} untuk tanggal ${new Date(
+        startdate
+      ).toLocaleDateString()} hingga tanggal ${new Date(enddate).toLocaleDateString()}.`
+
+      Gmail.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error)
+        } else {
+          console.log('Email sent: ' + info.response)
         }
       })
 
