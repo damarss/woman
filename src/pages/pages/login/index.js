@@ -103,7 +103,9 @@ const LoginPage = () => {
         const url_get = url_gets.concat(res.data.id)
         const getting_data = await axios.get(url_get)
         console.log(getting_data.data)
-        await AsyncStorage.setItem('@roleUser', getting_data.data.role)
+        // ** local storage
+        await AsyncStorage.setItem('@roleUser', getting_data.data.role);
+        await AsyncStorage.setItem('@nameUser', getting_data.data.name);
 
         router.push('/');
       }

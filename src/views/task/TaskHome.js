@@ -110,7 +110,7 @@ function getLabelStatus(status){
 }
 
 const statusObj = {
-  assigned: { color: 'info' },
+  assigned: { color: 'secondary' },
   on_progress: { color: 'info' },
   turned_in:{color: 'warning'},
   revision: { color: 'primary' },
