@@ -35,6 +35,6 @@ export default async function handle(req, res) {
       { algorithm: 'HS256' }
     )
 
-    return res.status(200).json({ message: 'Logged in successfully', token: token, id: user.id })
+    return res.status(200).json({ message: 'Logged in successfully', token: token })
   }
 }

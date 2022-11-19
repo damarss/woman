@@ -83,6 +83,13 @@ const LoginPage = () => {
     event.preventDefault()
   }
 
+  const parseJwt = (token) => {
+    if (!token) { return; }
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+}
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -96,11 +103,14 @@ const LoginPage = () => {
       if (res.status === 200) {
         // nanti ubah tampilannya
         alert("Login successful");
-        console.log(res.data);
+        console.log(res);
+
+        const token_decode = parseJwt(res.data.token)
+        console.log(token_decode)
 
         // ** mengambil data user
         const url_gets = '/user/'
-        const url_get = url_gets.concat(res.data.id)
+        const url_get = url_gets.concat(token_decode.uid)
         const getting_data = await axios.get(url_get)
         console.log(getting_data.data)
         
