@@ -149,7 +149,7 @@ const TaskHome = () => {
                 </TableCell>
                 <TableCell>{row.project}</TableCell>
                 <TableCell>{row.priority}</TableCell>
-                <TableCell><Chip
+                <TableCell sx={{textAlign:'center'}}><Chip
                     label={getLabelStatus(row.status)}
                     color={statusObj[row.status].color}
                     sx={{
