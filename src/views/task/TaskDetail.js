@@ -39,33 +39,61 @@ const TaskDetailPage = () => {
     <Grid xs={12}>
       <Card>
         <Grid container spacing={6}>
-          <Grid item xs={12} sm={7}>
-            <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5.75, 6.25)} !important` }}>
-              <Typography variant='h6' sx={{ marginBottom: 3.5 }}>
+          <Grid item xs={12} spacing={6}>
+            <Box
+              sx={{
+                gap: 5,
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingX: 5
+              }}
+            >
+              <Typography variant='h6' sx={{ marginY: 2.5 }}>
                 Task Title
               </Typography>
-            </CardContent>
+              <Chip
+                label={getLabelStatus('on_progress')}
+                //   color={statusObj['row.status'].color}
+                color='info'
+                sx={{
+                  height: 24,
+                  fontSize: '0.75rem',
+                  textTransform: 'capitalize',
+                  '& .MuiChip-label': { fontWeight: 500 }
+                }}
+              />
+            </Box>
           </Grid>
-          <Grid
-            item
-            sm={5}
-            xs={12}
-            sx={{
-              paddingTop: 0,
-              paddingRight: 0
-            }}
-          >
-            <Chip
-              label={getLabelStatus('on_progress')}
-              //   color={statusObj['row.status'].color}
-              color='info'
-              sx={{
-                height: 24,
-                fontSize: '0.75rem',
-                textTransform: 'capitalize',
-                '& .MuiChip-label': { fontWeight: 500 }
-              }}
-            />
+          <Grid item container xs={12} sx={{ marginX: 5 }}>
+            <Grid item xs={12} sm={2}>
+              Deadline
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              21 November 2022
+            </Grid>
+          </Grid>
+          <Grid item container xs={12} sx={{ marginX: 5 }}>
+            <Grid item xs={12} sm={2}>
+              Priority
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              High
+            </Grid>
+          </Grid>
+          <Grid item container xs={12} sx={{ marginX: 5 }}>
+            <Grid item xs={12} sm={2}>
+              Description
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu metus nisi. Nunc ac enim ligula.
+              Suspendisse est nibh, condimentum vulputate ullamcorper vitae, convallis sit amet tellus. Ut faucibus erat
+              tempus lectus elementum fringilla. Integer sollicitudin dui nec purus laoreet pellentesque. Aenean varius
+              tincidunt felis vitae luctus. Ut nulla nibh, euismod et libero id, ullamcorper lacinia lacus. Aenean
+              auctor urna ac placerat tempor. Pellentesque rutrum sed arcu ac luctus. Etiam pulvinar nec nulla ac
+              lacinia. Morbi nec facilisis massa.
+            </Grid>
           </Grid>
         </Grid>
       </Card>
