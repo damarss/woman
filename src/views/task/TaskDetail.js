@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import CardContent from '@mui/material/CardContent'
-
+import CardComment from 'src/views/task/CardComment'
 // ** Icons Imports
 import TrendingUp from 'mdi-material-ui/TrendingUp'
 import StarOutline from 'mdi-material-ui/StarOutline'
@@ -37,9 +37,10 @@ const statusObj = {
 const TaskDetailPage = () => {
   return (
     <Grid xs={12}>
+      {/* biar ada bg putih */}
       <Card>
         <Grid container spacing={6}>
-          <Grid item xs={12} spacing={6}>
+          <Grid item xs={12}>
             <Box
               sx={{
                 gap: 5,
@@ -94,6 +95,9 @@ const TaskDetailPage = () => {
               auctor urna ac placerat tempor. Pellentesque rutrum sed arcu ac luctus. Etiam pulvinar nec nulla ac
               lacinia. Morbi nec facilisis massa.
             </Grid>
+          </Grid>
+          <Grid item container xs={8}>
+            <CardComment />
           </Grid>
         </Grid>
       </Card>
