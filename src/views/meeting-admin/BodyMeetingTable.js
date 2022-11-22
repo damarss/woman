@@ -76,7 +76,7 @@ const BodyMeetingTable = () => {
         <Table sx={{ minWidth: 50 }} aria-label='table in dashboard'>
           <TableBody>
             {rows.map(row => (
-              <Link href='/meeting-detail' hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+              <Link href='/meeting-detail' hover key={row.judul} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableRow>
                   <TableCell align='left' style={{ width: '16rem' }}>
                     <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.judul}</Typography>

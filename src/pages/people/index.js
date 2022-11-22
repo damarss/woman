@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Box from '@mui/material/Box'
 
 // ** People Components Imports
-import HeadPeopleTable from 'src/views/people/HeadPeopleTable'
+import PeopleTable from 'src/views/people/PeopleTable'
 import BodyPeopleTable from 'src/views/people/BodyPeopleTable'
 
 const PeoplePage = () => {
@@ -14,9 +14,7 @@ const PeoplePage = () => {
       {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
         <h1>Anggota</h1>
       </Box> */}
-      <HeadPeopleTable />
-      <br></br>
-      <BodyPeopleTable />
+      <PeopleTable />
     </>
   )
 }

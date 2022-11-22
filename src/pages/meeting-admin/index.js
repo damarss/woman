@@ -6,8 +6,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 
 // ** Meeting Components Imports
-import HeadMeetingTable from 'src/views/meeting-aris/meeting-table/HeadMeetingTable'
-import BodyMeetingTable from 'src/views/meeting-aris/meeting-table/BodyMeetingTable'
+import MeetingTable from 'src/views/meeting-admin/MeetingTable'
 
 const MeetingPage = () => {
   return (
@@ -15,9 +14,7 @@ const MeetingPage = () => {
       {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
         <h2>Jadwal Rapat</h2>
       </Box> */}
-      <HeadMeetingTable />
-      <br></br>
-      <BodyMeetingTable />
+      <MeetingTable />
     </>
   )
 }

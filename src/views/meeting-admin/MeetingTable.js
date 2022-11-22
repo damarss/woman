@@ -8,6 +8,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
+import Link from '@mui/material/Link'
 
 const rows = [
   {
@@ -93,11 +94,25 @@ const MeetingTable = () => {
             {rows.map(row => (
               <TableRow hover key={row.judul} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell align='left'>
-                  <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.judul}</Typography>
+                  <Link href='/meeting-detail'>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.judul}</Typography>
+                  </Link>
                 </TableCell>
-                <TableCell align='center'>{row.tanggal}</TableCell>
-                <TableCell align='center'>{row.waktu}</TableCell>
-                <TableCell align='center'>{row.link}</TableCell>
+                <TableCell align='center'>
+                  <Link href='/meeting-detail'>
+                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.tanggal}</Typography>
+                  </Link>
+                </TableCell>
+                <TableCell align='center'>
+                  <Link href='/meeting-detail'>
+                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.waktu}</Typography>
+                  </Link>
+                </TableCell>
+                <TableCell align='center'>
+                  <Link href='#'>
+                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.link}</Typography>
+                  </Link>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

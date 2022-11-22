@@ -12,7 +12,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 
 // ** Meeting Components Imports
-import EditMeeting from 'src/views/meeting-aris/EditMeeting'
+import EditMeeting from 'src/views/edit-meeting/EditMeeting'
 
 const EditMeetingPage = () => {
   return (

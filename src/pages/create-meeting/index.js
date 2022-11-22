@@ -12,7 +12,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 
 // ** Meeting Components Imports
-import CreateMeeting from 'src/views/meeting-aris/CreateMeeting'
+import CreateMeeting from 'src/views/create-meeting/CreateMeeting'
 
 const CreateMeetingPage = () => {
   return (
