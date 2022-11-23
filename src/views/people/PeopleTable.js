@@ -9,17 +9,21 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
+import Select from '@mui/material/Select'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
 
 const rows = [
   {
     name: 'Sally Quinn',
-    role: 'Manager',
+    role: 'admin',
     proyek: 2,
     tugas: 7,
     designation: 'Humas Utama'
   },
   {
-    role: 'Admin',
+    role: 'leader',
     proyek: 4,
     name: 'Margaret Bowers',
     tugas: 7,
@@ -30,17 +34,17 @@ const rows = [
     designation: 'Divisi Umum',
     proyek: 4,
     name: 'Minnie Roy',
-    role: 'user'
+    role: 'anggota'
   },
   {
-    role: 'super admin',
+    role: 'leader',
     proyek: 6,
     name: 'Ralph Leonard',
     tugas: 7,
     designation: 'Pencacah Utama'
   },
   {
-    role: 'user',
+    role: 'anggota',
     proyek: 5,
     name: 'Annie Martin',
     designation: 'Divisi TI',
@@ -62,7 +66,7 @@ const rows = [
   },
   {
     name: 'Rodney Sharp',
-    role: 'user',
+    role: 'anggota',
     proyek: 4,
     designation: 'Divisi Umum',
     tugas: 5
@@ -110,7 +114,24 @@ const PeopleTable = () => {
                 <TableCell align='center' style={{ width: '16rem' }}>
                   {row.tugas}
                 </TableCell>
-                <TableCell align='center'>{row.role}</TableCell>
+                <TableCell align='center'>
+                  <form onSubmit={e => e.preventDefault()}>
+                    <FormControl fullWidth>
+                      <InputLabel id='form-layouts-separator-select-label'>role</InputLabel>
+                      <Select
+                        label='role'
+                        defaultValue={row.role}
+                        id='form-layouts-separator-role'
+                        labelId='form-layouts-separator-role-label'
+                      >
+                        <MenuItem value='admin'>admin</MenuItem>
+                        <MenuItem value='leader'>leader</MenuItem>
+                        <MenuItem value='manager'>manager</MenuItem>
+                        <MenuItem value='anggota'>anggota</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </form>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

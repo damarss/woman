@@ -201,7 +201,7 @@ const CreateMeeting = () => {
                 confirmButtonText: 'Ya, Buat Rapat'
               }).then(result => {
                 if (result.isConfirmed) {
-                  Swal.fire('', 'Rapat berhasil dibuat. Tekan "OK" untuk melanjutkan.', 'success')
+                  Swal.fire('', 'Rapat Created Succesfully. Tekan "OK" untuk melanjutkan.', 'success')
                 }
               })
             }}

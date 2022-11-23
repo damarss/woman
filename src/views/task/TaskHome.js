@@ -130,7 +130,7 @@ const TaskHome = () => {
               <TableCell>Task Title</TableCell>
               <TableCell>Project</TableCell>
               <TableCell>Priority</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell sx={{textAlign:'center'}}>Status</TableCell>
               <TableCell>Deadline</TableCell>
             </TableRow>
           </TableHead>
