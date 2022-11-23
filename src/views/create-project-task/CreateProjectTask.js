@@ -103,6 +103,7 @@ const CreateProjectTask = () => {
   return (
     <Card>
       <CardContent>
+        <CardHeader title='Task Lists' titleTypographyProps={{ variant: 'h6' }} />
         <TableContainer>
           <Table sx={{ minWidth: 50 }} aria-label='table in dashboard'>
             <TableHead>
