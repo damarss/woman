@@ -97,12 +97,12 @@ const TaskDetailPage = () => {
               lacinia. Morbi nec facilisis massa.
             </Grid>
           </Grid>
-          <Grid item container xs={12} sx={{ marginX: 5, marginTop: 5 }} spacing={5}>
-            <Grid xs={8} sx={{ paddingRight: 5 }}>
-              <CardComment xs />
+          <Grid item container xs={12} sx={{ marginX: 5, marginTop: 5 }} spacing={6}>
+            <Grid item xs={9} sx={{ paddingRight: 5 }}>
+              <CardComment />
             </Grid>
-            <Grid xs={4}>
-              <CardTaskFile xs />
+            <Grid item xs={3}>
+              <CardTaskFile />
             </Grid>
           </Grid>
         </Grid>
