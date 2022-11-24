@@ -73,11 +73,11 @@ const statusObj = {
 }
 
 const columns = [
-  { id: 'Tugas', label: 'Tugas', minWidth: 170 },
+  { id: 'Tugas', label: 'Tugas', minWidth: 150 },
   {
     id: 'penanggungjawab',
     label: 'Penanggung Jawab',
-    minWidth: 170,
+    minWidth: 150,
     align: 'left',
     format: value => value.toLocaleString('en-US')
   },
@@ -92,7 +92,7 @@ const columns = [
     id: 'Status',
     label: 'Status',
     minWidth: 70,
-    align: 'left',
+    align: 'center',
     format: value => value.toFixed(2)
   }
 ]
@@ -101,7 +101,7 @@ const PeopleTable = () => {
   return (
     <Card>
       <TableContainer>
-        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
+        <Table sx={{ minWidth: 10 }} aria-label='table in dashboard'>
         <Link href='/projectdetail'>
         <TableHead>
             <TableRow>
@@ -120,7 +120,7 @@ const PeopleTable = () => {
                 </TableCell>
                 <TableCell style={{width:'16rem'}}>{row.penanggungjawab}</TableCell>
                 <TableCell style={{width:'16rem'}}>{row.priority}</TableCell>
-                <TableCell>
+                <TableCell align='center'>
                   <Chip
                     label={row.status}
                     color={statusObj[row.status].color}
