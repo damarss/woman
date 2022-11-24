@@ -1,0 +1,30 @@
+// ** React Imports
+import { useState } from 'react'
+
+// ** MUI Imports
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+
+// ** Styled Component
+import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+
+// ** Third Party Styles Imports
+import 'react-datepicker/dist/react-datepicker.css'
+
+// ** Meeting Components Imports
+import EditProject from 'src/views/edit-project/EditProject'
+
+const EditProjectPage = () => {
+  return (
+    <>
+      <DatePickerWrapper>
+        {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+        <h2>Project Description</h2>
+      </Box> */}
+        <EditProject />
+      </DatePickerWrapper>
+    </>
+  )
+}
+
+export default EditProjectPage

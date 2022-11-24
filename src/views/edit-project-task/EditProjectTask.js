@@ -98,7 +98,7 @@ const CustomInputStart = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Start Date' autoComplete='on' />
 })
 
-const CreateProjectTask = () => {
+const EditProjectTask = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => {setOpen(false); Swal.fire('Cancelled', 'Task is not created!', 'error')}
@@ -381,4 +381,4 @@ const CreateProjectTask = () => {
   )
 }
 
-export default CreateProjectTask
+export default EditProjectTask

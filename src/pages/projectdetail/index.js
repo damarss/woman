@@ -1,6 +1,8 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 
 // ** Demo Components Imports
 import CardUser from 'src/views/cards/CardUser'
@@ -26,9 +28,6 @@ import Tableprojectdetail from 'src/views/tables/Tableprojectdetail'
 const CardBasic = () => {
   return (
     <Grid container spacing={6}>
-      <Grid item xs={12} sx={{ paddingBottom: 4 }}>
-        <Typography variant='h5'>Basic Cards</Typography>
-      </Grid>
       <Grid item xs={12} sm={12} md={8} lg={8}>
         <CardProjectdetail />
       </Grid>
@@ -37,11 +36,22 @@ const CardBasic = () => {
                   50%
                 </Typography> */}
       </Grid>
-      
+
       <Grid item xs={12} sm={12} md={12}>
         <Tableprojectdetail />
       </Grid>
-      
+
+      {/* Admin */}
+      <Grid item xs={12} sm={12} md={12}>
+        <Box>
+          <Button size='large' type='submit' sx={{ mr: 7 }} variant='contained' color='primary'>
+            Edit
+          </Button>
+          <Button size='large' type='submit' variant='contained' color='primary'>
+            Delete
+          </Button>
+        </Box>
+      </Grid>
     </Grid>
   )
 }

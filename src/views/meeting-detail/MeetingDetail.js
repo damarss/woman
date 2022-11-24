@@ -119,7 +119,7 @@ const CardMembership = () => {
                   /* Read more about handling dismissals below */
                   result.dismiss === Swal.DismissReason.cancel
                 ) {
-                  Swal.fire('', 'Rapat tidak dihapus. Tekan "OK" untuk melanjutkan.', 'info')
+                  Swal.fire('Cancelled!', 'Rapat tidak dihapus. Tekan "OK" untuk melanjutkan.', 'error')
                 }
               })
             }}
