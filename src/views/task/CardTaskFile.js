@@ -37,6 +37,7 @@ const CardTaskFileContent = () => {
         </Typography>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} /> */}
 
+        {/* BUAT UPLOAD FILE */}
         {/* <Typography variant='body2' sx={{ marginTop: 6 }}>
           No submitted file.
           <br /> Drop your file here or
@@ -57,14 +58,40 @@ const CardTaskFileContent = () => {
           </label>
         </>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} /> */}
-        <InsetDriveFileIcon />
+
+        {/* JIKA FILE SUDAH ADA */}
+        {/* <InsertDriveFileIcon fontSize='large' sx={{ height: '20vh' }} />
+        <Typography variant='body2'>File name</Typography>
+        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
         <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
           Submit
+        </Button> */}
+
+        {/* JIKA FILE SUDAH TURNED IN */}
+        {/* <Typography variant='body2' sx={{ marginTop: 4 }}>
+          Being Reviewed
+        </Typography>
+        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
+        <Typography variant='body2'>File name</Typography>
+        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
+        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+          Unsubmit
+        </Button> */}
+
+        {/* JIKA BUTUH REVISI */}
+        <Typography variant='body2' sx={{ textColor: 'warning', marginTop: 4 }}>
+          Need Revision
+        </Typography>
+        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
+        <Typography variant='body2'>File name</Typography>
+        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
+        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+          Resubmit
         </Button>
       </CardContent>
       <CardActions className='card-action-dense'>
         {/* <Button>Location</Button>
-        <Button>Reviews</Button> */}
+        <Button>Reviews </Button> */}
       </CardActions>
     </Card>
   )

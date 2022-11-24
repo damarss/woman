@@ -126,11 +126,25 @@ const TaskHome = () => {
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-              <TableCell>Task Title</TableCell>
-              <TableCell>Project</TableCell>
-              <TableCell>Priority</TableCell>
-              <TableCell sx={{ textAlign: 'center' }}>Status</TableCell>
-              <TableCell>Deadline</TableCell>
+              <TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Task Title</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Project</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Priority</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
+                  Status
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
+                  Deadline
+                </Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

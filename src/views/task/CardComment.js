@@ -24,32 +24,13 @@ import IconButton from '@mui/material/IconButton'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
 
-// Styled Box component
-const StyledBox = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: {
-    borderRight: `1px solid ${theme.palette.divider}`
-  }
-}))
-
-// Pendefinisian warna untuk status progress task
-const statusObj = {
-  assigned: { color: 'secondary' },
-  on_progress: { color: 'info' },
-  turned_in: { color: 'warning' },
-  revision: { color: 'primary' },
-  done: { color: 'success' },
-  late: { color: 'error' },
-  turned_in_late: { color: 'warning' },
-  done_late: { color: 'success' }
-}
-
 const CardCommentPageTask = () => {
   return (
     <Card>
       <CardHeader title='Private Comment' sx={{ textAlign: 'center', backgroundColor: 'primary.main', paddingY: 3 }} />
       <CardContent>
         {/* box buat komentar*/}
-        <Box sx={{ maxHeight: '30vh', overflowY: 'scroll', marginY: 2 }}>
+        <Box sx={{ maxHeight: '30vh', minHeight: '30vh', overflowY: 'scroll', marginY: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', marginY: 3 }}>
             <Avatar alt='Eugene Clarke' src='/images/avatars/1.png' sx={{ width: 50, height: 50, marginRight: 2.75 }} />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
