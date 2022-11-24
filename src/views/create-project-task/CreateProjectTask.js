@@ -25,6 +25,10 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 
+// ** Icon
+import PencilOutline from 'mdi-material-ui/PencilOutline'
+import DeleteOutline from 'mdi-material-ui/DeleteOutline'
+
 // ** Third Party Imports
 import DatePicker from 'react-datepicker'
 import Swal from 'sweetalert2'
@@ -97,8 +101,12 @@ const CustomInputStart = forwardRef((props, ref) => {
 const CreateProjectTask = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
-  const handleClose = () => { setOpen(false); Swal.fire('Cancelled','Task is not created!','error')}
+  const handleClose = () => {setOpen(false); Swal.fire('Cancelled', 'Task is not created!', 'error')}
   const [date, setDate] = useState(null)
+  
+  const [editOpen, setEditOpen] = useState(false)
+  const handleEditOpen = () => setEditOpen(true)
+  const handleEditClose = () => setEditOpen(false)
 
   return (
     <Card>
@@ -108,7 +116,7 @@ const CreateProjectTask = () => {
           <Table sx={{ minWidth: 50 }} aria-label='table in dashboard'>
             <TableHead>
               <TableRow>
-                <TableCell align='left' style={{ width: '16rem' }}>
+                <TableCell align='left' style={{ width: '18rem' }}>
                   <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Task Name</Typography>
                 </TableCell>
                 <TableCell align='left' style={{ width: '16rem' }}>
@@ -117,8 +125,11 @@ const CreateProjectTask = () => {
                 <TableCell align='left' style={{ width: '16rem' }}>
                   <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Priority</Typography>
                 </TableCell>
-                <TableCell align='left'>
+                <TableCell align='left' style={{ width: '8rem' }}>
                   <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Deadline</Typography>
+                </TableCell>
+                <TableCell align='center'>
+                  <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Action</Typography>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -145,6 +156,114 @@ const CreateProjectTask = () => {
                       <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.date}</Typography>
                     </Link>
                   </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      {/* Edit Task */}
+                      <Button type='submit' sx={{ mr: 1 }} color='info' variant='text' onClick={handleEditOpen}>
+                        <PencilOutline />
+                      </Button>
+                      {/* Modal Edit Task */}
+                      <Modal open={editOpen} onClose={handleEditClose} aria-labelledby='modal-edit-form'>
+                        <Card sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4}} id='modal-edit-form'>
+                          <form onSubmit={e => e.preventDefault()}>
+                            <CardContent>
+                              <Typography variant='h6'>Create Task</Typography>
+                              <br></br>
+                              <Grid container spacing={5}>
+                                <Grid item xs={12} sm={12} lg={6}>
+                                  <TextField fullWidth label='Task Title' placeholder='Task A' />
+                                </Grid>
+                                <Grid item xs={12} sm={6} lg={6}>
+                                  <FormControl fullWidth>
+                                    <InputLabel id='form-layouts-separator-select-label'>Asigned To</InputLabel>
+                                    <Select
+                                      label='asigned'
+                                      defaultValue=''
+                                      id='form-layouts-separator-asigned'
+                                      labelId='form-layouts-separator-asigned-label'
+                                    >
+                                      <MenuItem value='abi'>abi</MenuItem>
+                                      <MenuItem value='bibi'>bibi</MenuItem>
+                                      <MenuItem value='cici'>cici</MenuItem>
+                                      <MenuItem value='didi'>didi</MenuItem>
+                                    </Select>
+                                  </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={12} lg={6}>
+                                  <DatePickerWrapper>
+                                    <DatePicker
+                                      selected={date}
+                                      showYearDropdown
+                                      showMonthDropdown
+                                      placeholderText='DD-MM-YYYY'
+                                      customInput={<CustomInputStart />}
+                                      id='tanggal-mulai'
+                                      onChange={date => setDate(date)}
+                                    />
+                                  </DatePickerWrapper>
+                                </Grid>
+                                <Grid item xs={12} sm={6} lg={6}>
+                                  <FormControl fullWidth>
+                                    <InputLabel id='form-layouts-separator-select-label'>Priority</InputLabel>
+                                    <Select
+                                      label='priority'
+                                      defaultValue=''
+                                      id='form-layouts-separator-priority'
+                                      labelId='form-layouts-separator-priority-label'
+                                    >
+                                      <MenuItem value='high'>high</MenuItem>
+                                      <MenuItem value='medium'>medium</MenuItem>
+                                      <MenuItem value='low'>low</MenuItem>
+                                    </Select>
+                                  </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={12} lg={12}>
+                                  <TextField
+                                    fullWidth
+                                    multiline
+                                    minRows={3}
+                                    label='Task Description'
+                                    placeholder='Description'
+                                  />
+                                </Grid>
+                              </Grid>
+                              <br></br>
+                              <br></br>
+                              <br></br>
+                              <br></br>
+                              <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
+                                <Button
+                                  size='large'
+                                  color='secondary'
+                                  sx={{ mr: 2 }}
+                                  variant='outlined'
+                                  onClick={handleEditClose}
+                                >
+                                  Cancel
+                                </Button>
+                                <Button
+                                  size='large'
+                                  type='submit'
+                                  sx={{ mr: 2 }}
+                                  variant='contained'
+                                  onClick={() => {
+                                    setEditOpen(false)
+                                    Swal.fire('', 'Task Updated Succesfully!', 'success')
+                                  }}
+                                >
+                                  Edit Task
+                                </Button>
+                              </CardActions>
+                            </CardContent>
+                          </form>
+                        </Card>
+                      </Modal>
+                      {/* Delete Task */}
+                      <Button type='submit' sx={{ mr: 1 }} color='error' variant='text'>
+                        <DeleteOutline />
+                      </Button>
+                    </Box>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -152,102 +271,98 @@ const CreateProjectTask = () => {
         </TableContainer>
         {/* Add Task */}
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleOpen}>
+          <Button size='medium' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleOpen}>
             Add Task
           </Button>
           {/* Modal Form*/}
           <Modal open={open} onClose={handleClose} aria-labelledby='modal-form'>
-              <Card sx={style} id='modal-form'>
-                <form onSubmit={e => e.preventDefault()}>
-                  <CardContent>
-                    <Typography variant='h6'>Create Task</Typography>
-                    <br></br>
-                    <Grid container spacing={5}>
-                      <Grid item xs={12} sm={12} lg={6}>
-                        <TextField fullWidth label='Task Title' placeholder='Task A' />
-                      </Grid>
-                      <Grid item xs={12} sm={6} lg={6}>
-                        <FormControl fullWidth>
-                          <InputLabel id='form-layouts-separator-select-label'>Asigned To</InputLabel>
-                          <Select
-                            label='asigned'
-                            defaultValue=''
-                            id='form-layouts-separator-asigned'
-                            labelId='form-layouts-separator-asigned-label'
-                          >
-                            <MenuItem value='abi'>abi</MenuItem>
-                            <MenuItem value='bibi'>bibi</MenuItem>
-                            <MenuItem value='cici'>cici</MenuItem>
-                            <MenuItem value='didi'>didi</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12} sm={12} lg={6}>
-                        <DatePickerWrapper>
-                          <DatePicker
-                            selected={date}
-                            showYearDropdown
-                            showMonthDropdown
-                            placeholderText='DD-MM-YYYY'
-                            customInput={<CustomInputStart />}
-                            id='tanggal-mulai'
-                            onChange={date => setDate(date)}
-                          />
-                        </DatePickerWrapper>
-                      </Grid>
-                      <Grid item xs={12} sm={6} lg={6}>
-                        <FormControl fullWidth>
-                          <InputLabel id='form-layouts-separator-select-label'>Priority</InputLabel>
-                          <Select
-                            label='priority'
-                            defaultValue=''
-                            id='form-layouts-separator-priority'
-                            labelId='form-layouts-separator-priority-label'
-                          >
-                            <MenuItem value='high'>high</MenuItem>
-                            <MenuItem value='medium'>medium</MenuItem>
-                            <MenuItem value='low'>low</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12} sm={12} lg={12}>
-                        <TextField fullWidth multiline minRows={3} label='Task Description' placeholder='Description' />
-                      </Grid>
+            <Card sx={style} id='modal-form'>
+              <form onSubmit={e => e.preventDefault()}>
+                <CardContent>
+                  <Typography variant='h6'>Create Task</Typography>
+                  <br></br>
+                  <Grid container spacing={5}>
+                    <Grid item xs={12} sm={12} lg={6}>
+                      <TextField fullWidth label='Task Title' placeholder='Task A' />
                     </Grid>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-                      <Button
-                        size='large'
-                        color='secondary'
-                        sx={{ mr: 2 }}
-                        variant='outlined'
-                        onClick={handleClose}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        size='large'
-                        type='submit'
-                        sx={{ mr: 2 }}
-                        variant='contained'
-                        onClick={() => {
-                          setOpen(false)
-                          Swal.fire('', 'Task Created Succesfully!', 'success')
-                        }}
-                      >
-                        Add Task
-                      </Button>
-                    </CardActions>
-                  </CardContent>
-                </form>
-              </Card>
+                    <Grid item xs={12} sm={6} lg={6}>
+                      <FormControl fullWidth>
+                        <InputLabel id='form-layouts-separator-select-label'>Asigned To</InputLabel>
+                        <Select
+                          label='asigned'
+                          defaultValue=''
+                          id='form-layouts-separator-asigned'
+                          labelId='form-layouts-separator-asigned-label'
+                        >
+                          <MenuItem value='abi'>abi</MenuItem>
+                          <MenuItem value='bibi'>bibi</MenuItem>
+                          <MenuItem value='cici'>cici</MenuItem>
+                          <MenuItem value='didi'>didi</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={12} lg={6}>
+                      <DatePickerWrapper>
+                        <DatePicker
+                          selected={date}
+                          showYearDropdown
+                          showMonthDropdown
+                          placeholderText='DD-MM-YYYY'
+                          customInput={<CustomInputStart />}
+                          id='tanggal-mulai'
+                          onChange={date => setDate(date)}
+                        />
+                      </DatePickerWrapper>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={6}>
+                      <FormControl fullWidth>
+                        <InputLabel id='form-layouts-separator-select-label'>Priority</InputLabel>
+                        <Select
+                          label='priority'
+                          defaultValue=''
+                          id='form-layouts-separator-priority'
+                          labelId='form-layouts-separator-priority-label'
+                        >
+                          <MenuItem value='high'>high</MenuItem>
+                          <MenuItem value='medium'>medium</MenuItem>
+                          <MenuItem value='low'>low</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={12} lg={12}>
+                      <TextField fullWidth multiline minRows={3} label='Task Description' placeholder='Description' />
+                    </Grid>
+                  </Grid>
+                  <br></br>
+                  <br></br>
+                  <br></br>
+                  <br></br>
+                  <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
+                    <Button size='large' color='secondary' sx={{ mr: 2 }} variant='outlined' onClick={handleClose}>
+                      Cancel
+                    </Button>
+                    <Button
+                      size='large'
+                      type='submit'
+                      sx={{ mr: 2 }}
+                      variant='contained'
+                      onClick={() => {
+                        setOpen(false)
+                        Swal.fire('', 'Task Created Succesfully!', 'success')
+                      }}
+                    >
+                      Add Task
+                    </Button>
+                  </CardActions>
+                </CardContent>
+              </form>
+            </Card>
           </Modal>
         </CardActions>
 
         {/* Finish Make Project */}
+        <br></br>
+        <br></br>
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
           <Button
             size='large'

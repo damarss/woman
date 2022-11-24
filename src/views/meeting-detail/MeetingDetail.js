@@ -33,7 +33,7 @@ const CardMembership = () => {
         <Typography variant='h6' sx={{ marginBottom: 3.5 }}>
           Meeting Title
         </Typography>
-        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
+        <br></br>
         <Grid container spacing={6}>
           <Grid item xs={12} sm={5} md={4} lg={3}>
             <StyledBox>
