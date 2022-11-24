@@ -43,12 +43,12 @@ const CardBasic = () => {
 
       {/* Admin */}
       <Grid item xs={12} sm={12} md={12}>
-        <Box>
-          <Button size='large' type='submit' sx={{ mr: 7 }} variant='contained' color='primary'>
-            Edit
-          </Button>
-          <Button size='large' type='submit' variant='contained' color='primary'>
+        <Box sx={{display:'flex', justifyContent:'start'}}>
+          <Button size='medium' type='submit' sx={{ mr: 7 }} variant='contained' color='primary'>
             Delete
+          </Button>
+          <Button size='medium' type='submit' variant='contained' color='primary'>
+            Update
           </Button>
         </Box>
       </Grid>

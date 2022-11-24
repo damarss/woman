@@ -194,7 +194,7 @@ const CreateProject = () => {
         </CardActions>
       </form>
     </Card>
-  )
+  ) 
 }
 
 export default CreateProject 
