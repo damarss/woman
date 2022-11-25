@@ -163,8 +163,9 @@ const EditProjectTask = () => {
                         <PencilOutline />
                       </Button>
                       {/* Modal Edit Task */}
-                      <Modal open={editOpen} onClose={handleEditClose} aria-labelledby='modal-edit-form'>
-                        <Card sx={style} id='modal-edit-form'>
+                      <Modal open={editOpen} onClose={handleEditClose} >
+                        <Card sx={style}>
+                          {/* form edit task */}
                           <form onSubmit={e => e.preventDefault()}>
                             <CardContent>
                               <Typography variant='h6'>Create Task</Typography>
@@ -175,17 +176,16 @@ const EditProjectTask = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6} lg={6}>
                                   <FormControl fullWidth>
-                                    <InputLabel id='form-layouts-separator-select-label'>Asigned To</InputLabel>
+                                    <InputLabel id='form-layouts-separator-asigned-label-edit'>Asigned To</InputLabel>
                                     <Select
                                       label='asigned'
                                       defaultValue=''
                                       id='form-layouts-separator-asigned'
-                                      labelId='form-layouts-separator-asigned-label'
+                                      labelId='form-layouts-separator-asigned-label-edit'
                                     >
-                                      <MenuItem value='abi'>abi</MenuItem>
-                                      <MenuItem value='bibi'>bibi</MenuItem>
-                                      <MenuItem value='cici'>cici</MenuItem>
-                                      <MenuItem value='didi'>didi</MenuItem>
+                                    {rows.map(row => (
+                                      <MenuItem key={row.name} value={row.name}>{row.name}</MenuItem>
+                                    ))}
                                     </Select>
                                   </FormControl>
                                 </Grid>
@@ -204,12 +204,12 @@ const EditProjectTask = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6} lg={6}>
                                   <FormControl fullWidth>
-                                    <InputLabel id='form-layouts-separator-select-label'>Priority</InputLabel>
+                                    <InputLabel id='form-layouts-separator-priority-label-edit'>Priority</InputLabel>
                                     <Select
                                       label='priority'
                                       defaultValue=''
                                       id='form-layouts-separator-priority'
-                                      labelId='form-layouts-separator-priority-label'
+                                      labelId='form-layouts-separator-priority-label-edit'
                                     >
                                       <MenuItem value='high'>high</MenuItem>
                                       <MenuItem value='medium'>medium</MenuItem>
@@ -256,10 +256,35 @@ const EditProjectTask = () => {
                               </CardActions>
                             </CardContent>
                           </form>
+                          {/* end form edit task */}
                         </Card>
                       </Modal>
                       {/* Delete Task */}
-                      <Button type='submit' sx={{ mr: 1 }} color='error' variant='text'>
+                      <Button 
+                      type='submit' 
+                      sx={{ mr: 1 }} 
+                      color='error' 
+                      variant='text' 
+                      onClick={() => {
+                          Swal.fire({
+                            title: 'Hapus Tugas?',
+                            text: 'Tekan tombol "Hapus Tugas" untuk menghapus tugas',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, Hapus Tugas'
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              Swal.fire(
+                                '',
+                                'Tugas berhasil dihapus. Tekan "OK" untuk melanjutkan.',
+                                'success'
+                              )
+                            }
+                          })
+                      }}
+                      >
                         <DeleteOutline />
                       </Button>
                     </Box>
@@ -274,7 +299,7 @@ const EditProjectTask = () => {
           <Button size='medium' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleOpen}>
             Add Task
           </Button>
-          {/* Modal Form*/}
+          {/* Modal Add Task Form*/}
           <Modal open={open} onClose={handleClose} aria-labelledby='modal-form'>
             <Card sx={style} id='modal-form'>
               <form onSubmit={e => e.preventDefault()}>
@@ -294,10 +319,9 @@ const EditProjectTask = () => {
                           id='form-layouts-separator-asigned'
                           labelId='form-layouts-separator-asigned-label'
                         >
-                          <MenuItem value='abi'>abi</MenuItem>
-                          <MenuItem value='bibi'>bibi</MenuItem>
-                          <MenuItem value='cici'>cici</MenuItem>
-                          <MenuItem value='didi'>didi</MenuItem>
+                          {rows.map(row => (
+                            <MenuItem key={row.name} value={row.name}>{row.name}</MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                     </Grid>
@@ -356,6 +380,7 @@ const EditProjectTask = () => {
                   </CardActions>
                 </CardContent>
               </form>
+              {/* End Form */}
             </Card>
           </Modal>
         </CardActions>
@@ -370,7 +395,19 @@ const EditProjectTask = () => {
             sx={{ mr: 2 }}
             variant='contained'
             onClick={() => {
-              Swal.fire('', 'Project Created Succesfully!', 'success')
+              Swal.fire({
+                title: 'Create Project?',
+                text: 'Pastikan kembali data yang diisi sudah benar. Tekan tombol "Buat Project" untuk mengirim notifikasi kepada peserta Project',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#68B92E',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Buat Project'
+              }).then(result => {
+                if (result.isConfirmed) {
+                  Swal.fire('', 'Project Created Succesfully. Tekan "OK" untuk melanjutkan.', 'success')
+                }
+              })
             }}
           >
             Create Project

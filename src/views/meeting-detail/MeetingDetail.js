@@ -104,7 +104,7 @@ const CardMembership = () => {
 
               Swal.fire({
                 title: 'Hapus Rapat?',
-                text: 'Tekan tombol "Buat Rapat" untuk mengirim notifikasi kepada peserta rapat',
+                text: 'Tekan tombol "Hapus Rapat" untuk mengirim notifikasi kepada peserta rapat',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#68B92E',

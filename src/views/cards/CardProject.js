@@ -89,7 +89,7 @@ const CardMembership = () => {
                 <span>Arfiandys</span>
                 <span>Team Leader</span>
               </Typography>
-              <Link href='/projectdetail'>
+              <Link href='/project-detail'>
                 <Button variant='contained'>View More</Button>
               </Link>
             </Box>

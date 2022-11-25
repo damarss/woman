@@ -88,6 +88,7 @@ const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
+  minWidth: 370,
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   boxShadow: 24,
@@ -95,7 +96,7 @@ const style = {
 }
 
 const CustomInputStart = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Start Date' autoComplete='on' />
+  return <TextField fullWidth {...props} inputRef={ref} label='Deadline' autoComplete='on' />
 })
 
 const CreateProjectTask = () => {
@@ -103,7 +104,7 @@ const CreateProjectTask = () => {
   const handleOpen = () => setOpen(true)
   const handleClose = () => {setOpen(false); Swal.fire('Cancelled', 'Task is not created!', 'error')}
   const [date, setDate] = useState(null)
-  
+
   const [editOpen, setEditOpen] = useState(false)
   const handleEditOpen = () => setEditOpen(true)
   const handleEditClose = () => setEditOpen(false)
@@ -163,8 +164,9 @@ const CreateProjectTask = () => {
                         <PencilOutline />
                       </Button>
                       {/* Modal Edit Task */}
-                      <Modal open={editOpen} onClose={handleEditClose} aria-labelledby='modal-edit-form'>
-                        <Card sx={style} id='modal-edit-form'>
+                      <Modal open={editOpen} onClose={handleEditClose}>
+                        <Card sx={style}>
+                          {/* form edit task */}
                           <form onSubmit={e => e.preventDefault()}>
                             <CardContent>
                               <Typography variant='h6'>Create Task</Typography>
@@ -175,17 +177,18 @@ const CreateProjectTask = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6} lg={6}>
                                   <FormControl fullWidth>
-                                    <InputLabel id='form-layouts-separator-select-label'>Asigned To</InputLabel>
+                                    <InputLabel id='form-layouts-separator-asigned-label-edit'>Asigned To</InputLabel>
                                     <Select
-                                      label='asigned'
+                                      label='asigned to '
                                       defaultValue=''
-                                      id='form-layouts-separator-asigned'
-                                      labelId='form-layouts-separator-asigned-label'
+                                      id='form-layouts-separator-asigned-edit'
+                                      labelId='form-layouts-separator-asigned-label-edit'
                                     >
-                                      <MenuItem value='abi'>abi</MenuItem>
-                                      <MenuItem value='bibi'>bibi</MenuItem>
-                                      <MenuItem value='cici'>cici</MenuItem>
-                                      <MenuItem value='didi'>didi</MenuItem>
+                                      {rows.map(row => (
+                                        <MenuItem key={row.name} value={row.name}>
+                                          {row.name}
+                                        </MenuItem>
+                                      ))}
                                     </Select>
                                   </FormControl>
                                 </Grid>
@@ -195,25 +198,27 @@ const CreateProjectTask = () => {
                                       selected={date}
                                       showYearDropdown
                                       showMonthDropdown
-                                      placeholderText='DD-MM-YYYY'
+                                      showTimeSelect
+                                      dateFormat='Pp'
+                                      placeholderText='DD-MM-YYYY, HH:MM'
                                       customInput={<CustomInputStart />}
-                                      id='tanggal-mulai'
+                                      id='tanggal-selesai-edit'
                                       onChange={date => setDate(date)}
                                     />
                                   </DatePickerWrapper>
                                 </Grid>
                                 <Grid item xs={12} sm={6} lg={6}>
                                   <FormControl fullWidth>
-                                    <InputLabel id='form-layouts-separator-select-label'>Priority</InputLabel>
+                                    <InputLabel id='form-layouts-separator-priority-label-edit'>Priority</InputLabel>
                                     <Select
                                       label='priority'
                                       defaultValue=''
                                       id='form-layouts-separator-priority'
-                                      labelId='form-layouts-separator-priority-label'
+                                      labelId='form-layouts-separator-priority-label-edit'
                                     >
-                                      <MenuItem value='high'>high</MenuItem>
-                                      <MenuItem value='medium'>medium</MenuItem>
-                                      <MenuItem value='low'>low</MenuItem>
+                                      <MenuItem value='High'>High</MenuItem>
+                                      <MenuItem value='Medium'>Medium</MenuItem>
+                                      <MenuItem value='Low'>Low</MenuItem>
                                     </Select>
                                   </FormControl>
                                 </Grid>
@@ -221,15 +226,12 @@ const CreateProjectTask = () => {
                                   <TextField
                                     fullWidth
                                     multiline
-                                    minRows={3}
+                                    minRows={5}
                                     label='Task Description'
                                     placeholder='Description'
                                   />
                                 </Grid>
                               </Grid>
-                              <br></br>
-                              <br></br>
-                              <br></br>
                               <br></br>
                               <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
                                 <Button
@@ -256,10 +258,31 @@ const CreateProjectTask = () => {
                               </CardActions>
                             </CardContent>
                           </form>
+                          {/* end form edit task */}
                         </Card>
                       </Modal>
                       {/* Delete Task */}
-                      <Button type='submit' sx={{ mr: 1 }} color='error' variant='text'>
+                      <Button
+                        type='submit'
+                        sx={{ mr: 1 }}
+                        color='error'
+                        variant='text'
+                        onClick={() => {
+                          Swal.fire({
+                            title: 'Hapus Tugas?',
+                            text: 'Tekan tombol "Hapus Tugas" untuk menghapus tugas',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, Hapus Tugas'
+                          }).then(result => {
+                            if (result.isConfirmed) {
+                              Swal.fire('', 'Tugas berhasil dihapus. Tekan "OK" untuk melanjutkan.', 'success')
+                            }
+                          })
+                        }}
+                      >
                         <DeleteOutline />
                       </Button>
                     </Box>
@@ -274,7 +297,7 @@ const CreateProjectTask = () => {
           <Button size='medium' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleOpen}>
             Add Task
           </Button>
-          {/* Modal Form*/}
+          {/* Modal Add Task Form*/}
           <Modal open={open} onClose={handleClose} aria-labelledby='modal-form'>
             <Card sx={style} id='modal-form'>
               <form onSubmit={e => e.preventDefault()}>
@@ -289,15 +312,16 @@ const CreateProjectTask = () => {
                       <FormControl fullWidth>
                         <InputLabel id='form-layouts-separator-select-label'>Asigned To</InputLabel>
                         <Select
-                          label='asigned'
+                          label='asigned to '
                           defaultValue=''
                           id='form-layouts-separator-asigned'
                           labelId='form-layouts-separator-asigned-label'
                         >
-                          <MenuItem value='abi'>abi</MenuItem>
-                          <MenuItem value='bibi'>bibi</MenuItem>
-                          <MenuItem value='cici'>cici</MenuItem>
-                          <MenuItem value='didi'>didi</MenuItem>
+                          {rows.map(row => (
+                            <MenuItem key={row.name} value={row.name}>
+                              {row.name}
+                            </MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                     </Grid>
@@ -307,9 +331,11 @@ const CreateProjectTask = () => {
                           selected={date}
                           showYearDropdown
                           showMonthDropdown
-                          placeholderText='DD-MM-YYYY'
+                          showTimeSelect
+                          dateFormat='Pp'
+                          placeholderText='DD-MM-YYYY, HH:MM'
                           customInput={<CustomInputStart />}
-                          id='tanggal-mulai'
+                          id='tanggal-selesai'
                           onChange={date => setDate(date)}
                         />
                       </DatePickerWrapper>
@@ -323,19 +349,16 @@ const CreateProjectTask = () => {
                           id='form-layouts-separator-priority'
                           labelId='form-layouts-separator-priority-label'
                         >
-                          <MenuItem value='high'>high</MenuItem>
-                          <MenuItem value='medium'>medium</MenuItem>
-                          <MenuItem value='low'>low</MenuItem>
+                          <MenuItem value='High'>High</MenuItem>
+                          <MenuItem value='Medium'>Medium</MenuItem>
+                          <MenuItem value='Low'>Low</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={12} lg={12}>
-                      <TextField fullWidth multiline minRows={3} label='Task Description' placeholder='Description' />
+                      <TextField fullWidth multiline minRows={5} label='Task Description' placeholder='Description' />
                     </Grid>
                   </Grid>
-                  <br></br>
-                  <br></br>
-                  <br></br>
                   <br></br>
                   <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
                     <Button size='large' color='secondary' sx={{ mr: 2 }} variant='outlined' onClick={handleClose}>
@@ -356,6 +379,7 @@ const CreateProjectTask = () => {
                   </CardActions>
                 </CardContent>
               </form>
+              {/* End Form */}
             </Card>
           </Modal>
         </CardActions>
@@ -370,7 +394,19 @@ const CreateProjectTask = () => {
             sx={{ mr: 2 }}
             variant='contained'
             onClick={() => {
-              Swal.fire('', 'Project Created Succesfully!', 'success')
+              Swal.fire({
+                title: 'Create Project?',
+                text: 'Pastikan kembali data yang diisi sudah benar. Tekan tombol "Buat Project" untuk mengirim notifikasi kepada peserta Project',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#68B92E',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Buat Project'
+              }).then(result => {
+                if (result.isConfirmed) {
+                  Swal.fire('', 'Project Created Succesfully. Tekan "OK" untuk melanjutkan.', 'success')
+                }
+              })
             }}
           >
             Create Project

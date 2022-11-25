@@ -105,7 +105,7 @@ const CreateMeeting = () => {
                 showMonthDropdown
                 showTimeSelect
                 dateFormat="Pp"
-                placeholderText='MM-DD-YYYY'
+                placeholderText='DD-MM-YYYY, HH:MM'
                 customInput={<CustomInput />}
                 id='form-layouts-separator-meet'
                 onChange={date => setDate(date)}
