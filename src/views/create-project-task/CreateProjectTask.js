@@ -395,16 +395,16 @@ const CreateProjectTask = () => {
             variant='contained'
             onClick={() => {
               Swal.fire({
-                title: 'Create Project?',
-                text: 'Pastikan kembali data yang diisi sudah benar. Tekan tombol "Buat Project" untuk mengirim notifikasi kepada peserta Project',
+                title: 'Create this Project?',
+                text: 'Make sure all the data is valid. Click "Create Project" to send notification to all project members',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#68B92E',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Buat Project'
+                confirmButtonText: 'Create Project'
               }).then(result => {
                 if (result.isConfirmed) {
-                  Swal.fire('', 'Project Created Succesfully. Tekan "OK" untuk melanjutkan.', 'success')
+                  Swal.fire('', 'Project Created Succesfully. Click "OK" to continue.', 'success')
                 }
               })
             }}

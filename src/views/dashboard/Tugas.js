@@ -29,15 +29,15 @@ const Trophy = () => {
   return (
     <Card sx={{ position: 'relative' }}>
       <CardContent sx={{minHeight: 300}}>
-        <Typography variant='h6'>Jumlah Tugas</Typography>
+        <Typography variant='h6'>Number of Taks</Typography>
         <Typography variant='body2' sx={{ letterSpacing: '0.25px' }}>
-          yang belum selesai
+          Unfinished tasks
         </Typography>
         <Typography variant='h2' sx={{ my: 10, color: 'primary.main' }}>
           4
         </Typography>
         <Button size='small' variant='contained'>
-          Lihat tugas
+          View Task
         </Button>
         <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />
         <TaskImg alt='trophy' src='/images/misc/Empty-Files.png' />

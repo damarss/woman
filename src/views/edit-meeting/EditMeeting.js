@@ -182,18 +182,18 @@ const CreateMeeting = () => {
             variant='contained'
             onClick={() => {
               Swal.fire({
-                title: 'Ubah Rapat?',
-                text: 'Pastikan kembali data yang diisi sudah benar. Tekan tombol "Buat Rapat" untuk mengirim notifikasi kepada peserta rapat',
+                title: 'Change this Meeting?',
+                text: 'Make sure all the data is valid. Click "Update Meeting" to send notification to all meeting participants',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#68B92E',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Ubah Rapat'
+                confirmButtonText: 'Update Meeting'
               }).then((result) => {
                 if (result.isConfirmed) {
                   Swal.fire(
                     '',
-                    'Rapat berhasil diubah. Tekan "OK" untuk melanjutkan.',
+                    'Meeting updated succesfully. Click "OK" to continue',
                     'success'
                   )
                 }

@@ -396,8 +396,8 @@ const EditProjectTask = () => {
             variant='contained'
             onClick={() => {
               Swal.fire({
-                title: 'Create Project?',
-                text: 'Pastikan kembali data yang diisi sudah benar. Tekan tombol "Buat Project" untuk mengirim notifikasi kepada peserta Project',
+                title: 'Change Project?',
+                text: 'Make sure all the data is valid. Click "Update Project" to send notification to all meeting participants',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#68B92E',
@@ -405,7 +405,7 @@ const EditProjectTask = () => {
                 confirmButtonText: 'Ya, Buat Project'
               }).then(result => {
                 if (result.isConfirmed) {
-                  Swal.fire('', 'Project Created Succesfully. Tekan "OK" untuk melanjutkan.', 'success')
+                  Swal.fire('', 'Project Updated Succesfully. Click "OK" to continue.', 'success')
                 }
               })
             }}

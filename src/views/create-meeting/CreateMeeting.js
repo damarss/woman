@@ -192,16 +192,16 @@ const CreateMeeting = () => {
             variant='contained'
             onClick={() => {
               Swal.fire({
-                title: 'Adakan Rapat?',
-                text: 'Pastikan kembali data yang diisi sudah benar. Tekan tombol "Buat Rapat" untuk mengirim notifikasi kepada peserta rapat',
+                title: 'Create this Meeting?',
+                text: 'Make sure all the data is valid. Click "Create Meeting" to send notification to all meeting participants',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#68B92E',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Buat Rapat'
+                confirmButtonText: 'Create Meeting'
               }).then(result => {
                 if (result.isConfirmed) {
-                  Swal.fire('', 'Rapat Created Succesfully. Tekan "OK" untuk melanjutkan.', 'success')
+                  Swal.fire('', 'Meeting Created Succesfully. Click "OK" to continue.', 'success')
                 }
               })
             }}
