@@ -28,19 +28,24 @@ const Trophy = () => {
 
   return (
     <Card sx={{ position: 'relative' }}>
-      <CardContent sx={{minHeight: 300}}>
-        <Typography variant='h6'>Jumlah Tugas</Typography>
-        <Typography variant='body2' sx={{ letterSpacing: '0.25px' }}>
-          yang belum selesai
-        </Typography>
-        <Typography variant='h2' sx={{ my: 10, color: 'primary.main' }}>
+      <CardContent
+        sx={{
+          display: 'flex',
+          textAlign: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          minHeight: 300,
+          padding: theme => `${theme.spacing(9.75, 5, 9.25)} !important`
+        }}
+      >
+        <Typography variant='h6'>My Tasks</Typography>
+        <Typography variant='h1' sx={{ my: 2, color: 'primary.main' }}>
           4
         </Typography>
-        <Button size='small' variant='contained'>
-          Lihat tugas
+        <Button size='medium' variant='contained'>
+          Show tasks
         </Button>
         <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />
-        <TaskImg alt='trophy' src='/images/misc/Empty-Files.png' />
       </CardContent>
     </Card>
   )

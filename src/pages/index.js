@@ -26,26 +26,32 @@ import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 import Tugas from 'src/views/dashboard/Tugas'
-import TableProjectDs from 'src/views/tables/TableProjectDs'
+import ProjectTable from 'src/views/dashboard/ProjectTable'
 import CardMeetingSce from 'src/views/cards/CardMeetingSce'
+import TaskTable from 'src/views/dashboard/TaskTable'
 
 const Dashboard = () => {
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Tugas />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <CardMeetingSce />
-        </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={8}>
           <Card>
-            <CardHeader title='Project List' titleTypographyProps={{ variant: 'h6' }} />
-            <TableProjectDs />
+            <CardHeader title="Today's Tasks" titleTypographyProps={{ variant: 'h6' }} />
+            <TaskTable />
           </Card>
         </Grid>
-
+        <Grid item xs={12} md ={8}>
+          <Card>
+            <CardHeader title='My Projects' titleTypographyProps={{ variant: 'h6' }} />
+            <ProjectTable />
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <CardMeetingSce />
+        </Grid>
       </Grid>
     </ApexChartWrapper>
   )
