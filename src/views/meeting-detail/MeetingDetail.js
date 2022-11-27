@@ -33,7 +33,7 @@ const CardMembership = () => {
         <Typography variant='h6' sx={{ marginBottom: 3.5 }}>
           Meeting Title
         </Typography>
-        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
+        <br></br>
         <Grid container spacing={6}>
           <Grid item xs={12} sm={5} md={4} lg={3}>
             <StyledBox>
@@ -104,7 +104,7 @@ const CardMembership = () => {
 
               Swal.fire({
                 title: 'Hapus Rapat?',
-                text: 'Tekan tombol "Buat Rapat" untuk mengirim notifikasi kepada peserta rapat',
+                text: 'Tekan tombol "Hapus Rapat" untuk mengirim notifikasi kepada peserta rapat',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#68B92E',
@@ -119,7 +119,7 @@ const CardMembership = () => {
                   /* Read more about handling dismissals below */
                   result.dismiss === Swal.DismissReason.cancel
                 ) {
-                  Swal.fire('', 'Rapat tidak dihapus. Tekan "OK" untuk melanjutkan.', 'info')
+                  Swal.fire('Cancelled!', 'Rapat tidak dihapus. Tekan "OK" untuk melanjutkan.', 'error')
                 }
               })
             }}

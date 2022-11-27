@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
 import Link from '@mui/material/Link'
 
-
 const rows = [
   {
     status: 'on_progress',
@@ -19,7 +18,7 @@ const rows = [
     title: 'Sally Quinn',
     salary: '$19586.23',
     priority: 'High',
-    project: 'Human Resources Assistant',
+    project: 'Human Resources Assistant'
   },
   {
     date: '09/23/2016',
@@ -78,46 +77,46 @@ const rows = [
   }
 ]
 
-function getLabelStatus(status){
+function getLabelStatus(status) {
   switch (status) {
     case 'assigned':
       return 'Assigned'
-      break;
+      break
     case 'on_progress':
       return 'On Progress'
-      break;
+      break
     case 'turned_in':
       return 'Turned In'
-      break;
+      break
     case 'revision':
       return 'Revision'
-      break;
+      break
     case 'done':
       return 'Done'
-      break;
+      break
     case 'late':
       return 'Late'
-      break;
+      break
     case 'turned_in_late':
       return 'Turned In Late'
-      break;
+      break
     case 'done_late':
       return 'Done Late'
-      break;
+      break
     default:
-      break;
+      break
   }
 }
 
 const statusObj = {
   assigned: { color: 'secondary' },
   on_progress: { color: 'info' },
-  turned_in:{color: 'warning'},
+  turned_in: { color: 'warning' },
   revision: { color: 'primary' },
   done: { color: 'success' },
   late: { color: 'error' },
-  turned_in_late: {color:'warning'},
-  done_late: {color:"success"}
+  turned_in_late: { color: 'warning' },
+  done_late: { color: 'success' }
 }
 
 const TaskHome = () => {
@@ -127,11 +126,25 @@ const TaskHome = () => {
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-              <TableCell>Task Title</TableCell>
-              <TableCell>Project</TableCell>
-              <TableCell>Priority</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Deadline</TableCell>
+              <TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Task Title</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Project</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Priority</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
+                  Status
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
+                  Deadline
+                </Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -143,23 +156,42 @@ const TaskHome = () => {
             {rows.map(row => (
               <TableRow hover key={row.title} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
-                  </Box>
+                  <Link href='/task-detail'>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
+                    </Box>
+                  </Link>
                 </TableCell>
-                <TableCell>{row.project}</TableCell>
-                <TableCell>{row.priority}</TableCell>
-                <TableCell sx={{textAlign:'center'}}><Chip
-                    label={getLabelStatus(row.status)}
-                    color={statusObj[row.status].color}
-                    sx={{
-                      height: 24,
-                      fontSize: '0.75rem',
-                      textTransform: 'capitalize',
-                      '& .MuiChip-label': { fontWeight: 500 }
-                    }}
-                  /></TableCell>
-                <TableCell>{row.date}</TableCell>
+                <TableCell>
+                  <Link href='/task-detail'>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.project}</Typography>
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href='/task-detail'>
+                    {' '}
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.priority}</Typography>
+                  </Link>
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>
+                  <Link href='/task-detail'>
+                    <Chip
+                      label={getLabelStatus(row.status)}
+                      color={statusObj[row.status].color}
+                      sx={{
+                        height: 24,
+                        fontSize: '0.75rem',
+                        textTransform: 'capitalize',
+                        '& .MuiChip-label': { fontWeight: 500 }
+                      }}
+                    />
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href='/task-detail'>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.date}</Typography>
+                  </Link>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

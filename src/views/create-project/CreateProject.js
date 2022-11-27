@@ -184,33 +184,17 @@ const CreateProject = () => {
 
         <Divider sx={{ margin: 0 }} />
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-          <Button
-            size='large'
+          <Button  size='large'
             type='submit'
             sx={{ mr: 2 }}
-            variant='contained'
-            onClick={() => {
-              Swal.fire({
-                title: 'Adakan Proyek?',
-                text: 'Pastikan kembali data yang diisi sudah benar. Tekan tombol "Buat Proyek" untuk mengirim notifikasi kepada anggota proyek',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#68B92E',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Buat Proyek'
-              }).then(result => {
-                if (result.isConfirmed) {
-                  Swal.fire('', 'Proyek berhasil dibuat. Tekan "OK" untuk melanjutkan.', 'success')
-                }
-              })
-            }}
-          >
-            Create Project
+            variant='contained' 
+            href='/create-project-task'>
+            Next
           </Button>
         </CardActions>
       </form>
     </Card>
-  )
+  ) 
 }
 
-export default CreateProject
+export default CreateProject 

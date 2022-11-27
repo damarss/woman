@@ -1,6 +1,6 @@
 // ** React Imports
 import { useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -65,7 +65,7 @@ const LoginPage = () => {
     email: '',
     password: '',
     showPassword: false
-  });
+  })
 
   // ** Hook
   const theme = useTheme()
@@ -83,27 +83,31 @@ const LoginPage = () => {
     event.preventDefault()
   }
 
-  const parseJwt = (token) => {
-    if (!token) { return; }
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(window.atob(base64));
-}
+  const parseJwt = token => {
+    if (!token) {
+      return
+    }
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace('-', '+').replace('_', '/')
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+    return JSON.parse(window.atob(base64))
+  }
+
+  const handleLogin = async e => {
+    e.preventDefault()
 
     try {
-
       const res = await axios.post('/login', {
         email: values.email,
         password: values.password
-      });
+      })
 
       if (res.status === 200) {
         // nanti ubah tampilannya
-        alert("Login successful");
-        console.log(res);
+        alert('Login successful')
+
+        const token = res.data.token
+        await AsyncStorage.setItem('jwt', token)
 
         const token_decode = parseJwt(res.data.token)
         console.log(token_decode)
@@ -113,18 +117,16 @@ const LoginPage = () => {
         const url_get = url_gets.concat(token_decode.uid)
         const getting_data = await axios.get(url_get)
         console.log(getting_data.data)
-        
+
         // ** local storage
         await AsyncStorage.setItem('@roleUser', getting_data.data.role);
         await AsyncStorage.setItem('@nameUser', getting_data.data.name);
-
-        router.push('/');
+        router.push('/')
       }
     } catch (error) {
       // nanti ubah nampilin errornya
-      alert("Login failed");
+      alert('Login failed')
     }
-
   }
 
   return (
@@ -153,7 +155,15 @@ const LoginPage = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} defaultValue={values.email} onChange={handleChange('email')} />
+            <TextField
+              autoFocus
+              fullWidth
+              id='email'
+              label='Email'
+              sx={{ marginBottom: 4 }}
+              defaultValue={values.email}
+              onChange={handleChange('email')}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -188,6 +198,7 @@ const LoginPage = () => {
             <Button
               fullWidth
               size='large'
+              type='submit'
               variant='contained'
               sx={{ marginBottom: 7 }}
               onClick={handleLogin}
@@ -203,31 +214,6 @@ const LoginPage = () => {
                   <LinkStyled>Create an account</LinkStyled>
                 </Link>
               </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Facebook sx={{ color: '#497ce2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Twitter sx={{ color: '#1da1f2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Github
-                    sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
-                  />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
             </Box>
           </form>
         </CardContent>

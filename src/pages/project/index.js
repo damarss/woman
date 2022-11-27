@@ -18,27 +18,33 @@ import CardWithCollapse from 'src/views/cards/CardWithCollapse'
 import CardVerticalRatings from 'src/views/cards/CardVerticalRatings'
 import CardNavigationCenter from 'src/views/cards/CardNavigationCenter'
 import CardProject from 'src/views/cards/CardProject'
+import axios from '../api/axios'
 
-const Project = () => {
+const Project = ({ projects }) => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} sx={{ paddingBottom: 4 }}>
         <Typography variant='h5'>My Project</Typography>
       </Grid>
-      <Grid item xs={12} md={6}>
-        <CardProject />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <CardProject />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <CardProject />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <CardProject />
-      </Grid>
+      {projects &&
+        projects.map((project, index) => (
+          <Grid key={index} item xs={12} md={6}>
+            <CardProject project={project} />
+          </Grid>
+        ))}
     </Grid>
   )
+}
+
+export async function getServerSideProps() {
+  const res = await axios.get('/project')
+  const projects = res.data.data
+  
+  return {
+    props: {
+      projects
+    }
+  }
 }
 
 export default Project

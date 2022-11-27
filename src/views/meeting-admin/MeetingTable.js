@@ -79,13 +79,13 @@ const MeetingTable = () => {
               <TableCell align='left' style={{ width: '16rem' }}>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Meeting Title</Typography>
               </TableCell>
-              <TableCell align='center' style={{ width: '16rem' }}>
+              <TableCell align='left' style={{ width: '16rem' }}>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Date</Typography>
               </TableCell>
-              <TableCell align='center' style={{ width: '16rem' }}>
+              <TableCell align='left' style={{ width: '16rem' }}>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Start Time</Typography>
               </TableCell>
-              <TableCell align='center'>
+              <TableCell align='left'>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Meeting Link</Typography>
               </TableCell>
             </TableRow>
@@ -98,17 +98,17 @@ const MeetingTable = () => {
                     <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.judul}</Typography>
                   </Link>
                 </TableCell>
-                <TableCell align='center'>
+                <TableCell align='left'>
                   <Link href='/meeting-detail'>
                     <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.tanggal}</Typography>
                   </Link>
                 </TableCell>
-                <TableCell align='center'>
+                <TableCell align='left'>
                   <Link href='/meeting-detail'>
                     <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.waktu}</Typography>
                   </Link>
                 </TableCell>
-                <TableCell align='center'>
+                <TableCell align='left'>
                   <Link href='#'>
                     <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.link}</Typography>
                   </Link>

@@ -22,19 +22,16 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }))
 
-const CardMembership = () => {
+const CardMembership = props => {
   return (
-
     <Card>
       <Grid container spacing={6}>
         <Grid item xs={12} sm={7}>
           <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5.75, 6.25)} !important` }}>
             <Typography variant='h6' sx={{ marginBottom: 3.5 }}>
-              Buletin Statistik Perdagangan Luar Negeri Impor April 2022
+              {props.project.title}
             </Typography>
-            <Typography variant='body2'>
-            Impor Indonesia April 2022 mencapai US$19.757,4 juta, turun US$2.205,0 juta (10,04 persen) dibandingkan bulan sebelumnya. Demikian pula dengan volumenya turun 14,41 persen (2.578,9 ribu ton) menjadi 15.312,0 ribu ton.
-            </Typography>
+            <Typography variant='body2'>{props.project.description}</Typography>
             <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
             <Grid container spacing={4}>
               <Grid item xs={12} sm={5}>
@@ -89,7 +86,7 @@ const CardMembership = () => {
                 <span>Arfiandys</span>
                 <span>Team Leader</span>
               </Typography>
-              <Link href='/projectdetail'>
+              <Link href='/project-detail'>
                 <Button variant='contained'>View More</Button>
               </Link>
             </Box>

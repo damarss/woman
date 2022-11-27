@@ -35,109 +35,112 @@ import Swal from 'sweetalert2'
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'// ** Icons Imports
-import Alert from 'mdi-material-ui/Alert'
+import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
 const datas = [
   {
-    name: 'Sally Quinn',
-    nip: '220129129012'
+    name: 'Sally Quinn1',
+    nip: '220129129012',
+    projek: 4,
+    tugas: 7
   },
   {
-    name: 'Sally Quinn',
-    nip: '220129129012'
+    name: 'Sally Quinn2',
+    nip: '220129129012',
+    projek: 4,
+    tugas: 7
   },
   {
-    name: 'Sally Quinn',
-    nip: '220129129012'
+    name: 'Sally Quinn3',
+    nip: '220129129012',
+    projek: 4,
+    tugas: 7
   },
   {
-    name: 'Sally Quinn',
-    nip: '220129129012'
+    name: 'Sally Quinn4',
+    nip: '220129129012',
+    projek: 4,
+    tugas: 7
   },
   {
-    name: 'Sally Quinn',
-    nip: '220129129012'
+    name: 'Sally Quinn5',
+    nip: '220129129012',
+    projek: 4,
+    tugas: 7
   },
   {
-    name: 'Sally Quinn',
-    nip: '220129129012'
+    name: 'Sally Quinn6',
+    nip: '220129129012',
+    projek: 4,
+    tugas: 7
   },
   {
-    name: 'Sally Quinn',
-    nip: '220129129012'
+    name: 'Sally Quinn7',
+    nip: '220129129012',
+    projek: 4,
+    tugas: 7
   },
   {
-    name: 'Sally Quinn',
-    nip: '220129129012'
+    name: 'Sally Quinn8',
+    nip: '220129129012',
+    projek: 4,
+    tugas: 7
   }
 ]
 
-const CustomInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Waktu Rapat' autoComplete='off' />
+const CustomInputStart = forwardRef((props, ref) => {
+  return <TextField fullWidth {...props} inputRef={ref} label='Start Date' autoComplete='on' />
 })
 
-const CreateMeeting = () => {
+const CustomInputEnd = forwardRef((props, ref) => {
+  return <TextField fullWidth {...props} inputRef={ref} label='End Date' autoComplete='off' />
+})
+
+const EditProject = () => {
   // ** States
   const [language, setLanguage] = useState([])
   const [date, setDate] = useState(null)
-
-  // Handle Select
-  const handleSelectChange = event => {
-    setLanguage(event.target.value)
-  }
+  const [tanggal, setDateTwo] = useState(null)
 
   return (
     <Card>
       <form onSubmit={e => e.preventDefault()}>
         <CardContent>
-          <Typography variant='h6'>Meeting Description</Typography>
+          <Typography variant='h6'>Project Description</Typography>
           <br></br>
           <Grid container spacing={5}>
-            <Grid item xs={12} sm={12} lg={6}>
-              <TextField fullWidth label='Meeting Title' placeholder='Rapat IT' />
+            <Grid item xs={12} sm={12} lg={8}>
+              <TextField fullWidth label='Project Title' placeholder='Proyek A' />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
                 selected={date}
                 showYearDropdown
                 showMonthDropdown
-                placeholderText='MM-DD-YYYY'
-                customInput={<CustomInput />}
-                id='form-layouts-separator-meet'
+                placeholderText='DD-MM-YYYY'
+                customInput={<CustomInputStart />}
+                id='tanggal-mulai'
                 onChange={date => setDate(date)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={12} lg={6}>
-              timepicker
-            </Grid> */}
             <Grid item xs={12} sm={12} lg={6}>
-              <FormControl fullWidth>
-                <InputLabel id='form-layouts-separator-select-label'>Meeting Duration</InputLabel>
-                <Select
-                  label='Durasi Rapat'
-                  defaultValue=''
-                  id='form-layouts-separator-select'
-                  labelId='form-layouts-separator-select-label'
-                >
-                  <MenuItem value='1'>1 Hour</MenuItem>
-                  <MenuItem value='1.5'>1 Our and Half</MenuItem>
-                  <MenuItem value='2'>2 Hour</MenuItem>
-                  <MenuItem value='2.5'>2 Hour and Half</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={12} lg={6}>
-              <TextField fullWidth label='Meeting Link' placeholder='zoom/' />
+              <DatePicker
+                selected={tanggal}
+                showYearDropdown
+                showMonthDropdown
+                placeholderText='DD-MM-YYYY'
+                customInput={<CustomInputEnd />}
+                id='tanggal-berakhir'
+                onChange={tanggal => setDateTwo(tanggal)}
+              />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-              <TextField fullWidth multiline minRows={3} label='Meeting Description' placeholder='Bio...' />
+              <TextField fullWidth multiline minRows={3} label='Project Description' placeholder='Bio...' />
             </Grid>
           </Grid>
           <br></br>
-
           {/* Daftar Peserta */}
-          <Typography variant='h6'>Meeting Participant</Typography>
+          <Typography variant='h6'>Project Participant</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 50 }} aria-label='simple table'>
               <TableHead>
@@ -145,8 +148,10 @@ const CreateMeeting = () => {
                   <TableCell align='left'>
                     <FormControlLabel control={<Checkbox defaultChecked />} label='All' />
                   </TableCell>
-                  <TableCell align='left'>Name</TableCell>
-                  <TableCell align='left'>NIP</TableCell>
+                  <TableCell align='center'>NIP</TableCell>
+                  <TableCell align='center'>Name</TableCell>
+                  <TableCell align='center'>Number of Projek</TableCell>
+                  <TableCell align='center'>Number of Task</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -162,10 +167,14 @@ const CreateMeeting = () => {
                     <TableCell align='left'>
                       <FormControlLabel control={<Checkbox />} label='' />
                     </TableCell>
-                    <TableCell component='th' scope='row' align='left'>
+                    <TableCell align='center'>{data.nip}</TableCell>
+                    <TableCell component='th' scope='row' align='center'>
                       {data.name}
                     </TableCell>
-                    <TableCell align='left'>{data.nip}</TableCell>
+                    <TableCell align='center'>{data.projek}</TableCell>
+                    <TableCell component='th' scope='row' align='center'>
+                      {data.tugas}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -175,32 +184,12 @@ const CreateMeeting = () => {
 
         <Divider sx={{ margin: 0 }} />
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-          <Button
-            size='large'
+          <Button  size='large'
             type='submit'
             sx={{ mr: 2 }}
-            variant='contained'
-            onClick={() => {
-              Swal.fire({
-                title: 'Change this Meeting?',
-                text: 'Make sure all the data is valid. Click "Update Meeting" to send notification to all meeting participants',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#68B92E',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Update Meeting'
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  Swal.fire(
-                    '',
-                    'Meeting updated succesfully. Click "OK" to continue',
-                    'success'
-                  )
-                }
-              })
-            }}
-          >
-            Edit Meeting
+            variant='contained' 
+            href='/edit-project-task'>
+            Next
           </Button>
         </CardActions>
       </form>
@@ -208,4 +197,4 @@ const CreateMeeting = () => {
   )
 }
 
-export default CreateMeeting
+export default EditProject 

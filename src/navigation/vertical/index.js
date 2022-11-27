@@ -14,7 +14,7 @@ import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
-import CalendarCheckOutline  from 'mdi-material-ui/CalendarCheckOutline'
+import CalendarCheckOutline from 'mdi-material-ui/CalendarCheckOutline'
 import ClipboardFileOutline from 'mdi-material-ui/ClipboardFileOutline'
 import TextBoxMultipleOutline from 'mdi-material-ui/TextBoxMultipleOutline'
 import MessageVideo from 'mdi-material-ui/MessageVideo'
@@ -103,35 +103,11 @@ const navigation = () => {
         title: 'Meeting Setting',
         icon: VideoOutline,
         path: '/meeting-admin'
-      },{
-          title: 'Typography',
-    icon: FormatLetterCase,
-    path: '/typography'
-  },
-  {
-    title: 'Icons',
-    path: '/icons',
-    icon: GoogleCirclesExtended
-  },
-  {
-    title: 'Cards',
-    icon: CreditCardOutline,
-    path: '/cards'
-  },
-  {
-    title: 'Tables',
-    icon: Table,
-    path: '/tables'
-  },
-  {
-    icon: CubeOutline,
-    title: 'Form Layouts',
-    path: '/form-layouts'
-  }
+      }
     ]
   }
 
-  
+
 }
 
 export default navigation
