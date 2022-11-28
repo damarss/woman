@@ -29,6 +29,8 @@ import MenuItem from '@mui/material/MenuItem'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import DeleteOutline from 'mdi-material-ui/DeleteOutline'
 
+import UpdateTask from 'src/views/task/UpdateTask'
+
 // ** Third Party Imports
 import DatePicker from 'react-datepicker'
 import Swal from 'sweetalert2'
@@ -169,13 +171,13 @@ const CreateProjectTask = () => {
                           {/* form edit task */}
                           <form onSubmit={e => e.preventDefault()}>
                             <CardContent>
-                              <Typography variant='h6'>Create Task</Typography>
+                              <Typography variant='h6'>Update Task</Typography>
                               <br></br>
                               <Grid container spacing={5}>
                                 <Grid item xs={12} sm={12} lg={6}>
                                   <TextField fullWidth label='Task Title' placeholder='Task A' />
                                 </Grid>
-                                <Grid item xs={12} sm={6} lg={6}>
+                                <Grid item xs={12} sm={12} lg={6}>
                                   <FormControl fullWidth>
                                     <InputLabel id='form-layouts-separator-asigned-label-edit'>Asigned To</InputLabel>
                                     <Select
@@ -207,7 +209,7 @@ const CreateProjectTask = () => {
                                     />
                                   </DatePickerWrapper>
                                 </Grid>
-                                <Grid item xs={12} sm={6} lg={6}>
+                                <Grid item xs={12} sm={12} lg={6}>
                                   <FormControl fullWidth>
                                     <InputLabel id='form-layouts-separator-priority-label-edit'>Priority</InputLabel>
                                     <Select
@@ -253,7 +255,7 @@ const CreateProjectTask = () => {
                                     Swal.fire('', 'Task Updated Succesfully!', 'success')
                                   }}
                                 >
-                                  Edit Task
+                                  Update Task
                                 </Button>
                               </CardActions>
                             </CardContent>
@@ -261,6 +263,7 @@ const CreateProjectTask = () => {
                           {/* end form edit task */}
                         </Card>
                       </Modal>
+                      {/* <UpdateTask /> */}
                       {/* Delete Task */}
                       <Button
                         type='submit'

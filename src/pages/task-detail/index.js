@@ -27,6 +27,9 @@ import Tugas from 'src/views/dashboard/Tugas'
 import Typography from 'src/@core/theme/typography'
 import TaskDetail from 'src/views/task/TaskDetail'
 
+// ** Third Party Styles Imports
+import 'react-datepicker/dist/react-datepicker.css'
+
 const TaskDetailPage = () => {
     return (
         <ApexChartWrapper>

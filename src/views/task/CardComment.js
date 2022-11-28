@@ -11,6 +11,7 @@ import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
 import Avatar from '@mui/material/Avatar'
 import CardComment from 'src/views/task/CardComment'
+
 // ** Icons Imports
 import TrendingUp from 'mdi-material-ui/TrendingUp'
 import StarOutline from 'mdi-material-ui/StarOutline'
@@ -95,18 +96,21 @@ const CardCommentPageTask = () => {
               </Typography>
             </Box>
           </Box>
-        </Box>
+        </Box>        
+        <form onSubmit={e => e.preventDefault()}>
         <FormControl fullWidth>
-          <InputLabel htmlFor='send-icon'>Add Private Comment...</InputLabel>
+          <InputLabel htmlFor='send-icon'>Add Private Comment</InputLabel>
           <OutlinedInput
-            label='Private comment...'
+            label='Add Private Comment'
             id='send-icon'
+
             // onChange={handleConfirmChange('password2')}
             // type={values.showPassword2 ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position='end'>
                 <IconButton
                   edge='end'
+
                   // aria-label='toggle password visibility'
                   // onClick={handleClickShowConfirmPassword}
                   // onMouseDown={handleMouseDownConfirmPassword}
@@ -117,6 +121,7 @@ const CardCommentPageTask = () => {
             }
           />
         </FormControl>
+        </form>
       </CardContent>
       <CardActions className='card-action-dense'>
         {/* <Button>Location</Button>
