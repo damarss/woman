@@ -1,3 +1,4 @@
+import axios from 'src/pages/api/axios'
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
@@ -25,25 +26,36 @@ import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 import Tugas from 'src/views/dashboard/Tugas'
 
-const Task = () => {
+const Task = ({ tasks }) => {
     return (
         <ApexChartWrapper>
         <Grid container>
             <Grid item xs={12} mb={5}>
                 <Card>
                     <CardHeader title="Today's Task"  titleTypographyProps={{ variant: 'h6' }} />
-                    <TaskHome />
+                    <TaskHome tasks={tasks}/>
                 </Card>
             </Grid>
             <Grid item xs={12}>
                 <Card>
                     <CardHeader title="Other's Task"  titleTypographyProps={{ variant: 'h6' }} />
-                    <TaskHome />
+                    <TaskHome tasks={tasks}/>
                 </Card>
             </Grid>
         </Grid>
         </ApexChartWrapper>
     )
 }
+
+export async function getServerSideProps() {
+    const res = await axios.get('/task')
+    const tasks = res.data.data
+    
+    return {
+      props: {
+        tasks
+      }
+    }
+  }
 
 export default Task

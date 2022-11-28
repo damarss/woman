@@ -119,7 +119,8 @@ const statusObj = {
   done_late: { color: 'success' }
 }
 
-const TaskHome = () => {
+const TaskHome = props => {
+  console.log(props.tasks)
   return (
     <Card>
       <TableContainer>
