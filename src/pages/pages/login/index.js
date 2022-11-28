@@ -41,6 +41,9 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import axios from 'src/pages/api/axios'
 
+// ** third party import
+import Swal from 'sweetalert2'
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -104,7 +107,18 @@ const LoginPage = () => {
 
       if (res.status === 200) {
         // nanti ubah tampilannya
-        alert('Login successful')
+        // alert('Login successful')
+        Swal.fire({
+          title: 'Login Berhasil',
+          text: 'Tekan tombol OK untuk lanjut',
+          icon: 'success',
+          // showCancelButton: true,
+          confirmButtonColor: '#68B92E',
+          // cancelButtonColor: '#d33',
+          confirmButtonText: 'OK'
+          // cancelButtonText: 'Tidak, Kembali',
+          // reverseButtons: true
+        })
 
         const token = res.data.token
         await AsyncStorage.setItem('jwt', token)
@@ -119,13 +133,24 @@ const LoginPage = () => {
         console.log(getting_data.data)
 
         // ** local storage
-        await AsyncStorage.setItem('@roleUser', getting_data.data.role);
-        await AsyncStorage.setItem('@nameUser', getting_data.data.name);
+        await AsyncStorage.setItem('@roleUser', getting_data.data.role)
+        await AsyncStorage.setItem('@nameUser', getting_data.data.name)
         router.push('/')
       }
     } catch (error) {
       // nanti ubah nampilin errornya
-      alert('Login failed')
+      // alert('Login failed')
+      Swal.fire({
+        title: 'Login Gagal',
+        text: error,
+        icon: 'error',
+        // showCancelButton: true,
+        confirmButtonColor: '#d33',
+        // cancelButtonColor: '#d33',
+        confirmButtonText: 'OK'
+        // cancelButtonText: 'Tidak, Kembali',
+        // reverseButtons: true
+      })
     }
   }
 
