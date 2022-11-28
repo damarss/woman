@@ -41,6 +41,9 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
 import axios from 'src/pages/api/axios'
 
+// ** third party import
+import Swal from 'sweetalert2'
+
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -100,9 +103,30 @@ const RegisterPage = () => {
     try {
       const res = await axios.post('user', data)
       console.log(res.data)
+      Swal.fire({
+        title: 'Register Success',
+        text: 'Press OK to continue',
+        icon: 'success',
+        // showCancelButton: true,
+        confirmButtonColor: '#68B92E',
+        // cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+        // cancelButtonText: 'Tidak, Kembali',
+        // reverseButtons: true
+      })
       router.push('/pages/login')
     } catch (error) {
-      alert('Register failed')
+      Swal.fire({
+        title: 'Register Failed',
+        text: error,
+        icon: 'error',
+        // showCancelButton: true,
+        confirmButtonColor: '#d33',
+        // cancelButtonColor: '#d33',
+        confirmButtonText: 'OK'
+        // cancelButtonText: 'Tidak, Kembali',
+        // reverseButtons: true
+      })
     }
   }
 

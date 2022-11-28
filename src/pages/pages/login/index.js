@@ -109,8 +109,8 @@ const LoginPage = () => {
         // nanti ubah tampilannya
         // alert('Login successful')
         Swal.fire({
-          title: 'Login Berhasil',
-          text: 'Tekan tombol OK untuk lanjut',
+          title: 'Login Success',
+          text: 'Press OK to continue',
           icon: 'success',
           // showCancelButton: true,
           confirmButtonColor: '#68B92E',
@@ -141,7 +141,7 @@ const LoginPage = () => {
       // nanti ubah nampilin errornya
       // alert('Login failed')
       Swal.fire({
-        title: 'Login Gagal',
+        title: 'Login Failed',
         text: error,
         icon: 'error',
         // showCancelButton: true,
