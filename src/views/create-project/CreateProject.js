@@ -96,7 +96,7 @@ const CustomInputEnd = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='End Date' autoComplete='off' />
 })
 
-const CreateProject = () => {
+const CreateProject = props => {
   // ** States
   const [language, setLanguage] = useState([])
   const [date, setDate] = useState(null)
@@ -155,7 +155,7 @@ const CreateProject = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {datas.map(data => (
+                {props.users.map(data => (
                   <TableRow
                     key={data.name}
                     sx={{
