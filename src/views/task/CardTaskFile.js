@@ -37,9 +37,7 @@ const CardTaskFileContent = () => {
       <CardContent sx={{ textAlign: 'center' }}>
 
         {/* BUAT UPLOAD FILE */}
-        <form action='/target' className='dropzone'>
           <DragAndDrop />
-        </form>
 
         {/* JIKA FILE SUDAH TURNED IN */}
         {/* <Typography variant='body2' sx={{ marginTop: 4 }}>
