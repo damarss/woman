@@ -1,6 +1,7 @@
 // ** React Imports
 import { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { signIn } from 'next-auth/react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -96,37 +97,19 @@ const LoginPage = () => {
   const handleLogin = async e => {
     e.preventDefault()
 
-    try {
-      const res = await axios.post('/login', {
-        email: values.email,
-        password: values.password
-      })
+    const res = await signIn('credentials', {
+      email: values.email,
+      password: values.password,
+      redirect: false
+    })
 
-      if (res.status === 200) {
-        // nanti ubah tampilannya
-        alert('Login successful')
+    if (res.status !== 200) {
+      console.log(res)
 
-        const token = res.data.token
-        await AsyncStorage.setItem('jwt', token)
-
-        const token_decode = parseJwt(res.data.token)
-        console.log(token_decode)
-
-        // ** mengambil data user
-        const url_gets = '/user/'
-        const url_get = url_gets.concat(token_decode.uid)
-        const getting_data = await axios.get(url_get)
-        console.log(getting_data.data)
-
-        // ** local storage
-        await AsyncStorage.setItem('@roleUser', getting_data.data.role);
-        await AsyncStorage.setItem('@nameUser', getting_data.data.name);
-        router.push('/')
-      }
-    } catch (error) {
-      // nanti ubah nampilin errornya
-      alert('Login failed')
+      return
     }
+
+    router.push('/')
   }
 
   return (

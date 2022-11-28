@@ -25,7 +25,7 @@ import VideoOutline from 'mdi-material-ui/VideoOutline'
 
 // ** for employ
 
-const navigation = () => {
+const Navigation = () => {
 
   const [userRole, setUserRole] = useState('');
 
@@ -36,7 +36,6 @@ const navigation = () => {
   const userDetail = async () => {
     setUserRole(await AsyncStorage.getItem('@roleUser'));
   }
-
 
 
   if (userRole == 'employee') {
@@ -110,7 +109,7 @@ const navigation = () => {
 
 }
 
-export default navigation
+export default Navigation
 
 // return [
   // {

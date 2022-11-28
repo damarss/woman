@@ -14,8 +14,12 @@ export default async function handler(req, res) {
       }
     })
     if (!project) {
+      prisma.$disconnect()
+
       return res.status(400).json({ success: false, message: 'Project not found' })
     }
+
+    prisma.$disconnect()
 
     return res.status(200).json({ success: true, data: project })
   } else if (method === 'PUT') {
@@ -35,8 +39,11 @@ export default async function handler(req, res) {
         }
       })
 
+      prisma.$disconnect()
+
       return res.status(200).json({ success: true, data: project })
     } catch (error) {
+      prisma.$disconnect()
       console.log(error)
 
       return res.status(400).json({ success: false })
@@ -49,8 +56,12 @@ export default async function handler(req, res) {
         }
       })
 
+      prisma.$disconnect()
+
       return res.status(200).json({ success: true, message: 'Project deleted' })
     } catch (error) {
+      prisma.$disconnect()
+      
       return res.status(400).json({ success: false, message: 'Project not found' })
     }
   }
