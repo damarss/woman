@@ -113,38 +113,20 @@ const LoginPage = () => {
         title: 'Login Success',
         text: 'Press OK to continue',
         icon: 'success',
-
-        // showCancelButton: true,
         confirmButtonColor: '#68B92E',
-
-        // cancelButtonColor: '#d33',
         confirmButtonText: 'OK'
-
-        // cancelButtonText: 'Tidak, Kembali',
-        // reverseButtons: true
       })
 
       router.push('/')
     } else {
-      // nanti ubah nampilin errornya
-      // alert('Login failed')
       Swal.fire({
         title: 'Login Failed',
-        text: error,
+        text: res.error,
         icon: 'error',
-
-        // showCancelButton: true,
         confirmButtonColor: '#d33',
-
-        // cancelButtonColor: '#d33',
         confirmButtonText: 'OK'
-        
-        // cancelButtonText: 'Tidak, Kembali',
-        // reverseButtons: true
       })
     }
-
-    router.push('/')
   }
 
   return (
@@ -172,15 +154,17 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
+          <form autoComplete='off' onSubmit={e => e.preventDefault()}>
             <TextField
               autoFocus
               fullWidth
               id='email'
               label='Email'
+              type='email'
               sx={{ marginBottom: 4 }}
               defaultValue={values.email}
               onChange={handleChange('email')}
+              required
             />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
@@ -191,6 +175,7 @@ const LoginPage = () => {
                 name='password'
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
+                required
                 endAdornment={
                   <InputAdornment position='end'>
                     <IconButton
