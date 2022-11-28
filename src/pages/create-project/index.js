@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState } from 'react'
+import axios from 'src/pages/api/axios'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -14,17 +15,28 @@ import 'react-datepicker/dist/react-datepicker.css'
 // ** Meeting Components Imports
 import CreateProject from 'src/views/create-project/CreateProject'
 
-const CreateProjectPage = () => {
+const CreateProjectPage = ({ users }) => {
   return (
     <>
       <DatePickerWrapper>
         {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
         <h2>Project Description</h2>
       </Box> */}
-        <CreateProject />
+        <CreateProject users = {users}/>
       </DatePickerWrapper>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const res = await axios.get('/user')
+  const users = res.data
+  
+  return {
+    props: {
+      users
+    }
+  }
 }
 
 export default CreateProjectPage
