@@ -9,9 +9,12 @@ export default async function handler(req, res) {
       // Get data from your database
       const meets = await prisma.meet.findMany()
       if (!meets) {
+        prisma.$disconnect()
+
         return res.status(400).json({ success: false })
       }
 
+      prisma.$disconnect()
       res.status(200).json({ success: true, data: meets })
 
       break
@@ -29,8 +32,11 @@ export default async function handler(req, res) {
           }
         })
 
+        prisma.$disconnect()
+
         res.status(201).json({ success: true, data: meet })
       } catch (error) {
+        prisma.$disconnect()
         console.log(error)
 
         return res.status(400).json({ success: false })
