@@ -28,79 +28,18 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 
-import DragDrop from 'src/views/task/DragDrop'
-
-// Ignore if installed via a <script> tag.
-import { Uploader } from 'uploader'
-
-// Get production API keys from Upload.io
-const uploader = Uploader({
-  apiKey: 'free'
-})
-
-// Customize the file upload UI (see "customization" below):
-const options = {multi: true}
+import DragAndDrop from 'src/views/task/DragAndDrop'
 
 const CardTaskFileContent = () => {
   return (
     <Card>
       <CardHeader title='Your Work' sx={{ textAlign: 'center', backgroundColor: 'primary.main', paddingY: 3 }} />
       <CardContent sx={{ textAlign: 'center' }}>
-        {/* <Typography variant='body2' sx={{ marginBottom: 6 }}>
-          No submitted file
-        </Typography>
-        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} /> */}
 
         {/* BUAT UPLOAD FILE */}
-        <Typography variant='body2' sx={{ marginTop: 6 }}>
-          No submitted file.
-          {/* <br /> Drop your file here or */}
-        </Typography>
         <form action='/target' className='dropzone'>
-          {/* <input
-            accept='image/*'
-            className='test'
-            style={{ display: 'none' }}
-            id='raised-button-file'
-            multiple
-            type='file'
-          />
-          <label htmlFor='raised-button-file'>
-            <Button variant='raised' component='span'>
-              Upload
-            </Button>
-          </label> */}
-          <Button
-            onClick={() => {
-              uploader
-                .open({
-                  multi: true
-                })
-                .then(files => {
-                  if (files.length === 0) {
-                    console.log('No files selected.')
-                  } else {
-                    console.log('Files uploaded:')
-                    console.log(files.map(f => f.fileUrl))
-                  }
-                })
-                .catch(err => {
-                  console.error(err)
-                })
-            }}
-          >
-            Add
-          </Button>
+          <DragAndDrop />
         </form>
-        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
-
-        {/* JIKA FILE SUDAH ADA */}
-        {/* <InsertDriveFileIcon fontSize='large' sx={{ height: '20vh' }} />
-        <Typography variant='body2'>File name</Typography>
-        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
-        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
-          Submit
-        </Button> */}
 
         {/* JIKA FILE SUDAH TURNED IN */}
         {/* <Typography variant='body2' sx={{ marginTop: 4 }}>
