@@ -12,7 +12,7 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 // ** Demo Components Imports
 import TaskHome from 'src/views/task/TaskHome'
 import { useEffect, useState } from 'react'
-import { PrismaClient } from '@prisma/client'
+import prisma from 'src/pages/db'
 import { getToken } from 'next-auth/jwt'
 
 const Task = ({data}) => {
@@ -60,8 +60,6 @@ const Task = ({data}) => {
 }
 
 export async function getServerSideProps(context) {
-  const prisma = new PrismaClient()
-
   const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
 
   if (!token) {

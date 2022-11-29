@@ -56,10 +56,12 @@ const CreateProject = props => {
   const [language, setLanguage] = useState([])
   const [startDate, setSDate] = useState(new Date())
   const [endDate, setEDate] = useState(new Date())
+  // const [p_leader, setPLeader] = useState(0)
 
   const [values, setValues] = useState({
     p_title: '',
-    p_description: ''
+    p_description: '',
+    p_leader: 0
   })
 
   // ** Hook
@@ -67,27 +69,20 @@ const CreateProject = props => {
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
-  }
-
-  const parseJwt = token => {
-    if (!token) {
-      return
-    }
-    const base64Url = token.split('.')[1]
-    const base64 = base64Url.replace('-', '+').replace('_', '/')
-
-    return JSON.parse(window.atob(base64))
+    console.log(event.target.value)
   }
 
   const handleProject = async e => {
     e.preventDefault()
 
     try {
+      console.log(values.p_leader)
       const res = await axios.post('/project', {
         title: values.p_title,
         startdate: startDate,
         enddate: endDate,
-        description: values.p_description
+        description: values.p_description,
+        projectLeaderId: values.p_leader
       })
 
       if (res.status === 201) {
@@ -98,8 +93,6 @@ const CreateProject = props => {
           confirmButtonColor: '#68B92E',
           confirmButtonText: 'OK'
         })
-
-        const token_decode = parseJwt(res.data.token)
       }
     } catch (error) {
       Swal.fire({
@@ -170,12 +163,13 @@ const CreateProject = props => {
               <InputLabel id='form-layouts-separator-select-label'>Project Leader</InputLabel>
               <Select
                 label='Project Leader'
-                defaultValue=''
+                value={values.p_leader}
+                onChange={handleChange('p_leader')}
                 id='form-layouts-separator-select'
                 labelId='form-layouts-separator-select-label'
               >
                 {props.users.map(user => (
-                  <MenuItem key={user.id}>{user.name}</MenuItem>
+                  <MenuItem value={user.id}>{user.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
