@@ -1,30 +1,72 @@
-// ** React Imports
-import { useState } from 'react'
-
 // ** MUI Imports
 import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
+import { PrismaClient } from '@prisma/client'
+import { getToken } from 'next-auth/jwt'
 
 // ** People Components Imports
 import axios from 'src/pages/api/axios'
 import PeopleTable from 'src/views/people/PeopleTable'
+import axios from '../api/axios'
 
-const PeoplePage = ({users}) => {
+const PeoplePage = ({ people }) => {
   return (
     <Card>
-      {/* <CardHeader title='Dense Table' titleTypographyProps={{ variant: 'h6' }} /> */}
-      <PeopleTable users={users}/>
+      <PeopleTable rows={people} />
     </Card>
   )
 }
 
-export async function getServerSideProps() {
-  const res = await axios.get('/user')
-  const users = res.data
-  
+export async function getServerSideProps(context) {
+  const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/pages/login',
+        permanent: false
+      }
+    }
+  }
+
+  if (token.role !== 'admin') {
+    return {
+      redirect: {
+        destination: '/401',
+        permanent: false
+      }
+    }
+  }
+
+  const prisma = new PrismaClient()
+
+  const user = await prisma.user.findMany({
+    include: {
+      UserProject: true,
+      taskToDo: true
+    }
+  })
+
+  prisma.$disconnect()
+
+  const userView = []
+
+  user.forEach(user => {
+    userView.push({
+      id: user.id,
+      name: user.name,
+      role: user.role,
+      project: user.UserProject.length,
+      task: user.taskToDo.length
+    })
+  })
+
+  userView.sort((a, b) => {
+    return a.task - b.task || a.project - b.project
+  })
+
   return {
     props: {
-      users
+      people: userView
     }
   }
 }

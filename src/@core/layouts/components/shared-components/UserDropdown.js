@@ -1,7 +1,6 @@
 // ** React Imports
 import { useEffect, useState, Fragment } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // ** Next Import
 import { useRouter } from 'next/router'
@@ -24,6 +23,10 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
+import { signOut, useSession } from 'next-auth/react'
+import axios from 'src/pages/api/axios'
+import { route } from 'next/dist/server/router'
+import Swal from 'sweetalert2'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -34,21 +37,31 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
   boxShadow: `0 0 0 2px ${theme.palette.background.paper}`
 }))
 
-const UserDropdown = () => {
-  // ** States
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [userName, setUserName] = useState('');
-
-  useEffect(() => {
-    userDetail();
-  }, [])
-
-  // ** Get User datails
-  const userDetail = async () => {
-    setUserName(await AsyncStorage.getItem('@nameUser'));
-  }
+const UserDropdown = props => {
   // ** Hooks
   const router = useRouter()
+  const [user, setUser] = useState({})
+  const [anchorEl, setAnchorEl] = useState('')
+
+  const getUser = async () => {
+    await axios
+      .get('/user/detail')
+      .then(res => {
+        if (res.status !== 200) {
+          router.push('/pages/login')
+        }
+        let name = res.data.name
+        let role = res.data.role
+        if (!name || !role) {
+          router.push('/pages/login')
+        }
+        setUser({ name, role })
+      })
+      .catch(err => {
+        console.log(err)
+        router.push('/pages/login')
+      })
+  }
 
   const handleDropdownOpen = event => {
     setAnchorEl(event.currentTarget)
@@ -56,11 +69,33 @@ const UserDropdown = () => {
 
   const handleDropdownClose = url => {
     if (url) {
-      AsyncStorage.clear();
+      AsyncStorage.clear()
       router.push(url)
     }
     setAnchorEl(null)
   }
+
+  const handleSignout = async e => {
+    handleDropdownClose()
+
+    const confirm = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will be logged out',
+      icon: 'warning',
+      confirmButtonColor: '#68B92E',
+      confirmButtonText: 'OK',
+      cancelButtonColor: '#d33',
+      showCancelButton: true
+    })
+
+    if (confirm.isConfirmed) {
+      signOut()
+    }
+  }
+
+  useEffect(() => {
+    getUser()
+  }, [])
 
   const styles = {
     py: 2,
@@ -86,7 +121,7 @@ const UserDropdown = () => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
         <Avatar
-          alt='John Doe'
+          alt={user.name}
           onClick={handleDropdownOpen}
           sx={{ width: 40, height: 40 }}
           src='/images/avatars/1.png'
@@ -107,12 +142,12 @@ const UserDropdown = () => {
               badgeContent={<BadgeContentSpan />}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             >
-              <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
+              <Avatar alt={user.name} src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>{userName}</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{user.name}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                Admin
+                {user.role}
               </Typography>
             </Box>
           </Box>
@@ -124,7 +159,7 @@ const UserDropdown = () => {
             Profile
           </Box>
         </MenuItem>
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+        <MenuItem sx={{ py: 2 }} onClick={handleSignout}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>

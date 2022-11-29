@@ -13,6 +13,7 @@ import Button from '@mui/material/Button'
 
 // ** Meeting Components Imports
 import CreateMeeting from 'src/views/create-meeting/CreateMeeting'
+import { getToken } from 'next-auth/jwt'
 
 const CreateMeetingPage = () => {
   return (
@@ -25,6 +26,27 @@ const CreateMeetingPage = () => {
       </DatePickerWrapper>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
+
+  console.log(token)
+
+  if (token.role !== 'admin') {
+    return {
+      redirect: {
+        destination: '/401',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+      // res: JSON.stringify(res.data)
+    }
+  }
 }
 
 export default CreateMeetingPage

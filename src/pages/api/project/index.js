@@ -1,9 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from '../../db'
 import Gmail, { mailOptions } from 'src/services/Gmail'
 
 export default async function handler(req, res) {
   const { method } = req
-  const prisma = new PrismaClient()
 
   if (method === 'GET') {
     const projects = await prisma.project.findMany()
@@ -41,8 +40,11 @@ export default async function handler(req, res) {
         }
       })
 
+      
+
       return res.status(201).json({ success: true, data: project })
     } catch (error) {
+      
       console.log(error)
 
       return res.status(400).json({ success: false })
