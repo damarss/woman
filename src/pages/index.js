@@ -10,8 +10,16 @@ import Tugas from 'src/views/dashboard/Tugas'
 import ProjectTable from 'src/views/dashboard/ProjectTable'
 import CardMeetingSce from 'src/views/cards/CardMeetingSce'
 import TaskTable from 'src/views/dashboard/TaskTable'
+import { getToken } from 'next-auth/jwt'
+import { useEffect, useState } from 'react'
 
-const Dashboard = () => {
+const Dashboard = ({ data }) => {
+  const [dashboard, setDashboard] = useState(JSON.parse(data))
+
+  useEffect(() => {
+    console.log(dashboard)
+  }, [])
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
@@ -21,13 +29,13 @@ const Dashboard = () => {
         <Grid item xs={12} md={8}>
           <Card>
             <CardHeader title="Today's Tasks" titleTypographyProps={{ variant: 'h6' }} />
-            <TaskTable />
+            <TaskTable tasks={dashboard.tasks} />
           </Card>
         </Grid>
-        <Grid item xs={12} md ={8}>
+        <Grid item xs={12} md={8}>
           <Card>
             <CardHeader title='My Projects' titleTypographyProps={{ variant: 'h6' }} />
-            <ProjectTable />
+            <ProjectTable projects={dashboard.projects} />
           </Card>
         </Grid>
         <Grid item xs={12} md={4}>
@@ -38,5 +46,41 @@ const Dashboard = () => {
   )
 }
 
+export async function getServerSideProps(context) {
+  const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/pages/login',
+        permanent: false
+      }
+    }
+  }
+
+  const projects = await prisma.userProject.findMany({
+    where: {
+      userId: token.uid
+    },
+    include: {
+      project: true
+    }
+  })
+
+  const tasks = await prisma.task.findMany({
+    where: {
+      userId: token.uid
+    }
+  })
+
+  const data = { projects: [...projects], tasks: [...tasks] }
+  console.log(data)
+
+  return {
+    props: {
+      data: JSON.stringify(data)
+    }
+  }
+}
 
 export default Dashboard

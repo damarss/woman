@@ -45,9 +45,11 @@ export default async function handler(req, res) {
         }
       })
       mailOptions.subject = title
-      mailOptions.text = `Anda telah ditambahkan ke dalam project ${title} untuk tanggal ${new Date(
+      mailOptions.html = `<p>Anda telah ditambahkan ke dalam project ${title} untuk tanggal ${new Date(
         startdate
-      ).toLocaleDateString()} hingga tanggal ${new Date(enddate).toLocaleDateString()}.`
+      ).toLocaleDateString()} hingga tanggal ${new Date(enddate).toLocaleDateString()}.
+      <br />
+      Informasi mengenai projet dapat dilihat di <a href='${process.env.BASE_URL}/project-detail/'>link ini</a></p>` 
 
       Gmail.sendMail(mailOptions, function (error, info) {
         if (error) {
