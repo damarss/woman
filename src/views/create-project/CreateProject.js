@@ -43,7 +43,6 @@ import Swal from 'sweetalert2'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
-
 const CustomInputStart = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Start Date' autoComplete='on' />
 })
@@ -60,7 +59,7 @@ const CreateProject = props => {
 
   const [values, setValues] = useState({
     p_title: '',
-    p_description: '',
+    p_description: ''
   })
 
   // ** Hook
@@ -88,7 +87,7 @@ const CreateProject = props => {
         title: values.p_title,
         startdate: startDate,
         enddate: endDate,
-        description:values.p_description
+        description: values.p_description
       })
 
       if (res.status === 201) {
@@ -121,12 +120,13 @@ const CreateProject = props => {
           <br></br>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={12} lg={8}>
-              <TextField 
-              fullWidth 
-              label='Project Title' 
-              placeholder='Proyek A'
-              defaultValue={values.p_title}
-              onChange={handleChange('p_title')} />
+              <TextField
+                fullWidth
+                label='Project Title'
+                placeholder='Proyek A'
+                defaultValue={values.p_title}
+                onChange={handleChange('p_title')}
+              />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
@@ -136,7 +136,7 @@ const CreateProject = props => {
                 placeholderText='DD-MM-YYYY'
                 customInput={<CustomInputStart />}
                 id='tanggal-mulai'
-                onChange={(date) => setSDate(date)}
+                onChange={date => setSDate(date)}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
@@ -147,39 +147,40 @@ const CreateProject = props => {
                 placeholderText='DD-MM-YYYY'
                 customInput={<CustomInputEnd />}
                 id='tanggal-berakhir'
-                onChange={(date) => setEDate(date)}
+                onChange={date => setEDate(date)}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-              <TextField 
-              fullWidth 
-              multiline 
-              minRows={3} 
-              label='Project Description' 
-              defaultValue={values.p_description}
-              onChange={handleChange('p_description')} 
-              placeholder='Description...' />
+              <TextField
+                fullWidth
+                multiline
+                minRows={3}
+                label='Project Description'
+                defaultValue={values.p_description}
+                onChange={handleChange('p_description')}
+                placeholder='Description...'
+              />
             </Grid>
           </Grid>
           <br></br>
           {/* Daftar Peserta */}
           <Typography variant='h6'>Project Leader</Typography>
           <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel id='form-layouts-separator-select-label'>Project Leader</InputLabel>
-                <Select
-                  label='Project Leader'
-                  defaultValue=''
-                  id='form-layouts-separator-select'
-                  labelId='form-layouts-separator-select-label'
-                >
-                 {props.users.map(data => (
-                  <MenuItem value={data.name}>{data.name}</MenuItem>
+            <FormControl fullWidth>
+              <InputLabel id='form-layouts-separator-select-label'>Project Leader</InputLabel>
+              <Select
+                label='Project Leader'
+                defaultValue=''
+                id='form-layouts-separator-select'
+                labelId='form-layouts-separator-select-label'
+              >
+                {props.users.map(user => (
+                  <MenuItem key={user.id}>{user.name}</MenuItem>
                 ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <br></br>
+              </Select>
+            </FormControl>
+          </Grid>
+          <br></br>
           <Typography variant='h6'>Project Participant</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 50 }} aria-label='simple table'>
@@ -190,14 +191,14 @@ const CreateProject = props => {
                   </TableCell>
                   <TableCell align='center'>NIP</TableCell>
                   <TableCell align='center'>Name</TableCell>
-                  <TableCell align='center'>Number of Projek</TableCell>
+                  <TableCell align='center'>Number of Project</TableCell>
                   <TableCell align='center'>Number of Task</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.users.map(data => (
+                {props.users.map(user => (
                   <TableRow
-                    key={data.name}
+                    key={user.name}
                     sx={{
                       '&:last-of-type td, &:last-of-type th': {
                         border: 0
@@ -207,13 +208,13 @@ const CreateProject = props => {
                     <TableCell align='left'>
                       <FormControlLabel control={<Checkbox />} label='' />
                     </TableCell>
-                    <TableCell align='center'>{data.nip}</TableCell>
+                    <TableCell align='center'>{user.nip}</TableCell>
                     <TableCell component='th' scope='row' align='center'>
-                      {data.name}
+                      {user.name}
                     </TableCell>
-                    <TableCell align='center'>{data.projek}</TableCell>
+                    <TableCell align='center'>{user.project}</TableCell>
                     <TableCell component='th' scope='row' align='center'>
-                      {data.tugas}
+                      {user.task}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -224,18 +225,13 @@ const CreateProject = props => {
 
         <Divider sx={{ margin: 0 }} />
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-          <Button  size='large'
-            type='submit'
-            sx={{ mr: 2 }}
-            variant='contained' 
-            onClick={handleProject}
-            >
+          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleProject}>
             Create
           </Button>
         </CardActions>
       </form>
     </Card>
-  ) 
+  )
 }
 
-export default CreateProject 
+export default CreateProject
