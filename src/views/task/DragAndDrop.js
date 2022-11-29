@@ -109,6 +109,7 @@ const DragAndDrop = () => {
           </Typography>
           <Divider sx={{ marginTop: 0, marginBottom: 6.75 }} />
           <Button
+            type='submit'
             variant='contained'
             sx={{ padding: theme => theme.spacing(1.75, 5.5) }}
             style={{ display: showButton ? 'block' : 'none' }}
