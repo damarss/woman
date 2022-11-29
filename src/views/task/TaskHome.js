@@ -153,7 +153,7 @@ const TaskHome = props => {
               Tugas Hari Ini
               </TableCell>
             </TableRow> */}
-            {rows.map(row => (
+            {props.task.map(row => (
               <TableRow hover key={row.title} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                   <Link href='/task-detail'>

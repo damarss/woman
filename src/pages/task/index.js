@@ -4,6 +4,7 @@ import axios from 'src/pages/api/axios'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
+import Typography from '@mui/material/Typography'
 
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
@@ -11,18 +12,24 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 // ** Demo Components Imports
 import TaskHome from 'src/views/task/TaskHome'
 import { useEffect, useState } from 'react'
+import { PrismaClient } from '@prisma/client'
+import { getToken } from 'next-auth/jwt'
 
-const Task = props => {
+const Task = ({data}) => {
+
   const [tasks, setTasks] = useState([])
 
-  const getTasks = async () => {
-    const res = await axios.get('/task')
-    console.log(res.data)
-  }
+  const NotFound = () => (
+    <Grid container justifyContent='center' alignItems='center'>
+      <Grid item>
+        <Typography variant='h6'>Task Not Found</Typography>
+      </Grid>
+    </Grid>
+  )
 
   useEffect(() => {
-    getTasks()
-  }, [])
+    setTasks(JSON.parse(data))
+  }, [data])
 
   return (
     <ApexChartWrapper>
@@ -30,13 +37,21 @@ const Task = props => {
         <Grid item xs={12} mb={5}>
           <Card>
             <CardHeader title="Today's Task" titleTypographyProps={{ variant: 'h6' }} />
-            <TaskHome tasks={tasks} />
+            {tasks.length > 0 ? (
+              <TaskHome tasks={tasks} />
+            ) : (
+              <NotFound />
+            )}
           </Card>
         </Grid>
         <Grid item xs={12}>
           <Card>
             <CardHeader title="Other's Task" titleTypographyProps={{ variant: 'h6' }} />
-            <TaskHome tasks={tasks} />
+            {tasks.length > 0 ? (
+              <TaskHome tasks={tasks} />
+            ) : (
+              <NotFound />
+            )}
           </Card>
         </Grid>
       </Grid>
@@ -44,15 +59,33 @@ const Task = props => {
   )
 }
 
-export async function getServerSideProps() {
-    const res = await axios.get('/task')
-    const tasks = res.data.data
-    
+export async function getServerSideProps(context) {
+  const prisma = new PrismaClient()
+
+  const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
+
+  if (!token) {
     return {
-      props: {
-        tasks
+      redirect: {
+        destination: '/pages/login',
+        permanent: false
       }
     }
   }
+
+  const tasks = await prisma.task.findMany({
+    where: {
+      userId: token.uid
+    }
+  })
+
+  console.log(tasks)
+
+  return {
+    props: {
+      data: JSON.stringify(tasks)
+    }
+  }
+}
 
 export default Task
