@@ -100,34 +100,29 @@ const RegisterPage = () => {
       password: values.password
     }
 
-    try {
-      const res = await axios.post('user', data)
-      console.log(res.data)
-      Swal.fire({
-        title: 'Register Success',
-        text: 'Press OK to continue',
-        icon: 'success',
-        // showCancelButton: true,
-        confirmButtonColor: '#68B92E',
-        // cancelButtonColor: '#d33',
-        confirmButtonText: 'Ok'
-        // cancelButtonText: 'Tidak, Kembali',
-        // reverseButtons: true
+    axios
+      .post('auth/register', data)
+      .then(res => {
+        if (res.status === 200) {
+          Swal.fire({
+            title: 'Register Success',
+            text: 'Press OK to continue',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          })
+
+          router.push('/pages/login')
+        }
       })
-      router.push('/pages/login')
-    } catch (error) {
-      Swal.fire({
-        title: 'Register Failed',
-        text: error,
-        icon: 'error',
-        // showCancelButton: true,
-        confirmButtonColor: '#d33',
-        // cancelButtonColor: '#d33',
-        confirmButtonText: 'OK'
-        // cancelButtonText: 'Tidak, Kembali',
-        // reverseButtons: true
+      .catch(err => {
+        Swal.fire({
+          title: 'Register Failed',
+          text: err.message,
+          icon: 'error',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        })
       })
-    }
   }
 
   return (

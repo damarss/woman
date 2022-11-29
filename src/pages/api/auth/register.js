@@ -1,6 +1,6 @@
-import prisma from '../../db'
 import { PrismaClientKnownRequestError, PrismaClientValidationError } from '@prisma/client/runtime'
 import argon2 from 'argon2'
+import prisma from '../../db'
 
 export default async function handle(req, res) {
   if (req.method === 'POST') {
@@ -42,11 +42,5 @@ export default async function handle(req, res) {
 
       return res.status(500).json({ message: 'Something went wrong' })
     }
-  } else if (req.method === 'GET') {
-    const users = await prisma.user.findMany()
-
-    
-
-    return res.status(200).json(users)
   }
 }

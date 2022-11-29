@@ -1,6 +1,7 @@
 // ** React Imports
 import { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { signIn } from 'next-auth/react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -86,70 +87,32 @@ const LoginPage = () => {
     event.preventDefault()
   }
 
-  const parseJwt = token => {
-    if (!token) {
-      return
-    }
-    const base64Url = token.split('.')[1]
-    const base64 = base64Url.replace('-', '+').replace('_', '/')
-
-    return JSON.parse(window.atob(base64))
-  }
-
   const handleLogin = async e => {
     e.preventDefault()
 
-    try {
-      const res = await axios.post('/login', {
-        email: values.email,
-        password: values.password
+    const res = await signIn('credentials', {
+      email: values.email,
+      password: values.password,
+      redirect: false
+    })
+
+    if (res.status === 200) {
+      Swal.fire({
+        title: 'Login Success',
+        text: 'Press OK to continue',
+        icon: 'success',
+        confirmButtonColor: '#68B92E',
+        confirmButtonText: 'OK'
       })
 
-      if (res.status === 200) {
-        // nanti ubah tampilannya
-        // alert('Login successful')
-        Swal.fire({
-          title: 'Login Success',
-          text: 'Press OK to continue',
-          icon: 'success',
-          // showCancelButton: true,
-          confirmButtonColor: '#68B92E',
-          // cancelButtonColor: '#d33',
-          confirmButtonText: 'OK'
-          // cancelButtonText: 'Tidak, Kembali',
-          // reverseButtons: true
-        })
-
-        const token = res.data.token
-        await AsyncStorage.setItem('jwt', token)
-
-        const token_decode = parseJwt(res.data.token)
-        console.log(token_decode)
-
-        // ** mengambil data user
-        const url_gets = '/user/'
-        const url_get = url_gets.concat(token_decode.uid)
-        const getting_data = await axios.get(url_get)
-        console.log(getting_data.data)
-
-        // ** local storage
-        await AsyncStorage.setItem('@roleUser', getting_data.data.role)
-        await AsyncStorage.setItem('@nameUser', getting_data.data.name)
-        router.push('/')
-      }
-    } catch (error) {
-      // nanti ubah nampilin errornya
-      // alert('Login failed')
+      router.push('/')
+    } else {
       Swal.fire({
         title: 'Login Failed',
-        text: error,
+        text: res.error,
         icon: 'error',
-        // showCancelButton: true,
         confirmButtonColor: '#d33',
-        // cancelButtonColor: '#d33',
         confirmButtonText: 'OK'
-        // cancelButtonText: 'Tidak, Kembali',
-        // reverseButtons: true
       })
     }
   }
@@ -179,15 +142,17 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
+          <form autoComplete='off' onSubmit={e => e.preventDefault()}>
             <TextField
               autoFocus
               fullWidth
               id='email'
               label='Email'
+              type='email'
               sx={{ marginBottom: 4 }}
               defaultValue={values.email}
               onChange={handleChange('email')}
+              required
             />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
@@ -198,6 +163,7 @@ const LoginPage = () => {
                 name='password'
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
+                required
                 endAdornment={
                   <InputAdornment position='end'>
                     <IconButton

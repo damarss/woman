@@ -11,16 +11,17 @@ datasource db {
 }
 
 model User {
-  id              Int           @id @default(autoincrement())
-  email           String        @unique
-  name            String        @db.VarChar(64)
-  nip             String        @db.Char(18)
-  password        String        @db.VarChar(255)
-  role            String        @default("employee") @db.VarChar(64)
-  UserMeet        UserMeet[]
-  UserProject     UserProject[]
-  taskToDo        Task[]        @relation("taskToDo")
-  taskToSupervise Task[]        @relation("taskToSupervise")
+  id            Int           @id @default(autoincrement())
+  email         String        @unique
+  name          String        @db.VarChar(64)
+  nip           String        @db.Char(18)
+  password      String        @db.VarChar(255)
+  role          String        @default("employee") @db.VarChar(64)
+  UserMeet      UserMeet[]
+  UserProject   UserProject[]
+  projectToLead Project[]     @relation("projectToLead")
+  taskToDo      Task[]        @relation("taskToDo")
+  TaskComment   TaskComment[]
 }
 
 model Meet {
@@ -42,14 +43,16 @@ model UserMeet {
 }
 
 model Project {
-  id          Int           @id @default(autoincrement())
-  title       String        @db.VarChar(128)
-  startdate   DateTime      @db.Date
-  enddate     DateTime      @db.Date
-  description String?       @db.LongText
-  isArchived  Boolean       @db.TinyInt()
-  UserProject UserProject[]
-  Task        Task[]
+  id              Int           @id @default(autoincrement())
+  title           String        @db.VarChar(128)
+  startdate       DateTime      @db.Date
+  enddate         DateTime      @db.Date
+  description     String?       @db.LongText
+  isArchived      Boolean       @db.TinyInt()
+  projectLeader   User          @relation("projectToLead", fields: [projectLeaderId], references: [id])
+  projectLeaderId Int
+  UserProject     UserProject[]
+  Task            Task[]
 }
 
 model UserProject {
@@ -61,17 +64,25 @@ model UserProject {
 }
 
 model Task {
-  id           Int      @id @default(autoincrement())
-  title        String   @db.VarChar(128)
-  duedate      DateTime @db.Date
-  priority     Int      @db.Int
-  description  String?  @db.LongText
-  status       Int      @db.Int
-  taskfile     String?  @db.VarChar(255)
-  project      Project  @relation(fields: [projectId], references: [id])
-  projectId    Int
-  user         User     @relation("taskToDo", fields: [userId], references: [id])
-  userId       Int
-  supervisor   User     @relation("taskToSupervise", fields: [supervisorId], references: [id])
-  supervisorId Int
+  id          Int           @id @default(autoincrement())
+  title       String        @db.VarChar(128)
+  duedate     DateTime      @db.Date
+  priority    Int           @db.Int
+  description String?       @db.LongText
+  status      Int           @db.Int
+  taskfile    String?       @db.VarChar(255)
+  project     Project       @relation(fields: [projectId], references: [id])
+  projectId   Int
+  user        User          @relation("taskToDo", fields: [userId], references: [id])
+  userId      Int
+  TaskComment TaskComment[]
+}
+
+model TaskComment {
+  id      Int    @id @default(autoincrement())
+  comment String @db.LongText
+  task    Task   @relation(fields: [taskId], references: [id])
+  taskId  Int
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
 }

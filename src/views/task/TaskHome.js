@@ -120,7 +120,6 @@ const statusObj = {
 }
 
 const TaskHome = props => {
-  console.log(props.tasks)
   return (
     <Card>
       <TableContainer>

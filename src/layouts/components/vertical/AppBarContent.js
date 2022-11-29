@@ -15,7 +15,7 @@ import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
-import CalendarCheckOutline  from 'mdi-material-ui/CalendarCheckOutline'
+import CalendarCheckOutline from 'mdi-material-ui/CalendarCheckOutline'
 import ClipboardFileOutline from 'mdi-material-ui/ClipboardFileOutline'
 import TextBoxMultipleOutline from 'mdi-material-ui/TextBoxMultipleOutline'
 import MessageVideo from 'mdi-material-ui/MessageVideo'
@@ -35,8 +35,16 @@ import ModeToggler from 'src/@core/layouts/components/shared-components/ModeTogg
 import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
 import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
 import { Typography } from '@mui/material'
+import { PrismaClient } from '@prisma/client'
+import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import { getToken } from 'next-auth/jwt'
 
 const AppBarContent = props => {
+
+  useEffect(() => {
+  }, [])
+
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
 
@@ -44,7 +52,7 @@ const AppBarContent = props => {
   const hiddenSm = useMediaQuery(theme => theme.breakpoints.down('sm'))
 
   // ** Router
-  const route = useRouter();
+  const route = useRouter()
 
   return (
     <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -58,23 +66,176 @@ const AppBarContent = props => {
             <Menu />
           </IconButton>
         ) : null}
-        {route.asPath === '/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><HomeOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Dashboard</Typography></Box>: null}
-        {route.asPath === '/project/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><TextBoxMultipleOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Project List</Typography></Box>: null}
-        {route.asPath === '/projec-detail/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><TextBoxMultipleOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Project Detail</Typography></Box>: null}
-        {route.asPath === '/create-project/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><TextBoxMultipleOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Create Project-Step 1</Typography></Box>: null}
-        {route.asPath === '/create-project-task/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><TextBoxMultipleOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Create Project-Step 2</Typography></Box>: null}
-        {route.asPath === '/edit-project/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><TextBoxMultipleOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Change Project-Step 1</Typography></Box>: null}
-        {route.asPath === '/edit-project-task/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><TextBoxMultipleOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Change Project-Step 2</Typography></Box>: null}
-        {route.asPath === '/task/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><ClipboardFileOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Task List</Typography></Box>: null}
-        {route.asPath === '/task-detail/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><ClipboardFileOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Task Detail</Typography></Box>: null}
-        {route.asPath === '/create-task/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><ClipboardFileOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Create Task</Typography></Box>: null}
-        {route.asPath === '/edit-task/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><ClipboardFileOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Edit Task</Typography></Box>: null}
-        {route.asPath === '/meeting/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><MessageVideo /><Typography variant='h6' sx={{marginLeft: 3}}>Meeting Schedule</Typography></Box>: null}
-        {route.asPath === '/meeting-admin/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><VideoOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Meeting List</Typography></Box>: null}
-        {route.asPath === '/create-meeting/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><VideoOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Create Meeting</Typography></Box>: null}
-        {route.asPath === '/edit-meeting/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><VideoOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Change Meeting</Typography></Box>: null}
-        {route.asPath === '/meeting-detail/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><VideoOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Meeting Detail</Typography></Box>: null}
-        {route.asPath === '/people/' ? <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop: 2, marginLeft: 2}}><AccountGroupOutline /><Typography variant='h6' sx={{marginLeft: 3}}>Members</Typography></Box>: null}
+        {route.asPath === '/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <HomeOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Dashboard
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/project/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <TextBoxMultipleOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Project List
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/projec-detail/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <TextBoxMultipleOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Project Detail
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/create-project/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <TextBoxMultipleOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Create Project-Step 1
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/create-project-task/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <TextBoxMultipleOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Create Project-Step 2
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/edit-project/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <TextBoxMultipleOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Change Project-Step 1
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/edit-project-task/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <TextBoxMultipleOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Change Project-Step 2
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/task/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <ClipboardFileOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Task List
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/task-detail/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <ClipboardFileOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Task Detail
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/create-task/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <ClipboardFileOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Create Task
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/edit-task/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <ClipboardFileOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Edit Task
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/meeting/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <MessageVideo />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Meeting Schedule
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/meeting-admin/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <VideoOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Meeting List
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/create-meeting/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <VideoOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Create Meeting
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/edit-meeting/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <VideoOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Change Meeting
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/meeting-detail/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <VideoOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Meeting Detail
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/people/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <AccountGroupOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Members
+            </Typography>
+          </Box>
+        ) : null}
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
         <ModeToggler settings={settings} saveSettings={saveSettings} />
@@ -84,5 +245,7 @@ const AppBarContent = props => {
     </Box>
   )
 }
+
+
 
 export default AppBarContent

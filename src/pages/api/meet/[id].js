@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from '../../db'
 
 export default async function handler(req, res) {
   const id = req.query.id
   const { method } = req
-
-  const prisma = new PrismaClient()
 
   if (method === 'GET') {
     // Get data from your database

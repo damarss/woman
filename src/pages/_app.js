@@ -26,6 +26,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
+import { SessionProvider } from 'next-auth/react'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -50,25 +51,27 @@ const App = props => {
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>{`${themeConfig.templateName} - Work Management`}</title>
-        <meta
-          name='description'
-          content={`${themeConfig.templateName} – Work Management – Aplikasi berbasis web dengan system antarmuka yang efisien dan mudah digunakan oleh segala kalangan (Work Management System). `}
-        />
-        <meta name='keywords' content='Work Management, Material Design, MUI' />
-        <meta name='viewport' content='initial-scale=1, width=device-width' />
-      </Head>
+    <SessionProvider session={pageProps.session}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>{`${themeConfig.templateName} - Work Management`}</title>
+          <meta
+            name='description'
+            content={`${themeConfig.templateName} – Work Management – Aplikasi berbasis web dengan system antarmuka yang efisien dan mudah digunakan oleh segala kalangan (Work Management System). `}
+          />
+          <meta name='keywords' content='Work Management, Material Design, MUI' />
+          <meta name='viewport' content='initial-scale=1, width=device-width' />
+        </Head>
 
-      <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
-    </CacheProvider>
+        <SettingsProvider>
+          <SettingsConsumer>
+            {({ settings }) => {
+              return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+            }}
+          </SettingsConsumer>
+        </SettingsProvider>
+      </CacheProvider>
+    </SessionProvider>
   )
 }
 
