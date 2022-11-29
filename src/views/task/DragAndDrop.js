@@ -1,5 +1,5 @@
 //  ** React
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** Icon
 import Close from 'mdi-material-ui/Close'
@@ -23,6 +23,8 @@ const DragAndDrop = () => {
 
   const [isFile, setIsFile] = useState(true)
 
+  let inputRef;
+
   const handleFile = e => {
     setIsFile(false)
     setShowUpload(false)
@@ -31,7 +33,7 @@ const DragAndDrop = () => {
     let file = e.target.files
 
     for (let i = 0; i < file.length; i++) {
-      setFile([...files, file[i]])
+      setFile(files => [...files, file[i]])
     }
   }
 
@@ -40,6 +42,7 @@ const DragAndDrop = () => {
     setShowUpload(true)
     setShowButton(false)
     setFile(files.filter(x => x.name !== i))
+    inputRef.value=null
   }
 
   return (
@@ -59,7 +62,7 @@ const DragAndDrop = () => {
               type='file'
               onChange={handleFile}
               className='h-full w-full bg-green-200 opacity-0 z-10 absolute'
-              name='files[]'
+              ref={refParam => inputRef = refParam}
             />
             <div className='h-full w-full absolute z-1 flex justify-center items-center top-0 cursor-pointer'>
               <div className='flex flex-col'>
@@ -69,9 +72,9 @@ const DragAndDrop = () => {
             </div>
           </div>
           <div className='flex flex-wrap gap-2 mt-2'>
-            {files.map((file, key) => {
+            {files.map(file => {
               return (
-                <div key={key} className='w-full h-16 flex items-center justify-between rounded bg-white'>
+                <div key={file.name} className='w-full h-16 flex items-center justify-between rounded bg-white'>
                   <div className='flex flex-row justify-center items-center gap-2'>
                     <div className='h-12 w-12'>
                       <img
