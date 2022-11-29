@@ -42,8 +42,6 @@ export async function getServerSideProps(context) {
     }
   })
 
-  prisma.$disconnect()
-
   const userView = []
 
   user.forEach(user => {

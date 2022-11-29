@@ -1,7 +1,7 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import { PrismaClient } from '@prisma/client'
+import prisma from '../db'
 import { getToken } from 'next-auth/jwt'
 import { useEffect, useState } from 'react'
 
@@ -42,8 +42,6 @@ const Project = ({ data }) => {
 }
 
 export async function getServerSideProps(context) {
-  const prisma = new PrismaClient()
-
   const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
 
   if (!token) {
@@ -63,8 +61,6 @@ export async function getServerSideProps(context) {
       project: true
     }
   })
-
-  console.log(projects)
 
   return {
     props: {
