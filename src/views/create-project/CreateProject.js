@@ -55,7 +55,7 @@ const CreateProject = props => {
   // ** States
   const [language, setLanguage] = useState([])
   const [startDate, setSDate] = useState(new Date())
-  const [endDate, setEDate] = useState(new Date())
+  const [endDate, setEDate] = useState(null)
 
   const [participants, setParticipants] = useState(
     props.users.map(user => {
@@ -69,7 +69,7 @@ const CreateProject = props => {
   const [values, setValues] = useState({
     p_title: '',
     p_description: '',
-    p_leader: 0
+    p_leader: ''
   })
 
   // ** Hook
@@ -77,21 +77,19 @@ const CreateProject = props => {
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
-    console.log(event.target.value)
   }
 
   const handleProject = async e => {
     e.preventDefault()
 
     try {
-      console.log(values.p_leader)
-
       const res = await axios.post('/project', {
         title: values.p_title,
         startdate: startDate,
         enddate: endDate,
         description: values.p_description,
-        projectLeaderId: values.p_leader
+        projectLeaderId: values.p_leader,
+        participants: participants
       })
 
       if (res.status === 201) {
@@ -201,8 +199,8 @@ const CreateProject = props => {
                         <Checkbox
                           defaultChecked
                           checked={
-                            participants.filter(participant => participant.checked === true).length 
-                              === participants.length
+                            participants.filter(participant => participant.checked === true).length ===
+                            participants.length
                           }
                           onChange={e => {
                             let checked = e.target.checked
