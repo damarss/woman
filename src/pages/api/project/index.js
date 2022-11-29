@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   }
 
   if (method === 'POST') {
-    const { title, startdate, enddate, description } = req.body
+    const { title, startdate, enddate, description, projectLeaderId} = req.body
     try {
       const project = await prisma.project.create({
         data: {
@@ -22,7 +22,8 @@ export default async function handler(req, res) {
           startdate,
           enddate,
           description,
-          isArchived: false
+          isArchived: false,
+          projectLeaderId
         }
       })
 
