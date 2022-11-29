@@ -72,11 +72,16 @@ const TabAccount = props => {
   }
 
   const getUser = async () => {
-    const res = await axios.get('/user/detail')
-
-    if (res.status === 200) {
-      setUser(res.data)
-    }
+    await axios
+      .get('/user/detail')
+      .then(res => {
+        if (res.status === 200) {
+          setUser(res.data)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   useEffect(() => {
@@ -112,10 +117,24 @@ const TabAccount = props => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='NIP' placeholder='1234567890' defaultValue={user.nip} value={user.nip} onChange={handleChange('nip')} />
+            <TextField
+              fullWidth
+              label='NIP'
+              placeholder='1234567890'
+              defaultValue={user.nip}
+              value={user.nip}
+              onChange={handleChange('nip')}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Name' placeholder='John Doe' defaultValue={user.name} value={user.name} onChange={handleChange('name')}/>
+            <TextField
+              fullWidth
+              label='Name'
+              placeholder='John Doe'
+              defaultValue={user.name}
+              value={user.name}
+              onChange={handleChange('name')}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField

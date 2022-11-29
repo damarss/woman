@@ -16,10 +16,16 @@ const Navigation = () => {
   const [userRole, setUserRole] = useState('')
 
   const getUserRole = async () => {
-    const res = await axios.get('/user/detail')
-    if (res.status === 200) {
-      setUserRole(res.data.role)
-    }
+    axios
+      .get('/user/detail')
+      .then(res => {
+        if (res.status === 200) {
+          setUserRole(res.data.role)
+        }
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }
 
   useEffect(() => {

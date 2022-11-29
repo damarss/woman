@@ -23,8 +23,10 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import axios from 'src/pages/api/axios'
+import { route } from 'next/dist/server/router'
+import Swal from 'sweetalert2'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -42,11 +44,21 @@ const UserDropdown = props => {
   const [anchorEl, setAnchorEl] = useState('')
 
   const getUser = async () => {
-    axios.get('/user/detail')
+    await axios
+      .get('/user/detail')
       .then(res => {
-        setUser(res.data)
+        if (res.status !== 200) {
+          router.push('/pages/login')
+        }
+        let name = res.data.name
+        let role = res.data.role
+        if (!name || !role) {
+          router.push('/pages/login')
+        }
+        setUser({ name, role })
       })
       .catch(err => {
+        console.log(err)
         router.push('/pages/login')
       })
   }
@@ -61,6 +73,24 @@ const UserDropdown = props => {
       router.push(url)
     }
     setAnchorEl(null)
+  }
+
+  const handleSignout = async e => {
+    handleDropdownClose()
+
+    const confirm = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will be logged out',
+      icon: 'warning',
+      confirmButtonColor: '#68B92E',
+      confirmButtonText: 'OK',
+      cancelButtonColor: '#d33',
+      showCancelButton: true
+    })
+
+    if (confirm.isConfirmed) {
+      signOut()
+    }
   }
 
   useEffect(() => {
@@ -129,7 +159,7 @@ const UserDropdown = props => {
             Profile
           </Box>
         </MenuItem>
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/api/auth/signout')}>
+        <MenuItem sx={{ py: 2 }} onClick={handleSignout}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>

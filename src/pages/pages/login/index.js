@@ -87,16 +87,6 @@ const LoginPage = () => {
     event.preventDefault()
   }
 
-  const parseJwt = token => {
-    if (!token) {
-      return
-    }
-    const base64Url = token.split('.')[1]
-    const base64 = base64Url.replace('-', '+').replace('_', '/')
-
-    return JSON.parse(window.atob(base64))
-  }
-
   const handleLogin = async e => {
     e.preventDefault()
 
@@ -107,8 +97,6 @@ const LoginPage = () => {
     })
 
     if (res.status === 200) {
-      // nanti ubah tampilannya
-      // alert('Login successful')
       Swal.fire({
         title: 'Login Success',
         text: 'Press OK to continue',

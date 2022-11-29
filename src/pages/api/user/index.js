@@ -1,10 +1,16 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaClientKnownRequestError, PrismaClientValidationError } from '@prisma/client/runtime'
 import argon2 from 'argon2'
+import { getToken } from 'next-auth/jwt'
 
 const prisma = new PrismaClient()
 
 export default async function handle(req, res) {
+  const token = await getToken({ req, secret: process.env.JWT_SECRET })
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+
   if (req.method === 'POST') {
     const { email, password, name, nip } = req.body
 
@@ -45,6 +51,12 @@ export default async function handle(req, res) {
       return res.status(500).json({ message: 'Something went wrong' })
     }
   } else if (req.method === 'GET') {
+    if (token.role !== 'admin') {
+      prisma.$disconnect()
+
+      return res.status(401).json({ status: 'Unauthorized' })
+    }
+
     const users = await prisma.user.findMany()
 
     prisma.$disconnect()
