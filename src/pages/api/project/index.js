@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         }
       })
 
-      mailOptions.to = '222011829@stis.ac.id'
+      mailOptions.to = ''
       mailOptions.subject = title
       mailOptions.text = `Anda telah ditambahkan ke dalam project ${title} untuk tanggal ${new Date(
         startdate

@@ -34,10 +34,10 @@ const CardBasic = () => {
       <Grid item xs={12} sm={12} md={8} lg={8}>
         <CardProjectdetail />
       </Grid>
-      <Grid item xs={12} sm={12} md={8} lg={4}>
-        {/* <Typography variant='h6' sx={{ lineHeight: 1, fontWeight: 600, fontSize: '3.75rem !important' }}>
-                  50%
-                </Typography> */}
+      <Grid item xs={12} sm={12} md={4} lg={4} alignItems="center" justify="center">
+        <Button sx={{height: '100%'}} fullWidth href='/create-project-task' type='submit' variant='contained' color='primary'>
+            Add Task
+        </Button>
       </Grid>
 
       <Grid item xs={12} sm={12} md={12}>

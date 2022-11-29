@@ -103,7 +103,32 @@ const navigation = () => {
         title: 'Meeting Setting',
         icon: VideoOutline,
         path: '/meeting-admin'
-      }
+      },
+        {
+    title: 'Typography',
+    icon: FormatLetterCase,
+    path: '/typography'
+  },
+  {
+    title: 'Icons',
+    path: '/icons',
+    icon: GoogleCirclesExtended
+  },
+  {
+    title: 'Cards',
+    icon: CreditCardOutline,
+    path: '/cards'
+  },
+  {
+    title: 'Tables',
+    icon: Table,
+    path: '/tables'
+  },
+  {
+    icon: CubeOutline,
+    title: 'Form Layouts',
+    path: '/form-layouts'
+  }
     ]
   }
 

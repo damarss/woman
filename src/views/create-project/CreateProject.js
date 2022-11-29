@@ -1,5 +1,11 @@
 // ** React Imports
 import { forwardRef, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+// ** Next Imports
+// import Link from 'next/link'
+import { useRouter } from 'next/router'
+import axios from 'src/pages/api/axios'
 
 // ** MUI Imports
 import Card from '@mui/material/Card'
@@ -37,56 +43,6 @@ import Swal from 'sweetalert2'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
-const datas = [
-  {
-    name: 'Sally Quinn1',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn2',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn3',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn4',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn5',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn6',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn7',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn8',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  }
-]
 
 const CustomInputStart = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Start Date' autoComplete='on' />
@@ -99,8 +55,63 @@ const CustomInputEnd = forwardRef((props, ref) => {
 const CreateProject = props => {
   // ** States
   const [language, setLanguage] = useState([])
-  const [date, setDate] = useState(null)
-  const [tanggal, setDateTwo] = useState(null)
+  const [startDate, setSDate] = useState(new Date())
+  const [endDate, setEDate] = useState(new Date())
+
+  const [values, setValues] = useState({
+    p_title: '',
+    p_description: '',
+  })
+
+  // ** Hook
+  const router = useRouter()
+
+  const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
+
+  const parseJwt = token => {
+    if (!token) {
+      return
+    }
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace('-', '+').replace('_', '/')
+
+    return JSON.parse(window.atob(base64))
+  }
+
+  const handleProject = async e => {
+    e.preventDefault()
+
+    try {
+      const res = await axios.post('/project', {
+        title: values.p_title,
+        startdate: startDate,
+        enddate: endDate,
+        description:values.p_description
+      })
+
+      if (res.status === 201) {
+        Swal.fire({
+          title: 'Create Project Success',
+          text: 'Press OK to continue',
+          icon: 'success',
+          confirmButtonColor: '#68B92E',
+          confirmButtonText: 'OK'
+        })
+
+        const token_decode = parseJwt(res.data.token)
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Create Project Failed',
+        text: error,
+        icon: 'error',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+      })
+    }
+  }
 
   return (
     <Card>
@@ -110,36 +121,65 @@ const CreateProject = props => {
           <br></br>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={12} lg={8}>
-              <TextField fullWidth label='Project Title' placeholder='Proyek A' />
+              <TextField 
+              fullWidth 
+              label='Project Title' 
+              placeholder='Proyek A'
+              defaultValue={values.p_title}
+              onChange={handleChange('p_title')} />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
-                selected={date}
+                selected={startDate}
                 showYearDropdown
                 showMonthDropdown
                 placeholderText='DD-MM-YYYY'
                 customInput={<CustomInputStart />}
                 id='tanggal-mulai'
-                onChange={date => setDate(date)}
+                onChange={(date) => setSDate(date)}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
-                selected={tanggal}
+                selected={endDate}
                 showYearDropdown
                 showMonthDropdown
                 placeholderText='DD-MM-YYYY'
                 customInput={<CustomInputEnd />}
                 id='tanggal-berakhir'
-                onChange={tanggal => setDateTwo(tanggal)}
+                onChange={(date) => setEDate(date)}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-              <TextField fullWidth multiline minRows={3} label='Project Description' placeholder='Bio...' />
+              <TextField 
+              fullWidth 
+              multiline 
+              minRows={3} 
+              label='Project Description' 
+              defaultValue={values.p_description}
+              onChange={handleChange('p_description')} 
+              placeholder='Description...' />
             </Grid>
           </Grid>
           <br></br>
           {/* Daftar Peserta */}
+          <Typography variant='h6'>Project Leader</Typography>
+          <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id='form-layouts-separator-select-label'>Project Leader</InputLabel>
+                <Select
+                  label='Project Leader'
+                  defaultValue=''
+                  id='form-layouts-separator-select'
+                  labelId='form-layouts-separator-select-label'
+                >
+                 {props.users.map(data => (
+                  <MenuItem value={data.name}>{data.name}</MenuItem>
+                ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <br></br>
           <Typography variant='h6'>Project Participant</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 50 }} aria-label='simple table'>
@@ -188,8 +228,9 @@ const CreateProject = props => {
             type='submit'
             sx={{ mr: 2 }}
             variant='contained' 
-            href='/create-project-task'>
-            Next
+            onClick={handleProject}
+            >
+            Create
           </Button>
         </CardActions>
       </form>
