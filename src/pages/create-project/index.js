@@ -54,6 +54,7 @@ export async function getServerSideProps(context) {
     userView.push({
       id: user.id,
       name: user.name,
+      email: user.email,
       nip: user.nip,
       role: user.role,
       project: user.UserProject.length,
@@ -64,8 +65,6 @@ export async function getServerSideProps(context) {
   userView.sort((a, b) => {
     return a.task - b.task || a.project - b.project
   })
-
-  console.log(userView)
 
   return {
     props: {
