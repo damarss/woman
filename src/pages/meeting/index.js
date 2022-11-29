@@ -31,7 +31,7 @@ const schedulerData = [
 ];
 
 const Meeting = () => {
-  const [currentDate, setCurrentDate] = useState('2022-11-11');
+  const [currentDate, setCurrentDate] = useState(new Date);
   const currentDateChange = (currentDate) => { setCurrentDate(currentDate); };
 
   return (
@@ -54,10 +54,6 @@ const Meeting = () => {
         <Appointments />
         <AppointmentTooltip
           showCloseButton
-          showOpenButton
-        />
-        <AppointmentForm
-          readOnly
         />
       </Scheduler>
     </Paper>

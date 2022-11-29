@@ -18,7 +18,7 @@ import CardWithCollapse from 'src/views/cards/CardWithCollapse'
 import CardVerticalRatings from 'src/views/cards/CardVerticalRatings'
 import CardNavigationCenter from 'src/views/cards/CardNavigationCenter'
 import CardProject from 'src/views/cards/CardProject'
-import axios from '../api/axios'
+import axios from 'src/pages/api/axios'
 
 const Project = ({ projects }) => {
   return (
