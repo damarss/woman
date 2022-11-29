@@ -115,8 +115,6 @@ const LoginPage = () => {
         confirmButtonText: 'OK'
       })
     }
-
-    router.push('/')
   }
 
   return (

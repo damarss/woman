@@ -1,9 +1,7 @@
 import NextAuth from 'next-auth'
-import { PrismaClient } from '@prisma/client'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import argon2 from 'argon2'
-
-const prisma = new PrismaClient()
+import prisma from '../../db'
 
 const authOptions = {
   session: {
@@ -42,7 +40,7 @@ const authOptions = {
   ],
   pages: {
     signIn: '/pages/login',
-    
+
     error: '/auth/error'
   },
   callbacks: {
@@ -50,6 +48,10 @@ const authOptions = {
       // update token
       if (params.user?.role) {
         params.token.role = params.user.role
+      }
+
+      if (params.user?.id) {
+        params.token.uid = params.user.id
       }
 
       // return final_token

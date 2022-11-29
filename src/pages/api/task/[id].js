@@ -1,11 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from '../../db'
 
 export default async function handler(req, res) {
   const id = req.query.id
 
   const { method } = req
-
-  const prisma = new PrismaClient()
 
   if (method === 'GET') {
     const task = await prisma.task.findUnique({
@@ -15,12 +13,12 @@ export default async function handler(req, res) {
     })
 
     if (!task) {
-      prisma.$disconnect()
+      
 
       return res.status(400).json({ success: false, message: 'Task not found' })
     }
 
-    prisma.$disconnect()
+    
 
     return res.status(200).json({ success: true, data: task })
   } else if (method === 'PUT') {
@@ -43,11 +41,11 @@ export default async function handler(req, res) {
         }
       })
 
-      prisma.$disconnect()
+      
 
       return res.status(200).json({ success: true, data: task })
     } catch (error) {
-      prisma.$disconnect()
+      
       console.log(error)
 
       return res.status(400).json({ success: false })
@@ -60,11 +58,11 @@ export default async function handler(req, res) {
         }
       })
 
-      prisma.$disconnect()
+      
 
       return res.status(200).json({ success: true, message: 'Task deleted' })
     } catch (error) {
-      prisma.$disconnect()
+      
       console.log(error)
 
       return res.status(400).json({ success: false, message: 'Task not found' })

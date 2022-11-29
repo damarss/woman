@@ -1,8 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import argon2 from 'argon2'
-
-const prisma = new PrismaClient()
+import prisma from '../../db'
 
 export default async function handle(req, res) {
   const { id } = req.query
@@ -14,7 +13,7 @@ export default async function handle(req, res) {
     })
 
     if (!user) {
-      prisma.$disconnect()
+      
 
       return res.status(404).json({ message: 'User not found' })
     }
@@ -41,7 +40,7 @@ export default async function handle(req, res) {
       data
     })
 
-    prisma.$disconnect()
+    
 
     return res.json(user)
   } else if (req.method === 'DELETE') {
@@ -52,19 +51,19 @@ export default async function handle(req, res) {
         }
       })
 
-      prisma.$disconnect()
+      
 
       return res.status(200).json({ status: true, message: 'User deleted' })
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === 'P2025') {
-          prisma.$disconnect()
+          
 
           return res.status(404).json({ message: 'User not found' })
         }
       }
 
-      prisma.$disconnect()
+      
 
       return res.status(500).json({ message: 'Something went wrong' })
     }

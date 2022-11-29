@@ -9,9 +9,6 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 
-// ** Import third party
-import $ from 'jquery'
-
 const DragAndDrop = () => {
   const [files, setFile] = useState([])
 

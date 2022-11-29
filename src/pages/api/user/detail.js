@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from '../../db'
 import { getToken } from 'next-auth/jwt'
 
 export default async function handle(req, res) {
-  const prisma = new PrismaClient()
   if (req.method === 'GET') {
     const token = await getToken({ req, secret: process.env.JWT_SECRET })
 
@@ -17,14 +16,14 @@ export default async function handle(req, res) {
         name: true,
         nip: true,
         role: true,
-        password: false,
+        password: false
       },
       where: {
         email: token.email
-      },
+      }
     })
 
-    prisma.$disconnect()
+    
 
     return res.status(200).json(user)
   }

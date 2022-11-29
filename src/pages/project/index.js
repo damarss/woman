@@ -1,48 +1,74 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
+import { PrismaClient } from '@prisma/client'
+import { getToken } from 'next-auth/jwt'
+import { useEffect, useState } from 'react'
 
 // ** Demo Components Imports
-import CardUser from 'src/views/cards/CardUser'
-import CardImgTop from 'src/views/cards/CardImgTop'
-import CardMobile from 'src/views/cards/CardMobile'
-import CardSupport from 'src/views/cards/CardSupport'
-import CardTwitter from 'src/views/cards/CardTwitter'
-import CardFacebook from 'src/views/cards/CardFacebook'
-import CardLinkedIn from 'src/views/cards/CardLinkedIn'
-import CardAppleWatch from 'src/views/cards/CardAppleWatch'
-import CardMembership from 'src/views/cards/CardMembership'
-import CardInfluencer from 'src/views/cards/CardInfluencer'
-import CardNavigation from 'src/views/cards/CardNavigation'
-import CardWithCollapse from 'src/views/cards/CardWithCollapse'
-import CardVerticalRatings from 'src/views/cards/CardVerticalRatings'
-import CardNavigationCenter from 'src/views/cards/CardNavigationCenter'
 import CardProject from 'src/views/cards/CardProject'
-import axios from '../api/axios'
 
-const Project = ({ projects }) => {
+const Project = ({ data }) => {
+  const [projects, setProjects] = useState([])
+
+  const NotFound = () => (
+    <Grid container justifyContent='center' alignItems='center'>
+      <Grid item>
+        <Typography variant='h6'>Project Not Found</Typography>
+      </Grid>
+    </Grid>
+  )
+
+  useEffect(() => {
+    setProjects(JSON.parse(data))
+  }, [data])
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} sx={{ paddingBottom: 4 }}>
         <Typography variant='h5'>My Project</Typography>
       </Grid>
-      {projects &&
+      {projects.length > 0 ? (
         projects.map((project, index) => (
           <Grid key={index} item xs={12} md={6}>
-            <CardProject project={project} />
+            <CardProject project={project.project} />
           </Grid>
-        ))}
+        ))
+      ) : (
+        <NotFound />
+      )}
     </Grid>
   )
 }
 
-export async function getServerSideProps() {
-  const res = await axios.get('/project')
-  const projects = res.data.data
-  
+export async function getServerSideProps(context) {
+  const prisma = new PrismaClient()
+
+  const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/pages/login',
+        permanent: false
+      }
+    }
+  }
+
+  const projects = await prisma.userProject.findMany({
+    where: {
+      userId: token.uid
+    },
+    include: {
+      project: true
+    }
+  })
+
+  console.log(projects)
+
   return {
     props: {
-      projects
+      data: JSON.stringify(projects)
     }
   }
 }
