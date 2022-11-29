@@ -1,5 +1,5 @@
 // ** React Imports
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // ** Next Imports
@@ -56,7 +56,15 @@ const CreateProject = props => {
   const [language, setLanguage] = useState([])
   const [startDate, setSDate] = useState(new Date())
   const [endDate, setEDate] = useState(new Date())
-  // const [p_leader, setPLeader] = useState(0)
+
+  const [participants, setParticipants] = useState(
+    props.users.map(user => {
+      return {
+        ...user,
+        checked: true
+      }
+    })
+  )
 
   const [values, setValues] = useState({
     p_title: '',
@@ -77,6 +85,7 @@ const CreateProject = props => {
 
     try {
       console.log(values.p_leader)
+
       const res = await axios.post('/project', {
         title: values.p_title,
         startdate: startDate,
@@ -104,6 +113,10 @@ const CreateProject = props => {
       })
     }
   }
+
+  useEffect(() => {
+    console.log(participants)
+  }, [endDate, participants, startDate, values])
 
   return (
     <Card>
@@ -169,7 +182,9 @@ const CreateProject = props => {
                 labelId='form-layouts-separator-select-label'
               >
                 {props.users.map(user => (
-                  <MenuItem value={user.id}>{user.name}</MenuItem>
+                  <MenuItem key={user.id} value={user.id}>
+                    {user.name}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -181,7 +196,29 @@ const CreateProject = props => {
               <TableHead>
                 <TableRow>
                   <TableCell align='left'>
-                    <FormControlLabel control={<Checkbox defaultChecked />} label='All' />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          defaultChecked
+                          checked={
+                            participants.filter(participant => participant.checked === true).length 
+                              === participants.length
+                          }
+                          onChange={e => {
+                            let checked = e.target.checked
+                            setParticipants(
+                              participants.map(participant => {
+                                return {
+                                  ...participant,
+                                  checked: checked
+                                }
+                              })
+                            )
+                          }}
+                        />
+                      }
+                      label='All'
+                    />
                   </TableCell>
                   <TableCell align='center'>NIP</TableCell>
                   <TableCell align='center'>Name</TableCell>
@@ -190,7 +227,7 @@ const CreateProject = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.users.map(user => (
+                {participants.map(user => (
                   <TableRow
                     key={user.name}
                     sx={{
@@ -200,7 +237,26 @@ const CreateProject = props => {
                     }}
                   >
                     <TableCell align='left'>
-                      <FormControlLabel control={<Checkbox />} label='' />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={user.checked}
+                            onChange={e => {
+                              let checked = e.target.checked
+                              setParticipants(
+                                participants.map(participant => {
+                                  if (participant.id === user.id) {
+                                    participant.checked = checked
+                                  }
+
+                                  return participant
+                                })
+                              )
+                            }}
+                          />
+                        }
+                        label=''
+                      />
                     </TableCell>
                     <TableCell align='center'>{user.nip}</TableCell>
                     <TableCell component='th' scope='row' align='center'>
