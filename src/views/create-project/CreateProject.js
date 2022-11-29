@@ -61,7 +61,7 @@ const CreateProject = props => {
     props.users.map(user => {
       return {
         ...user,
-        checked: true
+        checked: false
       }
     })
   )

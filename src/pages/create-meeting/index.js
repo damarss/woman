@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState } from 'react'
+import prisma from '../db'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
@@ -15,14 +16,14 @@ import Button from '@mui/material/Button'
 import CreateMeeting from 'src/views/create-meeting/CreateMeeting'
 import { getToken } from 'next-auth/jwt'
 
-const CreateMeetingPage = () => {
+const CreateMeetingPage = ({users}) => {
   return (
     <>
       <DatePickerWrapper>
         {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
         <h2>Create Meeting</h2>
       </Box> */}
-        <CreateMeeting />
+        <CreateMeeting users={users}/>
       </DatePickerWrapper>
     </>
   )
@@ -31,7 +32,14 @@ const CreateMeetingPage = () => {
 export async function getServerSideProps(context) {
   const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
 
-  console.log(token)
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/pages/login',
+        permanent: false
+      }
+    }
+  }
 
   if (token.role !== 'admin') {
     return {
@@ -42,9 +50,36 @@ export async function getServerSideProps(context) {
     }
   }
 
+  const user = await prisma.user.findMany({
+    include: {
+      UserProject: true,
+      taskToDo: true,
+      UserMeet: true
+    }
+  })
+
+  const userView = []
+
+  user.forEach(user => {
+    userView.push({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      nip: user.nip,
+      role: user.role,
+      project: user.UserProject.length,
+      task: user.taskToDo.length,
+      meet: user.UserMeet.length
+    })
+  })
+
+  userView.sort((a, b) => {
+    return a.task - b.task || a.project - b.project
+  })
+
   return {
     props: {
-      // res: JSON.stringify(res.data)
+      users: userView
     }
   }
 }

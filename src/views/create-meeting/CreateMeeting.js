@@ -1,5 +1,11 @@
 // ** React Imports
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+// ** Next Imports
+// import Link from 'next/link'
+import { useRouter } from 'next/router'
+import axios from 'src/pages/api/axios'
 
 // ** MUI Imports
 import Card from '@mui/material/Card'
@@ -38,78 +44,88 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline' // ** Icons Imports
 import Alert from 'mdi-material-ui/Alert'
 
-const datas = [
-  {
-    name: 'Sally Quinn',
-    nip: '9'
-  },
-  {
-    name: 'Sally Quinn1',
-    nip: '1'
-  },
-  {
-    name: 'Sally Quinn2',
-    nip: '2'
-  },
-  {
-    name: 'Sally Quinn3',
-    nip: '3'
-  },
-  {
-    name: 'Sally Quinn4',
-    nip: '4'
-  },
-  {
-    name: 'Sally Quinn5',
-    nip: '5'
-  },
-  {
-    name: 'Sally Quinn6',
-    nip: '6'
-  },
-  {
-    name: 'Sally Quinn7',
-    nip: '7'
-  }
-]
-
 const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Meeting Time' autoComplete='off' />
 })
 
-const CreateMeeting = () => {
+const CreateMeeting = props => {
   // ** States
-  const [language, setLanguage] = useState([])
-  const [date, setDate] = useState(null)
-  const [Time, setTime] = useState(null)
+  const [startDate, setSDate] = useState(new Date())
+  const [endDate, setEDate] = useState(null)
 
-  // Handle Select
-  const handleSelectChange = event => {
-    setLanguage(event.target.value)
+  const [participants, setParticipants] = useState(
+    props.users.map(user => {
+      return {
+        ...user,
+        checked: false
+      }
+    })
+  )
+
+  const [values, setValues] = useState({
+    m_title: '',
+    m_description: '',
+    m_link: '',
+    m_duration: '',
+  })
+
+  // ** Hook
+  // const router = useRouter()
+
+  const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
   }
 
-  // ** Handle Check
-  const [checked, setChecked] = useState([]);
-  const [isCheckAll, setIsCheckAll] = useState(false);
-  // Add/Remove checked item from list
-  const handleCheck = async (event) => {
-    var updatedList = [...checked];
-    if (event.target.checked) {
-      updatedList = [...checked, event.target.value];
-    } else {
-      updatedList.splice(checked.indexOf(event.target.value), 1);
+  const handleMeeting = async e => {
+    e.preventDefault()
+
+    try {
+      const res = await axios.post('/meet', {
+        title: values.m_title,
+        start: startDate,
+        duration: values.m_duration,
+        link: values.m_link,
+        description: values.m_description,
+        participants: participants
+      })
+
+      if (res.status === 201) {
+        Swal.fire({
+          title: 'Create Meeting Success',
+          text: 'Press OK to continue',
+          icon: 'success',
+          confirmButtonColor: '#68B92E',
+          confirmButtonText: 'OK'
+        })
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Create Meeting Failed',
+        text: error,
+        icon: 'error',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+      })
     }
-    setChecked(updatedList);
-    console.log(updatedList);
-  };
-  // Add/Remove checked All item from list
-  const handleSelectAll = async e => {
-    setIsCheckAll(!isCheckAll);
-    setChecked(datas.map(li => li.nip));
-    if (isCheckAll) {
-      setChecked([]);
-    }
-  };
+
+    // Swal.fire({
+    //   title: 'Create this Meeting?',
+    //   text: 'Make sure all the data is valid. Click "Create Meeting" to send notification to all meeting participants',
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#68B92E',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Create Meeting'
+    // }).then(result => {
+    //   if (result.isConfirmed) {
+        
+    //   }
+    // })
+  }
+
+  useEffect(() => {
+    console.log(participants)
+  }, [endDate, participants, startDate, values])
 
 
   return (
@@ -120,11 +136,17 @@ const CreateMeeting = () => {
           <br></br>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={12} lg={6}>
-              <TextField fullWidth label='Meeting Title' placeholder='Rapat IT' />
+              <TextField
+                fullWidth
+                label='Meeting Title'
+                placeholder='Title'
+                defaultValue={values.m_title}
+                onChange={handleChange('m_title')}
+              />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
-                selected={date}
+                selected={startDate}
                 showYearDropdown
                 showMonthDropdown
                 showTimeSelect
@@ -132,40 +154,43 @@ const CreateMeeting = () => {
                 placeholderText='DD-MM-YYYY, HH:MM'
                 customInput={<CustomInput />}
                 id='form-layouts-separator-meet'
-                onChange={date => setDate(date)}
+                onChange={startDate => setSDate(startDate)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={12} lg={6}>
-              <DatePicker
-                selected={Time}
-                showTimeSelect
-                placeholderText='hh:mm:ss'
-                customInput={<CustomInput />}
-                id='form-layouts-separator-meet'
-                onChange={Time => setTime(Time)}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={12} lg={6}>
               <FormControl fullWidth>
                 <InputLabel id='form-layouts-separator-select-label'>Meeting Duration</InputLabel>
                 <Select
                   label='Durasi Rapat'
-                  defaultValue=''
+                  value={values.m_duration}
+                  onChange={handleChange('m_duration')}
                   id='form-layouts-separator-select'
                   labelId='form-layouts-separator-select-label'
                 >
-                  <MenuItem value='1'>1 Hour</MenuItem>
-                  <MenuItem value='1.5'>1 Our and Half</MenuItem>
-                  <MenuItem value='2'>2 Hour</MenuItem>
-                  <MenuItem value='2.5'>2 Hour and Half</MenuItem>
+                  <MenuItem value='60'>1 Hour</MenuItem>
+                  <MenuItem value='90'>1 Our and Half</MenuItem>
+                  <MenuItem value='120'>2 Hour</MenuItem>
+                  <MenuItem value='150'>2 Hour and Half</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
-              <TextField fullWidth label='Meeting Place' placeholder='zoom/' />
+              <TextField
+                fullWidth
+                label='Meeting Place'
+                placeholder='zoom/'
+                defaultValue={values.m_link}
+                onChange={handleChange('m_link')} />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-              <TextField fullWidth multiline minRows={3} label='Meeting Description' placeholder='Bio...' />
+              <TextField
+                fullWidth
+                multiline
+                minRows={3}
+                label='Meeting Description'
+                placeholder='Description'
+                defaultValue={values.m_description}
+                onChange={handleChange('m_description')} />
             </Grid>
           </Grid>
           <br></br>
@@ -181,21 +206,35 @@ const CreateMeeting = () => {
                       control={
 
                         <Checkbox
-                          type="checkbox"
-                          onChange={handleSelectAll}
-                          checked={isCheckAll}
+                          defaultChecked
+                          checked={
+                            participants.filter(participant => participant.checked === true).length ===
+                            participants.length
+                          }
+                          onChange={e => {
+                            let checked = e.target.checked
+                            setParticipants(
+                              participants.map(participant => {
+                                return {
+                                  ...participant,
+                                  checked: checked
+                                }
+                              })
+                            )
+                          }}
                         />
                       }
                       label='All' />
                   </TableCell>
                   <TableCell align='left'>Name</TableCell>
                   <TableCell align='left'>NIP</TableCell>
+                  <TableCell align='left'>Number Of Meeting</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {datas.map(data => (
+                {participants.map(user => (
                   <TableRow
-                    key={data.nip}
+                    key={user.name}
                     sx={{
                       '&:last-of-type td, &:last-of-type th': {
                         border: 0
@@ -206,18 +245,29 @@ const CreateMeeting = () => {
                       <FormControlLabel
                         control={
                           <Checkbox
-                            value={data.nip}
-                            type="checkbox"
-                            onChange={handleCheck}
-                            checked={checked.includes(data.nip)}
+                            checked={user.checked}
+                            onChange={e => {
+                              let checked = e.target.checked
+                              setParticipants(
+                                participants.map(participant => {
+                                  if (participant.id === user.id) {
+                                    participant.checked = checked
+                                  }
+
+                                  return participant
+                                })
+                              )
+                            }}
                           />
                         }
-                        label='' />
+                        label=''
+                      />
                     </TableCell>
-                    <TableCell component='th' scope='row' align='left'>
-                      {data.name}
+                    <TableCell align='center'>{user.nip}</TableCell>
+                    <TableCell component='th' scope='row' align='center'>
+                      {user.name}
                     </TableCell>
-                    <TableCell align='left'>{data.nip}</TableCell>
+                    <TableCell align='center'>{user.meet}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -232,21 +282,7 @@ const CreateMeeting = () => {
             type='submit'
             sx={{ mr: 2 }}
             variant='contained'
-            onClick={() => {
-              Swal.fire({
-                title: 'Create this Meeting?',
-                text: 'Make sure all the data is valid. Click "Create Meeting" to send notification to all meeting participants',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#68B92E',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Create Meeting'
-              }).then(result => {
-                if (result.isConfirmed) {
-                  Swal.fire('', 'Meeting Created Succesfully. Click "OK" to continue.', 'success')
-                }
-              })
-            }}
+            onClick={handleMeeting}
           >
             Create Meeting
           </Button>

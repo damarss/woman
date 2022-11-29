@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       break
 
     case 'POST':
-      const { title, start, duration, link, description } = req.body
+      const { title, start, duration, link, description, participants } = req.body
       try {
         const meet = await prisma.meet.create({
           data: {
@@ -28,6 +28,37 @@ export default async function handler(req, res) {
             duration: Number(duration),
             link,
             description
+          }
+        })
+
+        participants.map(async participant => {
+          if (participant.checked) {
+            const userMeet = await prisma.userMeet.create({
+              data: {
+                userId: participant.id,
+                meetId: meet.id
+              }
+            })
+          }
+        })
+  
+        mailOptions.to = participants.map(participant => {
+          if (participant.checked) {
+            return participant.email
+          }
+        })
+        mailOptions.subject = title
+        mailOptions.html = `<p>Anda telah ditambahkan ke dalam Meeeting ${title} untuk tanggal ${new Date(
+          start
+        ).toLocaleDateString()} dengan durasi ${duration} menit.
+        <br />
+        Informasi mengenai meeting dapat dilihat di <a href='${process.env.BASE_URL}/meeting/'>link ini</a></p>` 
+  
+        Gmail.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error)
+          } else {
+            console.log('Email sent: ' + info.response)
           }
         })
 
