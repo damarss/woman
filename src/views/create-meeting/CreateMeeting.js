@@ -41,35 +41,35 @@ import Alert from 'mdi-material-ui/Alert'
 const datas = [
   {
     name: 'Sally Quinn',
-    nip: '220129129012'
+    nip: '9'
   },
   {
     name: 'Sally Quinn1',
-    nip: '220129129012'
+    nip: '1'
   },
   {
     name: 'Sally Quinn2',
-    nip: '220129129012'
+    nip: '2'
   },
   {
     name: 'Sally Quinn3',
-    nip: '220129129012'
+    nip: '3'
   },
   {
     name: 'Sally Quinn4',
-    nip: '220129129012'
+    nip: '4'
   },
   {
     name: 'Sally Quinn5',
-    nip: '220129129012'
+    nip: '5'
   },
   {
     name: 'Sally Quinn6',
-    nip: '220129129012'
+    nip: '6'
   },
   {
     name: 'Sally Quinn7',
-    nip: '220129129012'
+    nip: '7'
   }
 ]
 
@@ -87,6 +87,30 @@ const CreateMeeting = () => {
   const handleSelectChange = event => {
     setLanguage(event.target.value)
   }
+
+  // ** Handle Check
+  const [checked, setChecked] = useState([]);
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  // Add/Remove checked item from list
+  const handleCheck = async (event) => {
+    var updatedList = [...checked];
+    if (event.target.checked) {
+      updatedList = [...checked, event.target.value];
+    } else {
+      updatedList.splice(checked.indexOf(event.target.value), 1);
+    }
+    setChecked(updatedList);
+    console.log(updatedList);
+  };
+  // Add/Remove checked All item from list
+  const handleSelectAll = async e => {
+    setIsCheckAll(!isCheckAll);
+    setChecked(datas.map(li => li.nip));
+    if (isCheckAll) {
+      setChecked([]);
+    }
+  };
+
 
   return (
     <Card>
@@ -153,7 +177,16 @@ const CreateMeeting = () => {
               <TableHead>
                 <TableRow>
                   <TableCell align='left'>
-                    <FormControlLabel control={<Checkbox defaultChecked />} label='All' />
+                    <FormControlLabel
+                      control={
+
+                        <Checkbox
+                          type="checkbox"
+                          onChange={handleSelectAll}
+                          checked={isCheckAll}
+                        />
+                      }
+                      label='All' />
                   </TableCell>
                   <TableCell align='left'>Name</TableCell>
                   <TableCell align='left'>NIP</TableCell>
@@ -162,7 +195,7 @@ const CreateMeeting = () => {
               <TableBody>
                 {datas.map(data => (
                   <TableRow
-                    key={data.name}
+                    key={data.nip}
                     sx={{
                       '&:last-of-type td, &:last-of-type th': {
                         border: 0
@@ -170,7 +203,16 @@ const CreateMeeting = () => {
                     }}
                   >
                     <TableCell align='left'>
-                      <FormControlLabel control={<Checkbox />} label='' />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            value={data.nip}
+                            type="checkbox"
+                            onChange={handleCheck}
+                            checked={checked.includes(data.nip)}
+                          />
+                        }
+                        label='' />
                     </TableCell>
                     <TableCell component='th' scope='row' align='left'>
                       {data.name}
