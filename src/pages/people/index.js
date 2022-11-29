@@ -1,12 +1,10 @@
 // ** MUI Imports
 import Card from '@mui/material/Card'
-import { PrismaClient } from '@prisma/client'
+import prisma from '../db'
 import { getToken } from 'next-auth/jwt'
 
 // ** People Components Imports
-import axios from 'src/pages/api/axios'
 import PeopleTable from 'src/views/people/PeopleTable'
-import axios from '../api/axios'
 
 const PeoplePage = ({ people }) => {
   return (
@@ -36,8 +34,6 @@ export async function getServerSideProps(context) {
       }
     }
   }
-
-  const prisma = new PrismaClient()
 
   const user = await prisma.user.findMany({
     include: {
