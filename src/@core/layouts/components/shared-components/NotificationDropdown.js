@@ -161,7 +161,7 @@ const NotificationDropdown = () => {
             <Typography sx={{ fontWeight: 600 }}>Notifications</Typography>
             <Chip
               size='small'
-              label={`${notifications.length} New`}
+              label={notifications.length > 0 ? `${notifications.length} New` : 'No New'}
               color='primary'
               sx={{ height: 20, fontSize: '0.75rem', fontWeight: 500, borderRadius: '10px' }}
             />
