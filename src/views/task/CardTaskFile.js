@@ -35,9 +35,8 @@ const CardTaskFileContent = () => {
     <Card>
       <CardHeader title='Your Work' sx={{ textAlign: 'center', backgroundColor: 'primary.main', paddingY: 3 }} />
       <CardContent sx={{ textAlign: 'center' }}>
-
         {/* BUAT UPLOAD FILE */}
-          <DragAndDrop />
+        <DragAndDrop />
 
         {/* JIKA FILE SUDAH TURNED IN */}
         {/* <Typography variant='body2' sx={{ marginTop: 4 }}>

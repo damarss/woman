@@ -56,7 +56,7 @@ const TaskHome = props => {
             {props.tasks.map(row => (
               <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
-                  <Link href='/task-detail'>
+                  <Link href={`/task-detail/${row.id}`}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
                     </Box>
@@ -75,22 +75,22 @@ const TaskHome = props => {
                   </Typography>
                 </TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>
-                  <Link href='/task-detail'>
-                    <Chip
-                      label={statusObj[row.status].status}
-                      color={statusObj[row.status].color}
-                      sx={{
-                        height: 24,
-                        fontSize: '0.75rem',
-                        textTransform: 'capitalize',
-                        '& .MuiChip-label': { fontWeight: 500 }
-                      }}
-                    />
-                  </Link>
+                  <Chip
+                    label={statusObj[row.status].status}
+                    color={statusObj[row.status].color}
+                    sx={{
+                      height: 24,
+                      fontSize: '0.75rem',
+                      textTransform: 'capitalize',
+                      '& .MuiChip-label': { fontWeight: 500 }
+                    }}
+                  />
                 </TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>
                   <Link href='/task-detail'>
-                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{new Date(row.duedate).toLocaleDateString('id')}</Typography>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
+                      {new Date(row.duedate).toLocaleDateString('id')}
+                    </Typography>
                   </Link>
                 </TableCell>
               </TableRow>
