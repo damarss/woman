@@ -30,8 +30,7 @@ const Task = ({ data }) => {
     </Grid>
   )
 
-  useEffect(() => {
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <ApexChartWrapper>
@@ -65,14 +64,24 @@ export async function getServerSideProps(context) {
     }
   }
 
-  const tasks = await prisma.task.findMany({
-    where: {
-      userId: token.uid
-    },
-    include: {
-      project: true
-    }
-  })
+  let tasks
+
+  if (token.role !== 'admin') {
+    tasks = await prisma.task.findMany({
+      where: {
+        userId: token.uid
+      },
+      include: {
+        project: true
+      }
+    })
+  } else {
+    tasks = await prisma.task.findMany({
+      include: {
+        project: true
+      }
+    })
+  }
 
   return {
     props: {
