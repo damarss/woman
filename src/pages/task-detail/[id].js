@@ -29,15 +29,41 @@ import TaskDetail from 'src/views/task/TaskDetail'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
+import { getToken } from 'next-auth/jwt'
 
-const TaskDetailPage = () => {
-    return (
-        <ApexChartWrapper>
-        <Grid container>
-            <TaskDetail />
-        </Grid>
-        </ApexChartWrapper>
-    )
+const TaskDetailPage = ({ data }) => {
+  return (
+    <ApexChartWrapper>
+      <Grid container>
+        <TaskDetail task={JSON.parse(data)} />
+      </Grid>
+    </ApexChartWrapper>
+  )
+}
+
+export async function getServerSideProps(context) {
+  const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/pages/login',
+        permanent: false
+      }
+    }
+  }
+
+  const data = await prisma.task.findUnique({
+    where: {
+      id: parseInt(context.params.id)
+    }
+  })
+
+  return {
+    props: {
+      data: JSON.stringify(data)
+    }
+  }
 }
 
 export default TaskDetailPage

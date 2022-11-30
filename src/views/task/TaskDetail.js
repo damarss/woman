@@ -84,7 +84,7 @@ const rows = [
   }
 ]
 
-const TaskDetailPage = () => {
+const TaskDetailPage = props => {
   const [date, setDate] = useState(null)
 
   const [Open, setOpen] = useState(false)
@@ -108,7 +108,7 @@ const TaskDetailPage = () => {
               }}
             >
               <Typography variant='h6' sx={{ marginY: 2.5 }}>
-                Task Title
+                {props.task.title}
               </Typography>
               <Chip
                 label={getLabelStatus('on_progress')} //fungsi getLabelStatus ini buatan sendiri, fungsinya ada di bawah
@@ -128,7 +128,12 @@ const TaskDetailPage = () => {
               Deadline
             </Grid>
             <Grid item xs={12} sm={10}>
-              21 November 2022
+              {new Date(props.task.duedate).toLocaleDateString('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
             </Grid>
           </Grid>
           <Grid item container xs={12} sx={{ marginX: 5 }}>
@@ -144,12 +149,7 @@ const TaskDetailPage = () => {
               Description
             </Grid>
             <Grid item xs={12} sm={10}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu metus nisi. Nunc ac enim ligula.
-              Suspendisse est nibh, condimentum vulputate ullamcorper vitae, convallis sit amet tellus. Ut faucibus erat
-              tempus lectus elementum fringilla. Integer sollicitudin dui nec purus laoreet pellentesque. Aenean varius
-              tincidunt felis vitae luctus. Ut nulla nibh, euismod et libero id, ullamcorper lacinia lacus. Aenean
-              auctor urna ac placerat tempor. Pellentesque rutrum sed arcu ac luctus. Etiam pulvinar nec nulla ac
-              lacinia. Morbi nec facilisis massa.
+              {props.task.description}
             </Grid>
           </Grid>
           <Grid item container xs={12} sx={{ marginX: 5, marginTop: 5 }} spacing={6}>
@@ -238,7 +238,7 @@ const TaskDetailPage = () => {
                               id='tanggal-selesai'
                               onChange={date => setDate(date)}
                             />
-                            </DatePickerWrapper>
+                          </DatePickerWrapper>
                         </Grid>
                         <Grid item xs={12} sm={12} lg={6}>
                           <FormControl fullWidth>
@@ -267,13 +267,7 @@ const TaskDetailPage = () => {
                       </Grid>
                       <br></br>
                       <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-                        <Button
-                          size='large'
-                          color='secondary'
-                          sx={{ mr: 2 }}
-                          variant='outlined'
-                          onClick={handleClose}
-                        >
+                        <Button size='large' color='secondary' sx={{ mr: 2 }} variant='outlined' onClick={handleClose}>
                           Cancel
                         </Button>
                         <Button
