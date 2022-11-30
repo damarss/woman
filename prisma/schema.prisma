@@ -11,17 +11,18 @@ datasource db {
 }
 
 model User {
-  id            Int           @id @default(autoincrement())
-  email         String        @unique
-  name          String        @db.VarChar(64)
-  nip           String        @db.Char(18)
-  password      String        @db.VarChar(255)
-  role          String        @default("employee") @db.VarChar(64)
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  name          String         @db.VarChar(64)
+  nip           String         @db.Char(18)
+  password      String         @db.VarChar(255)
+  role          String         @default("employee") @db.VarChar(64)
   UserMeet      UserMeet[]
   UserProject   UserProject[]
-  projectToLead Project[]     @relation("projectToLead")
-  taskToDo      Task[]        @relation("taskToDo")
+  projectToLead Project[]      @relation("projectToLead")
+  taskToDo      Task[]         @relation("taskToDo")
   TaskComment   TaskComment[]
+  Notification  Notification[]
 }
 
 model Meet {
@@ -86,4 +87,15 @@ model TaskComment {
   taskId  Int
   user    User   @relation(fields: [userId], references: [id])
   userId  Int
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(128)
+  message   String   @db.LongText
+  type      String   @db.VarChar(24)
+  createdAt DateTime @default(now())
+  isRead    Boolean  @default(false) @db.TinyInt()
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
 }

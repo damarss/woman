@@ -9,12 +9,9 @@ export default async function handler(req, res) {
       // Get data from your database
       const meets = await prisma.meet.findMany()
       if (!meets) {
-        
-
         return res.status(400).json({ success: false })
       }
 
-      
       res.status(200).json({ success: true, data: meets })
 
       break
@@ -43,7 +40,7 @@ export default async function handler(req, res) {
             })
           }
         })
-  
+
         mailOptions.to = participants.map(participant => {
           if (participant.checked) {
             return participant.email
@@ -52,12 +49,10 @@ export default async function handler(req, res) {
         mailOptions.subject = title
         mailOptions.html = `<p>Anda telah ditambahkan ke dalam Meeeting ${title} untuk tanggal ${new Date(
           startDate
-        ).toLocaleDateString()} sampai pukul ${new Date(
-          endDate
-        ).toLocaleDateString()} menit.
+        ).toLocaleDateString()} sampai pukul ${new Date(endDate).toLocaleDateString()} menit.
         <br />
-        Informasi mengenai meeting dapat dilihat di <a href='${process.env.BASE_URL}/meeting/'>link ini</a></p>` 
-  
+        Informasi mengenai meeting dapat dilihat di <a href='${process.env.BASE_URL}/meeting/'>link ini</a></p>`
+
         Gmail.sendMail(mailOptions, function (error, info) {
           if (error) {
             console.log(error)
@@ -66,11 +61,8 @@ export default async function handler(req, res) {
           }
         })
 
-        
-
         res.status(201).json({ success: true, data: meet })
       } catch (error) {
-        
         console.log(error)
 
         return res.status(400).json({ success: false })
@@ -81,6 +73,4 @@ export default async function handler(req, res) {
       res.setHeader('Allow', ['GET', 'POST'])
       res.status(405).end(`Method ${method} Not Allowed`)
   }
-
-  
 }
