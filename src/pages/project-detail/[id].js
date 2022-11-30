@@ -29,6 +29,7 @@ import Tableprojectdetail from 'src/views/tables/Tableprojectdetail'
 import Swal from 'sweetalert2'
 import { getToken } from 'next-auth/jwt'
 import { useState } from 'react'
+import prisma from 'src/pages/db'
 
 const CardBasic = ({ data }) => {
   const [project, setProject] = useState(JSON.parse(data))
@@ -47,7 +48,7 @@ const CardBasic = ({ data }) => {
           variant='contained'
           color='primary'
         >
-          Add Task
+          Edit Task
         </Button>
       </Grid>
 

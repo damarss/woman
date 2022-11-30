@@ -101,7 +101,7 @@ const CustomInputStart = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Deadline' autoComplete='on' />
 })
 
-const CreateProjectTask = () => {
+const CreateProjectTask = props => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => {setOpen(false); Swal.fire('Cancelled', 'Task is not created!', 'error')}
@@ -137,16 +137,16 @@ const CreateProjectTask = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map(row => (
+              {props.data.Task.map(row => (
                 <TableRow hover key={row.judul} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                   <TableCell align='left'>
                     <Link href='#'>
-                      <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.name}</Typography>
+                      <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
                     </Link>
                   </TableCell>
                   <TableCell align='left'>
                     <Link href='#'>
-                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.asigned}</Typography>
+                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.user.name}</Typography>
                     </Link>
                   </TableCell>
                   <TableCell align='left'>
@@ -156,7 +156,7 @@ const CreateProjectTask = () => {
                   </TableCell>
                   <TableCell align='left'>
                     <Link href='#'>
-                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.date}</Typography>
+                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.duedate}</Typography>
                     </Link>
                   </TableCell>
                   <TableCell>
@@ -320,8 +320,8 @@ const CreateProjectTask = () => {
                           id='form-layouts-separator-asigned'
                           labelId='form-layouts-separator-asigned-label'
                         >
-                          {rows.map(row => (
-                            <MenuItem key={row.name} value={row.name}>
+                          {props.data.UserProject.map(row => (
+                            <MenuItem key={row.userId} value={row.userId}>
                               {row.name}
                             </MenuItem>
                           ))}
@@ -385,35 +385,6 @@ const CreateProjectTask = () => {
               {/* End Form */}
             </Card>
           </Modal>
-        </CardActions>
-
-        {/* Finish Make Project */}
-        <br></br>
-        <br></br>
-        <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-          <Button
-            size='large'
-            type='submit'
-            sx={{ mr: 2 }}
-            variant='contained'
-            onClick={() => {
-              Swal.fire({
-                title: 'Create this Project?',
-                text: 'Make sure all the data is valid. Click "Create Project" to send notification to all project members',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#68B92E',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Create Project'
-              }).then(result => {
-                if (result.isConfirmed) {
-                  Swal.fire('', 'Project Created Succesfully. Click "OK" to continue.', 'success')
-                }
-              })
-            }}
-          >
-            Create Project
-          </Button>
         </CardActions>
       </CardContent>
     </Card>

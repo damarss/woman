@@ -3,7 +3,9 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 
 // ** Hooks
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react'
+import prisma from 'src/pages/db'
+import { getToken } from 'next-auth/jwt'
 
 // ** Scheduler
 import Paper from '@mui/material/Paper';
@@ -30,14 +32,21 @@ const schedulerData = [
   { startDate: '2022-11-08T10:00', endDate: '2022-11-08T16:00', title: 'Inisiasi Proyek' },
 ];
 
-const Meeting = () => {
+const Meeting = ({data}) => {
   const [currentDate, setCurrentDate] = useState(new Date);
   const currentDateChange = (currentDate) => { setCurrentDate(currentDate); };
+  const [meet, setMeet] = useState([])
+
+  useEffect(() => {
+    setMeet(JSON.parse(data))
+    console.log(JSON.parse(data))
+    console.log(schedulerData)
+  }, [data])
 
   return (
     <Paper>
       <Scheduler
-        data={schedulerData}
+        data={meet}
         height={660}
       >
         <ViewState
@@ -58,6 +67,29 @@ const Meeting = () => {
       </Scheduler>
     </Paper>
   )
+}
+
+export async function getServerSideProps(context) {
+  const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/pages/login',
+        permanent: false
+      }
+    }
+  }
+
+  const meet = await prisma.meet.findMany()
+
+  console.log(meet)
+
+  return {
+    props: {
+      data: JSON.stringify(meet)
+    }
+  }
 }
 
 export default Meeting

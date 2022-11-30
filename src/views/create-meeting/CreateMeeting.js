@@ -45,13 +45,16 @@ import EyeOffOutline from 'mdi-material-ui/EyeOffOutline' // ** Icons Imports
 import Alert from 'mdi-material-ui/Alert'
 
 const CustomInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Meeting Time' autoComplete='off' />
+  return <TextField fullWidth {...props} inputRef={ref} label='Start Meeting Time' autoComplete='off' />
+})
+const CustomInput2 = forwardRef((props, ref) => {
+  return <TextField fullWidth {...props} inputRef={ref} label='End Meeting Time' autoComplete='off' />
 })
 
 const CreateMeeting = props => {
   // ** States
   const [startDate, setSDate] = useState(new Date())
-  const [endDate, setEDate] = useState(null)
+  const [endDate, setEDate] = useState(new Date())
 
   const [participants, setParticipants] = useState(
     props.users.map(user => {
@@ -66,7 +69,7 @@ const CreateMeeting = props => {
     m_title: '',
     m_description: '',
     m_link: '',
-    m_duration: '',
+    m_duration: '0',
   })
 
   // ** Hook
@@ -82,7 +85,8 @@ const CreateMeeting = props => {
     try {
       const res = await axios.post('/meet', {
         title: values.m_title,
-        start: startDate,
+        startDate: startDate,
+        endDate: endDate,
         duration: values.m_duration,
         link: values.m_link,
         description: values.m_description,
@@ -107,20 +111,6 @@ const CreateMeeting = props => {
         confirmButtonText: 'OK'
       })
     }
-
-    // Swal.fire({
-    //   title: 'Create this Meeting?',
-    //   text: 'Make sure all the data is valid. Click "Create Meeting" to send notification to all meeting participants',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#68B92E',
-    //   cancelButtonColor: '#d33',
-    //   confirmButtonText: 'Create Meeting'
-    // }).then(result => {
-    //   if (result.isConfirmed) {
-        
-    //   }
-    // })
   }
 
   useEffect(() => {
@@ -145,6 +135,14 @@ const CreateMeeting = props => {
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
+              <TextField
+                fullWidth
+                label='Meeting Place'
+                placeholder='zoom/'
+                defaultValue={values.m_link}
+                onChange={handleChange('m_link')} />
+            </Grid>
+            <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
                 selected={startDate}
                 showYearDropdown
@@ -158,6 +156,19 @@ const CreateMeeting = props => {
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
+              <DatePicker
+                selected={endDate}
+                showYearDropdown
+                showMonthDropdown
+                showTimeSelect
+                dateFormat="Pp"
+                placeholderText='DD-MM-YYYY, HH:MM'
+                customInput={<CustomInput2 />}
+                id='form-layouts-separator-meet'
+                onChange={endDate => setEDate(endDate)}
+              />
+            </Grid>
+            {/* <Grid item xs={12} sm={12} lg={6}>
               <FormControl fullWidth>
                 <InputLabel id='form-layouts-separator-select-label'>Meeting Duration</InputLabel>
                 <Select
@@ -173,15 +184,7 @@ const CreateMeeting = props => {
                   <MenuItem value='150'>2 Hour and Half</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={12} lg={6}>
-              <TextField
-                fullWidth
-                label='Meeting Place'
-                placeholder='zoom/'
-                defaultValue={values.m_link}
-                onChange={handleChange('m_link')} />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={12} lg={12}>
               <TextField
                 fullWidth

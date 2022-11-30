@@ -1,4 +1,5 @@
 import prisma from '../../db'
+import Gmail, { mailOptions } from 'src/services/Gmail'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -19,12 +20,13 @@ export default async function handler(req, res) {
       break
 
     case 'POST':
-      const { title, start, duration, link, description, participants } = req.body
+      const { title, startDate, endDate, duration, link, description, participants } = req.body
       try {
         const meet = await prisma.meet.create({
           data: {
             title,
-            start,
+            startDate,
+            endDate,
             duration: Number(duration),
             link,
             description
@@ -49,8 +51,10 @@ export default async function handler(req, res) {
         })
         mailOptions.subject = title
         mailOptions.html = `<p>Anda telah ditambahkan ke dalam Meeeting ${title} untuk tanggal ${new Date(
-          start
-        ).toLocaleDateString()} dengan durasi ${duration} menit.
+          startDate
+        ).toLocaleDateString()} sampai pukul ${new Date(
+          endDate
+        ).toLocaleDateString()} menit.
         <br />
         Informasi mengenai meeting dapat dilihat di <a href='${process.env.BASE_URL}/meeting/'>link ini</a></p>` 
   
