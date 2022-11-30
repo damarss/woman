@@ -107,8 +107,6 @@ const CreateProject = props => {
           p_leader: ''
         })
 
-        console.log(values)
-
         setSDate(new Date())
         setEDate(null)
         setParticipants(
@@ -131,16 +129,14 @@ const CreateProject = props => {
     }
   }
 
-  useEffect(() => {
-    console.log(participants)
-  }, [endDate, participants, startDate, values])
+  useEffect(() => {}, [endDate, participants, startDate, values])
 
   return (
     <Card>
       <form onSubmit={e => e.preventDefault()}>
         <CardContent>
           <Typography variant='h6'>Project Description</Typography>
-          <br></br>
+          <br />
           <Grid container spacing={5}>
             <Grid item xs={12} sm={12} lg={8}>
               <TextField
@@ -190,6 +186,7 @@ const CreateProject = props => {
           <br></br>
           {/* Daftar Peserta */}
           <Typography variant='h6'>Project Leader</Typography>
+          <br />
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel id='form-layouts-separator-select-label'>Project Leader</InputLabel>

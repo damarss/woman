@@ -16,11 +16,9 @@ const FooterContent = () => {
           ❤️
         </Box>
         {` by `}
-        <Link target='_blank' href='https://themeselection.com/'>
-          WOMAN RPL
-        </Link>
+        <Link href='/'>WOMAN RPL</Link>
       </Typography>
-      {hidden ? null : (
+      {/* {hidden ? null : (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', '& :not(:last-child)': { mr: 4 } }}>
           <Link
             target='_blank'
@@ -44,7 +42,7 @@ const FooterContent = () => {
             Support
           </Link>
         </Box>
-      )}
+      )} */}
     </Box>
   )
 }

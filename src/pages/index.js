@@ -77,7 +77,6 @@ export async function getServerSideProps(context) {
   })
 
   const data = { projects: [...projects], tasks: [...tasks] }
-  console.log(data)
 
   return {
     props: {

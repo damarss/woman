@@ -56,6 +56,12 @@ const authOptions = {
 
       // return final_token
       return params.token
+    },
+    session: async ({ session, token }) => {
+      session.role = token.role
+      session.uid = token.uid
+
+      return session
     }
   },
   jwt: {

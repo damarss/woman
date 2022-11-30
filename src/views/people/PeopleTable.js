@@ -2,6 +2,7 @@
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Chip from '@mui/material/Chip'
+import Button from '@mui/material/Button'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
@@ -12,7 +13,10 @@ import TableContainer from '@mui/material/TableContainer'
 import Select from '@mui/material/Select'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
+import Divider from '@mui/material/Divider'
+import CardActions from '@mui/material/CardActions'
 import MenuItem from '@mui/material/MenuItem'
+import Link from 'next/link'
 
 const statusObj = {
   applied: { color: 'info' },
@@ -76,6 +80,14 @@ const PeopleTable = ({ rows }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Divider sx={{ margin: 0 }} />
+      <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
+        <Link passHref href='/add-people'>
+          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
+            Add People
+          </Button>
+        </Link>
+      </CardActions>
     </Card>
   )
 }
