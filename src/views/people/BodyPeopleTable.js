@@ -98,6 +98,7 @@ const BodyTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Button variant='contained'>View More</Button>
     </Card>
   )
 }
