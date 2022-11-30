@@ -15,9 +15,12 @@ import { useEffect, useState } from 'react'
 import prisma from 'src/pages/db'
 import { getToken } from 'next-auth/jwt'
 
-const Task = ({data}) => {
+const Task = ({ data }) => {
+  const [tasks, setTasks] = useState(JSON.parse(data))
 
-  const [tasks, setTasks] = useState([])
+  const [todayTasks, setTodayTasks] = useState(
+    JSON.parse(data).filter(task => new Date(task.duedate).toDateString() === new Date().toDateString())
+  )
 
   const NotFound = () => (
     <Grid container justifyContent='center' alignItems='center'>
@@ -28,8 +31,7 @@ const Task = ({data}) => {
   )
 
   useEffect(() => {
-    setTasks(JSON.parse(data))
-  }, [data])
+  }, [])
 
   return (
     <ApexChartWrapper>
@@ -37,21 +39,13 @@ const Task = ({data}) => {
         <Grid item xs={12} mb={5}>
           <Card>
             <CardHeader title="Today's Task" titleTypographyProps={{ variant: 'h6' }} />
-            {tasks.length > 0 ? (
-              <TaskHome tasks={tasks} />
-            ) : (
-              <NotFound />
-            )}
+            {tasks.length > 0 ? <TaskHome tasks={todayTasks} /> : <NotFound />}
           </Card>
         </Grid>
         <Grid item xs={12}>
           <Card>
-            <CardHeader title="Other's Task" titleTypographyProps={{ variant: 'h6' }} />
-            {tasks.length > 0 ? (
-              <TaskHome tasks={tasks} />
-            ) : (
-              <NotFound />
-            )}
+            <CardHeader title='All Task' titleTypographyProps={{ variant: 'h6' }} />
+            {tasks.length > 0 ? <TaskHome tasks={tasks} /> : <NotFound />}
           </Card>
         </Grid>
       </Grid>
@@ -74,10 +68,11 @@ export async function getServerSideProps(context) {
   const tasks = await prisma.task.findMany({
     where: {
       userId: token.uid
+    },
+    include: {
+      project: true
     }
   })
-
-  console.log(tasks)
 
   return {
     props: {
