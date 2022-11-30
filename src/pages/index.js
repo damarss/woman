@@ -13,6 +13,8 @@ import TaskTable from 'src/views/dashboard/TaskTable'
 import { getToken } from 'next-auth/jwt'
 import { useEffect, useState } from 'react'
 
+import prisma from './db'
+
 const Dashboard = ({ data }) => {
   const [dashboard, setDashboard] = useState(JSON.parse(data))
 
@@ -24,7 +26,7 @@ const Dashboard = ({ data }) => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12} md={4}>
-          <Tugas />
+          <Tugas taskNumber={dashboard.tasks.length} />
         </Grid>
         <Grid item xs={12} md={8}>
           <Card>

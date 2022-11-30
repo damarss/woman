@@ -4,6 +4,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import { styled, useTheme } from '@mui/material/styles'
+import { useRouter } from 'next/dist/client/router'
 
 // Styled component for the triangle shaped background image
 const TriangleImg = styled('img')({
@@ -21,10 +22,12 @@ const TaskImg = styled('img')({
   position: 'absolute'
 })
 
-const Trophy = () => {
+const Trophy = props => {
   // ** Hook
   const theme = useTheme()
   const imageSrc = theme.palette.mode === 'light' ? 'triangle-light.png' : 'triangle-dark.png'
+
+  const router = useRouter()
 
   return (
     <Card sx={{ position: 'relative' }}>
@@ -40,9 +43,9 @@ const Trophy = () => {
       >
         <Typography variant='h6'>My Tasks</Typography>
         <Typography variant='h1' sx={{ my: 2, color: 'primary.main' }}>
-          4
+          {props.taskNumber}
         </Typography>
-        <Button size='medium' variant='contained'>
+        <Button size='medium' variant='contained' onClick={e => router.push('/task')}>
           Show tasks
         </Button>
         <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />
