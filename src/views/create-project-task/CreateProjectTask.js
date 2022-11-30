@@ -1,5 +1,11 @@
 // ** React Imports
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+// ** Next Imports
+// import Link from 'next/link'
+import { useRouter } from 'next/router'
+import axios from 'src/pages/api/axios'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -35,56 +41,8 @@ import UpdateTask from 'src/views/task/UpdateTask'
 import DatePicker from 'react-datepicker'
 import Swal from 'sweetalert2'
 
-const rows = [
-  {
-    name: 'Make Cakae inn',
-    priority: 'highger',
-    date: '22/12/2022',
-    asigned: 'Humas Utama'
-  },
-  {
-    priority: 'highn',
-    date: '22/12/2022',
-    name: 'Make Cakae  Bowers',
-    asigned: 'Manajer'
-  },
-  {
-    asigned: 'Divisi Umum',
-    date: '22/12/2022',
-    name: 'Make Cakae oy',
-    priority: 'high'
-  },
-  {
-    priority: 'highr admin',
-    date: '22/12/2022',
-    name: 'Make Cakae onard',
-    asigned: 'Pencacah Utama'
-  },
-  {
-    priority: 'high',
-    date: '22/12/2022',
-    name: 'Make Cakae rtin',
-    asigned: 'Divisi TI'
-  },
-  {
-    name: 'Make Cakae Day',
-    priority: 'highger',
-    date: '22/12/2022',
-    asigned: 'Divisi IT'
-  },
-  {
-    name: 'Make Cakae kson',
-    date: '22/12/2022',
-    priority: 'highger',
-    asigned: 'Divisi Logistik'
-  },
-  {
-    name: 'Make Cakae harp',
-    priority: 'high',
-    date: '22/12/2022',
-    asigned: 'Divisi Umum'
-  }
-]
+
+const priorities = ['Low', 'Medium', 'High']
 
 const style = {
   position: 'absolute',
@@ -104,12 +62,71 @@ const CustomInputStart = forwardRef((props, ref) => {
 const CreateProjectTask = props => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
-  const handleClose = () => {setOpen(false); Swal.fire('Cancelled', 'Task is not created!', 'error')}
+  const handleClose = () => { setOpen(false); Swal.fire('Cancelled', 'Task is not created!', 'error') }
   const [date, setDate] = useState(null)
 
   const [editOpen, setEditOpen] = useState(false)
   const handleEditOpen = () => setEditOpen(true)
   const handleEditClose = () => setEditOpen(false)
+
+
+  // ** States
+  const [endDate, setEDate] = useState(new Date())
+  const [projectId, setProjectId] = useState('')
+
+  const [values, setValues] = useState({
+    t_title: '',
+    t_description: '',
+    t_user: '',
+    t_priority: '0',
+  })
+
+  // ** Hook
+
+  const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
+    console.log(event.target.value)
+  }
+
+  const handleTask = async e => {
+    e.preventDefault()
+
+    try {
+      console.log(projectId)
+      const res = await axios.post('/task', {
+        title: values.t_title,
+        duedate: endDate,
+        priority: values.t_priority,
+        description: values.t_description,
+        status: '0',
+        projectId: projectId,
+        userId: values.t_user
+      })
+
+      if (res.status === 201) {
+        Swal.fire({
+          title: 'Create Task Success',
+          text: 'Press OK to continue',
+          icon: 'success',
+          confirmButtonColor: '#68B92E',
+          confirmButtonText: 'OK'
+        })
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Create Task Failed',
+        text: error,
+        icon: 'error',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+      })
+    }
+  }
+
+  useEffect(() => {
+    setProjectId(props.data.id)
+  }, [endDate, values])
+
 
   return (
     <Card>
@@ -151,7 +168,7 @@ const CreateProjectTask = props => {
                   </TableCell>
                   <TableCell align='left'>
                     <Link href='#'>
-                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.priority}</Typography>
+                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{priorities[row.priority]}</Typography>
                     </Link>
                   </TableCell>
                   <TableCell align='left'>
@@ -186,9 +203,9 @@ const CreateProjectTask = props => {
                                       id='form-layouts-separator-asigned-edit'
                                       labelId='form-layouts-separator-asigned-label-edit'
                                     >
-                                      {rows.map(row => (
-                                        <MenuItem key={row.name} value={row.name}>
-                                          {row.name}
+                                      {props.data.UserProject.map(row => (
+                                        <MenuItem key={row.userId} value={row.userId}>
+                                          {row.userId}
                                         </MenuItem>
                                       ))}
                                     </Select>
@@ -263,7 +280,6 @@ const CreateProjectTask = props => {
                           {/* end form edit task */}
                         </Card>
                       </Modal>
-                      {/* <UpdateTask /> */}
                       {/* Delete Task */}
                       <Button
                         type='submit'
@@ -309,20 +325,26 @@ const CreateProjectTask = props => {
                   <br></br>
                   <Grid container spacing={5}>
                     <Grid item xs={12} sm={12} lg={6}>
-                      <TextField fullWidth label='Task Title' placeholder='Task A' />
+                      <TextField
+                        fullWidth
+                        label='Task Title'
+                        placeholder='Title'
+                        value={values.t_title}
+                        onChange={handleChange('t_title')} />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={6}>
                       <FormControl fullWidth>
                         <InputLabel id='form-layouts-separator-select-label'>Asigned To</InputLabel>
                         <Select
                           label='asigned to '
-                          defaultValue=''
                           id='form-layouts-separator-asigned'
                           labelId='form-layouts-separator-asigned-label'
+                          value={values.t_user}
+                          onChange={handleChange('t_user')}
                         >
                           {props.data.UserProject.map(row => (
                             <MenuItem key={row.userId} value={row.userId}>
-                              {row.name}
+                              {row.user.name}
                             </MenuItem>
                           ))}
                         </Select>
@@ -331,7 +353,7 @@ const CreateProjectTask = props => {
                     <Grid item xs={12} sm={12} lg={6}>
                       <DatePickerWrapper>
                         <DatePicker
-                          selected={date}
+                          selected={endDate}
                           showYearDropdown
                           showMonthDropdown
                           showTimeSelect
@@ -339,7 +361,7 @@ const CreateProjectTask = props => {
                           placeholderText='DD-MM-YYYY, HH:MM'
                           customInput={<CustomInputStart />}
                           id='tanggal-selesai'
-                          onChange={date => setDate(date)}
+                          onChange={endDate => setEDate(endDate)}
                         />
                       </DatePickerWrapper>
                     </Grid>
@@ -348,18 +370,27 @@ const CreateProjectTask = props => {
                         <InputLabel id='form-layouts-separator-select-label'>Priority</InputLabel>
                         <Select
                           label='priority'
-                          defaultValue=''
                           id='form-layouts-separator-priority'
                           labelId='form-layouts-separator-priority-label'
+                          placeholder='Title'
+                          value={values.t_priority}
+                          onChange={handleChange('t_priority')}
                         >
-                          <MenuItem value='High'>High</MenuItem>
-                          <MenuItem value='Medium'>Medium</MenuItem>
-                          <MenuItem value='Low'>Low</MenuItem>
+                          <MenuItem value='2'>High</MenuItem>
+                          <MenuItem value='1'>Medium</MenuItem>
+                          <MenuItem value='0'>Low</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={12} lg={12}>
-                      <TextField fullWidth multiline minRows={5} label='Task Description' placeholder='Description' />
+                      <TextField
+                        fullWidth
+                        multiline
+                        minRows={5}
+                        label='Task Description'
+                        placeholder='Description'
+                        value={values.t_description}
+                        onChange={handleChange('t_description')} />
                     </Grid>
                   </Grid>
                   <br></br>
@@ -372,10 +403,7 @@ const CreateProjectTask = props => {
                       type='submit'
                       sx={{ mr: 2 }}
                       variant='contained'
-                      onClick={() => {
-                        setOpen(false)
-                        Swal.fire('', 'Task Created Succesfully!', 'success')
-                      }}
+                      onClick={handleTask}
                     >
                       Add Task
                     </Button>

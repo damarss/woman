@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   }
 
   if (method === 'POST') {
-    const { title, duedate, priority, description, status, taskfile, projectId, penanggungJawabId } = req.body
+    const { title, duedate, priority, description, status, taskfile, projectId, userId } = req.body
 
     try {
       const task = await prisma.task.create({
@@ -27,9 +27,9 @@ export default async function handler(req, res) {
           priority: Number(priority),
           description,
           status: Number(status),
-          taskfile,
+          taskfile: '',
           projectId: Number(projectId),
-          penanggungJawabId: Number(penanggungJawabId)
+          userId: Number(userId)
         }
       })
 

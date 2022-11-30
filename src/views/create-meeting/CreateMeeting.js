@@ -73,7 +73,6 @@ const CreateMeeting = props => {
   })
 
   // ** Hook
-  // const router = useRouter()
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
