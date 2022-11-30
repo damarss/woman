@@ -18,9 +18,7 @@ import prisma from './db'
 const Dashboard = ({ data }) => {
   const [dashboard, setDashboard] = useState(JSON.parse(data))
 
-  useEffect(() => {
-    console.log(dashboard)
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <ApexChartWrapper>
@@ -72,6 +70,9 @@ export async function getServerSideProps(context) {
   const tasks = await prisma.task.findMany({
     where: {
       userId: token.uid
+    },
+    include: {
+      project: true
     }
   })
 

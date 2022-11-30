@@ -9,6 +9,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
+import { useEffect } from 'react'
 
 const rows = [
   {
@@ -17,7 +18,7 @@ const rows = [
     title: 'Sally Quinn',
     salary: '$19586.23',
     priority: 'High',
-    project: 'Human Resources Assistant',
+    project: 'Human Resources Assistant'
   },
   {
     date: '09/23/2016',
@@ -84,11 +85,15 @@ const statusObj = {
   professional: { color: 'success' }
 }
 
-const DashboardTable = () => {
+const DashboardTable = props => {
+  useEffect(() => {
+    console.log(props)
+  }, [])
+
   return (
-    <Card sx={{overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 250}}>
-        <Table sx={{minWidth: 400}} aria-label='table in dashboard'>
+    <Card sx={{ overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 250 }}>
+        <Table sx={{ minWidth: 400 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
               <TableCell>Task Name</TableCell>
@@ -96,10 +101,10 @@ const DashboardTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
+            {props.tasks.map(row => (
               <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell>{row.title}</TableCell>
-                <TableCell>{row.project}</TableCell>
+                <TableCell>{row.project.title}</TableCell>
               </TableRow>
             ))}
           </TableBody>
