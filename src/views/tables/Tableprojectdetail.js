@@ -64,7 +64,7 @@ const PeopleTable = props => {
             {props.project.Task.map(row => (
               <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell style={{ width: '12rem' }}>
-                  <Link href={`/task-detail/${props.project.id}`}>
+                  <Link href={`/task-detail/${row.id}`}>
                     <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
                   </Link>
                 </TableCell>
