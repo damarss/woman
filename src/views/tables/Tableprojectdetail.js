@@ -51,40 +51,40 @@ const PeopleTable = props => {
     <Card>
       <TableContainer>
         <Table sx={{ minWidth: 10 }} aria-label='table in dashboard'>
-          <Link href={`/task/${props.project.id}`}>
-            <TableHead>
-              <TableRow>
-                {columns.map(column => (
-                  <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {props.project.Task.map(row => (
-                <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                  <TableCell style={{ width: '12rem' }}>
-                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
-                  </TableCell>
-                  <TableCell style={{ width: '16rem' }}>{row.user.name}</TableCell>
-                  <TableCell style={{ width: '16rem' }}>{priorities[row.priority]}</TableCell>
-                  <TableCell align='center'>
-                    <Chip
-                      label={statusObj[row.status].status}
-                      color={statusObj[row.status].color}
-                      sx={{
-                        height: 24,
-                        fontSize: '0.75rem',
-                        textTransform: 'capitalize',
-                        '& .MuiChip-label': { fontWeight: 500 }
-                      }}
-                    />
-                  </TableCell>
-                </TableRow>
+          <TableHead>
+            <TableRow>
+              {columns.map(column => (
+                <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
+                  {column.label}
+                </TableCell>
               ))}
-            </TableBody>
-          </Link>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.project.Task.map(row => (
+              <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                <TableCell style={{ width: '12rem' }}>
+                  <Link href={`/task-detail/${props.project.id}`}>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
+                  </Link>
+                </TableCell>
+                <TableCell style={{ width: '16rem' }}>{row.user.name}</TableCell>
+                <TableCell style={{ width: '16rem' }}>{priorities[row.priority]}</TableCell>
+                <TableCell align='center'>
+                  <Chip
+                    label={statusObj[row.status].status}
+                    color={statusObj[row.status].color}
+                    sx={{
+                      height: 24,
+                      fontSize: '0.75rem',
+                      textTransform: 'capitalize',
+                      '& .MuiChip-label': { fontWeight: 500 }
+                    }}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
     </Card>

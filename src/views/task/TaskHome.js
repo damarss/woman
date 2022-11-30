@@ -87,11 +87,9 @@ const TaskHome = props => {
                   />
                 </TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>
-                  <Link href='/task-detail'>
-                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
-                      {new Date(row.duedate).toLocaleDateString('id')}
-                    </Typography>
-                  </Link>
+                  <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
+                    {new Date(row.duedate).toLocaleDateString('id')}
+                  </Typography>
                 </TableCell>
               </TableRow>
             ))}

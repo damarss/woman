@@ -21,7 +21,7 @@ const statusObj = {
 const DashboardTable = props => {
   return (
     <Card sx={{ overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 250 }}>
+      <TableContainer sx={{ maxHeight: 240, height: 240 }}>
         <Table sx={{ minWidth: 400 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
