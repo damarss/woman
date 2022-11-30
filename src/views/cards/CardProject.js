@@ -14,6 +14,7 @@ import TrendingUp from 'mdi-material-ui/TrendingUp'
 import StarOutline from 'mdi-material-ui/StarOutline'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
+import { useRouter } from 'next/dist/client/router'
 
 // Styled Box component
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -23,6 +24,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }))
 
 const CardMembership = props => {
+  const router = useRouter()
+
   return (
     <Card>
       <Grid container spacing={6}>
@@ -42,7 +45,7 @@ const CardMembership = props => {
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <AccountOutline sx={{ color: 'primary.main', marginRight: 2.75 }} fontSize='small' />
-                    <Typography variant='body2'>15 Members</Typography>
+                    <Typography variant='body2'>{props.project.UserProject.length} Members</Typography>
                   </Box>
                 </StyledBox>
               </Grid>
@@ -83,10 +86,10 @@ const CardMembership = props => {
                 </Typography>
               </Box>
               <Typography variant='body2' sx={{ mb: 13.75, display: 'flex', flexDirection: 'column' }}>
-                <span>Arfiandys</span>
+                <span>{props.project.projectLeader.name}</span>
                 <span>Team Leader</span>
               </Typography>
-              <Link href='/project-detail'>
+              <Link onClick={e => router.push(`/project-detail/${props.project.id}`)}>
                 <Button variant='contained'>View More</Button>
               </Link>
             </Box>

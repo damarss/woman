@@ -27,21 +27,32 @@ import Tableprojectdetail from 'src/views/tables/Tableprojectdetail'
 
 // third party import
 import Swal from 'sweetalert2'
+import { getToken } from 'next-auth/jwt'
+import { useState } from 'react'
 
-const CardBasic = () => {
+const CardBasic = ({ data }) => {
+  const [project, setProject] = useState(JSON.parse(data))
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} sm={12} md={8} lg={8}>
-        <CardProjectdetail />
+        <CardProjectdetail project={project} />
       </Grid>
-      <Grid item xs={12} sm={12} md={4} lg={4} alignItems="center" justify="center">
-        <Button sx={{height: '100%'}} fullWidth href='/create-project-task' type='submit' variant='contained' color='primary'>
-            Add Task
+      <Grid item xs={12} sm={12} md={4} lg={4} alignItems='center' justify='center'>
+        <Button
+          sx={{ height: '100%' }}
+          fullWidth
+          href={`/create-project-task/${project.id}`}
+          type='submit'
+          variant='contained'
+          color='primary'
+        >
+          Add Task
         </Button>
       </Grid>
 
       <Grid item xs={12} sm={12} md={12}>
-        <Tableprojectdetail />
+        <Tableprojectdetail project={project} />
       </Grid>
 
       {/* Admin */}
@@ -79,12 +90,48 @@ const CardBasic = () => {
             Delete
           </Button>
           <Button href='/edit-project' size='medium' type='submit' variant='contained' color='primary'>
-            Update
+            Edit
           </Button>
         </Box>
       </Grid>
     </Grid>
   )
+}
+
+export async function getServerSideProps(context) {
+  const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/pages/login',
+        permanent: false
+      }
+    }
+  }
+
+  const project = await prisma.project.findUnique({
+    where: {
+      id: parseInt(context.params.id)
+    },
+    include: {
+      Task: {
+        include: {
+          user: true
+        }
+      },
+      projectLeader: true,
+      UserProject: true
+    }
+  })
+
+  console.log(project)
+
+  return {
+    props: {
+      data: JSON.stringify(project)
+    }
+  }
 }
 
 export default CardBasic

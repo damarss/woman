@@ -27,8 +27,8 @@ model User {
 model Meet {
   id          Int        @id @default(autoincrement())
   title       String     @db.VarChar(128)
-  startdate   DateTime   @db.DateTime
-  enddate     DateTime   @db.DateTime
+  startDate   DateTime   @db.DateTime
+  endDate     DateTime   @db.DateTime
   duration    Int        @db.Int
   link        String     @db.VarChar(255)
   description String?    @db.LongText

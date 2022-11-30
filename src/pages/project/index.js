@@ -58,9 +58,16 @@ export async function getServerSideProps(context) {
       userId: token.uid
     },
     include: {
-      project: true
+      project: {
+        include: {
+          projectLeader: true,
+          UserProject: true,
+        }
+      },
     }
   })
+
+  console.log(projects)
 
   return {
     props: {

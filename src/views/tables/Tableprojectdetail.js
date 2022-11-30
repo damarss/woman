@@ -11,66 +11,15 @@ import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
 import Link from '@mui/material/Link'
 
-const rows = [
-  
-  {
-    status: 'Done',
-    priority: 'Low',
-    penanggungjawab: 'Margaret Bowers',
-    Tugas: 'Nama Tugas',
-    designation: 'Manajer priority'
-  },
-  {
-    Tugas: 'Nama Tugas',
-    designation: 'Divisi Umum',
-    priority: 'Medium',
-    penanggungjawab: 'Minnie Roy',
-    status: 'Assign'
-  },
-  {
-    status: 'Revision',
-    priority: 'High',
-    penanggungjawab: 'Ralph Leonard',
-    Tugas: 'Nama Tugas',
-    designation: 'Pencacah Utama'
-  },
-  {
-    status: 'Done',
-    priority: 'Medium',
-    penanggungjawab: 'Annie Martin',
-    designation: 'Divisi TI',
-    Tugas: 'Nama Tugas'
-  },
-  {
-    penanggungjawab: 'Adeline Day',
-    status: 'TurnedIn',
-    priority: 'High',
-    Tugas: 'Nama Tugas',
-    designation: 'Divisi IT'
-  },
-  {
-    penanggungjawab: 'Lora Jackson',
-    priority: 'Low',
-    status: 'OnProgress',
-    designation: 'Divisi Logistik',
-    Tugas: 'Nama Tugas'
-  },
-  {
-    penanggungjawab: 'Rodney Sharp',
-    status: 'Done',
-    priority: 'Medium',
-    designation: 'Divisi Umum',
-    Tugas: 'Nama Tugas'
-  }
-]
-
 const statusObj = {
-  Revision: { color: 'info' },
-  Assign: { color: 'error' },
-  OnProgress: { color: 'primary' },
-  TurnedIn: { color: 'warning' },
-  Done: { color: 'success' }
+  0: { color: 'default', status: 'Assign' },
+  1: { color: 'error', status: 'Revision' },
+  2: { color: 'primary', status: 'Turned In' },
+  3: { color: 'warning', status: 'Done' },
+  4: { color: 'success', status: 'Approved' }
 }
+
+const priorities = ['Low', 'Medium', 'High']
 
 const columns = [
   { id: 'Tugas', label: 'Tugas', minWidth: 150 },
@@ -97,44 +46,44 @@ const columns = [
   }
 ]
 
-const PeopleTable = () => {
+const PeopleTable = props => {
   return (
     <Card>
       <TableContainer>
         <Table sx={{ minWidth: 10 }} aria-label='table in dashboard'>
-        <Link href='/projectdetail'>
-        <TableHead>
-            <TableRow>
-              {columns.map(column => (
-                <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map(row => (
-              <TableRow hover key={row.penanggungjawab} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                <TableCell style={{width:'16rem'}}>
-                <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.Tugas}</Typography>
-                </TableCell>
-                <TableCell style={{width:'16rem'}}>{row.penanggungjawab}</TableCell>
-                <TableCell style={{width:'16rem'}}>{row.priority}</TableCell>
-                <TableCell align='center'>
-                  <Chip
-                    label={row.status}
-                    color={statusObj[row.status].color}
-                    sx={{
-                      height: 24,
-                      fontSize: '0.75rem',
-                      textTransform: 'capitalize',
-                      '& .MuiChip-label': { fontWeight: 500 }
-                    }}
-                  />
-                </TableCell>
+          <Link href={`/task/${props.project.id}`}>
+            <TableHead>
+              <TableRow>
+                {columns.map(column => (
+                  <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
+                    {column.label}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
+            </TableHead>
+            <TableBody>
+              {props.project.Task.map(row => (
+                <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                  <TableCell style={{ width: '12rem' }}>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
+                  </TableCell>
+                  <TableCell style={{ width: '16rem' }}>{row.user.name}</TableCell>
+                  <TableCell style={{ width: '16rem' }}>{priorities[row.priority]}</TableCell>
+                  <TableCell align='center'>
+                    <Chip
+                      label={statusObj[row.status].status}
+                      color={statusObj[row.status].color}
+                      sx={{
+                        height: 24,
+                        fontSize: '0.75rem',
+                        textTransform: 'capitalize',
+                        '& .MuiChip-label': { fontWeight: 500 }
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
           </Link>
         </Table>
       </TableContainer>
