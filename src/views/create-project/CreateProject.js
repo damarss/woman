@@ -100,6 +100,25 @@ const CreateProject = props => {
           confirmButtonColor: '#68B92E',
           confirmButtonText: 'OK'
         })
+
+        setValues({
+          p_title: '',
+          p_description: '',
+          p_leader: ''
+        })
+
+        console.log(values)
+
+        setSDate(new Date())
+        setEDate(null)
+        setParticipants(
+          props.users.map(user => {
+            return {
+              ...user,
+              checked: false
+            }
+          })
+        )
       }
     } catch (error) {
       Swal.fire({
@@ -130,6 +149,7 @@ const CreateProject = props => {
                 placeholder='Proyek A'
                 defaultValue={values.p_title}
                 onChange={handleChange('p_title')}
+                value={values.p_title}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
@@ -163,6 +183,7 @@ const CreateProject = props => {
                 defaultValue={values.p_description}
                 onChange={handleChange('p_description')}
                 placeholder='Description...'
+                value={values.p_description}
               />
             </Grid>
           </Grid>
