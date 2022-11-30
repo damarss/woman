@@ -30,6 +30,7 @@ import TaskDetail from 'src/views/task/TaskDetail'
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
 import { getToken } from 'next-auth/jwt'
+import prisma from '../db'
 
 const TaskDetailPage = ({ data }) => {
   return (
@@ -53,11 +54,31 @@ export async function getServerSideProps(context) {
     }
   }
 
-  const data = await prisma.task.findUnique({
+  const task = await prisma.task.findUnique({
     where: {
       id: parseInt(context.params.id)
     }
   })
+
+  const comments = await prisma.taskComment.findMany({
+    where: {
+      taskId: parseInt(context.params.id)
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          id: true,
+          password: false
+        }
+      }
+    }
+  })
+
+  const data = {
+    task,
+    comments
+  }
 
   return {
     props: {
