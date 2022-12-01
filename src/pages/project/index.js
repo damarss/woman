@@ -29,8 +29,8 @@ const Project = ({ data }) => {
         <Typography variant='h5'>My Project</Typography>
       </Grid>
       {projects.length > 0 ? (
-        projects.map((project, index) => (
-          <Grid key={index} item xs={12} md={6}>
+        projects.map(project => (
+          <Grid key={project.project.id} item xs={12} md={6}>
             <CardProject project={project.project} />
           </Grid>
         ))
@@ -63,25 +63,35 @@ export async function getServerSideProps(context) {
         project: {
           include: {
             projectLeader: true,
-            UserProject: true,
+            UserProject: true
           }
-        },
+        }
       }
     })
   } else {
-    projects = await prisma.userProject.findMany({
+    const key = []
+    projects = []
+
+    const projectsGet = await prisma.userProject.findMany({
       include: {
         project: {
           include: {
             projectLeader: true,
-            UserProject: true,
+            UserProject: true
           }
-        },
+        }
       }
     })
-  }
 
-  console.log(projects)
+    projectsGet.map(project => {
+      if (key.includes(project.project.id)) {
+        return
+      }
+
+      key.push(project.project.id)
+      projects.push(project)
+    })
+  }
 
   return {
     props: {
