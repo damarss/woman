@@ -75,7 +75,7 @@ const Navigation = () => {
         title: 'Meeting Setting',
         icon: VideoOutline,
         path: '/meeting-admin'
-      },
+      }
     ]
   } else {
     return [
@@ -97,7 +97,7 @@ const Navigation = () => {
       {
         title: 'Meeting Scedule',
         icon: MessageVideo,
-        path: '/meeting'
+        path: '/meeting-schedule'
       }
     ]
   }
