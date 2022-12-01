@@ -18,6 +18,7 @@ import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 
 // third party import
 import Swal from 'sweetalert2'
+import { useEffect, useState } from 'react'
 
 // Styled Box component
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -26,25 +27,31 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }))
 
-const CardMembership = () => {
+const CardMembership = props => {
+  const [listName, setListName] = useState('')
+  useEffect(() => {
+    const list = []
+    props.data.UserMeet.map(row => list.push(row.user.name));
+    setListName(list.join(" , "));
+  },[])
   return (
     <Card>
       <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5.75, 6.25)} !important` }}>
         <Typography variant='h6' sx={{ marginBottom: 3.5 }}>
-          Meeting Title
+          {props.data.title}
         </Typography>
         <br></br>
         <Grid container spacing={6}>
           <Grid item xs={12} sm={5} md={4} lg={3}>
             <StyledBox>
               <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-                <Typography variant='body2'>Date</Typography>
+                <Typography variant='body2'>Meeting End</Typography>
               </Box>
               <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-                <Typography variant='body2'>Meeting Start</Typography>
+                <Typography variant='body2'>Meeting End</Typography>
               </Box>
               <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-                <Typography variant='body2'>Meeting Duration</Typography>
+                <Typography variant='body2'>Description</Typography>
               </Box>
               <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
                 <Typography variant='body2'>Link</Typography>
@@ -56,19 +63,19 @@ const CardMembership = () => {
           </Grid>
           <Grid item xs={12} sm={7} md={8} lg={9}>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>22/12/2022</Typography>
+              <Typography variant='body2'>{props.data.startDate}</Typography>
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>09:00</Typography>
+              <Typography variant='body2'>{props.data.endDate}</Typography>
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>1 Hour</Typography>
+              <Typography variant='body2'>{props.data.description}</Typography>
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>https:/zooom.us</Typography>
+              <Typography variant='body2'>{props.data.link}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>Roger, Goerge, Philip, Elizabeth</Typography>
+              <Typography variant='body2'>{listName}</Typography>
             </Box>
           </Grid>
         </Grid>
@@ -84,24 +91,6 @@ const CardMembership = () => {
             sx={{ mr: 2 }}
             variant='contained'
             onClick={() => {
-              // Swal.fire({
-              //   title: 'Hapus Rapat?',
-              //   text: 'Tekan tombol "Buat Rapat" untuk mengirim notifikasi kepada peserta rapat',
-              //   icon: 'warning',
-              //   showCancelButton: true,
-              //   confirmButtonColor: '#3085d6',
-              //   cancelButtonColor: '#d33',
-              //   confirmButtonText: 'Ya, Hapus Rapat'
-              // }).then((result) => {
-              //   if (result.isConfirmed) {
-              //     Swal.fire(
-              //       '',
-              //       'Rapat berhasil dihapus. Tekan "OK" untuk melanjutkan.',
-              //       'success'
-              //     )
-              //   }
-              // })
-
               Swal.fire({
                 title: 'Hapus Rapat?',
                 text: 'Tekan tombol "Hapus Rapat" untuk mengirim notifikasi kepada peserta rapat',

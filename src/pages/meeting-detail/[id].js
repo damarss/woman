@@ -1,25 +1,19 @@
-// ** React Imports
-import { useEffect, useState } from 'react'
-import prisma from 'src/pages/db'
-import { getToken } from 'next-auth/jwt'
-
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 
 // ** Meeting Components Imports
-import MeetingTable from 'src/views/meeting-admin/MeetingTable'
+import MeetingDetail from 'src/views/meeting-detail/MeetingDetail'
+import Swal from 'sweetalert2'
+import { getToken } from 'next-auth/jwt'
+import { useState } from 'react'
+import prisma from 'src/pages/db'
 
 const MeetingPage = ({data}) => {
-  const [meet, setMeet] = useState([])
-
-  useEffect(() => {
-    setMeet(JSON.parse(data))
-    console.log(JSON.parse(data))
-  }, [])
+  const [meet, setMeet] = useState(JSON.parse(data))
   return (
     <>
-      <MeetingTable data={meet}/>
+      <MeetingDetail data={meet}/>
     </>
   )
 }
@@ -36,16 +30,20 @@ export async function getServerSideProps(context) {
     }
   }
 
-  if (token.role !== 'admin') {
-    return {
-      redirect: {
-        destination: '/401',
-        permanent: false
+  const meet = await prisma.meet.findUnique({
+    where: {
+      id: parseInt(context.params.id)
+    },
+    include: {
+      UserMeet: {
+        include: {
+          user: true
+        }
       }
     }
-  }
+  })
 
-  const meet = await prisma.meet.findMany()
+  console.log(meet)
 
   return {
     props: {
