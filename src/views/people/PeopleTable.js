@@ -45,6 +45,9 @@ const PeopleTable = ({ rows }) => {
               <TableCell align='center'>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Role</Typography>
               </TableCell>
+              <TableCell align='center'>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Action</Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -74,6 +77,14 @@ const PeopleTable = ({ rows }) => {
                       </Select>
                     </FormControl>
                   </form>
+                </TableCell>
+                <TableCell align='center'>
+                  <Button size='medium' type='submit' variant='contained' color='primary' sx={{ color: '#FFFFFF' }}>
+                    Update
+                  </Button>
+                  <Button size='medium' type='submit' variant='contained' color='primary' sx={{ mt: 2 }}>
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

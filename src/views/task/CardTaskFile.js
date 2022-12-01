@@ -1,3 +1,6 @@
+//  ** React
+import { useState } from 'react'
+
 // ** MUI Imports
 import Card from '@mui/material/Card'
 import Chip from '@mui/material/Chip'
@@ -29,11 +32,14 @@ import InputAdornment from '@mui/material/InputAdornment'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 
 import DragAndDrop from 'src/views/task/DragAndDrop'
+import { color } from '@mui/system'
 
-const CardTaskFileContent = () => {
+const CardTaskFileContent = props => {
+  const [isFile, setIsFile] = useState(true)
+
   return (
     <Card>
-      <CardHeader title='Your Work' sx={{ textAlign: 'center', backgroundColor: 'primary.main', paddingY: 3 }} />
+      <CardHeader title={props.title} sx={{ textAlign: 'center', backgroundColor: 'primary.main', paddingY: 3 }} />
       <CardContent sx={{ textAlign: 'center' }}>
         {/* BUAT UPLOAD FILE */}
         {/* <DragAndDrop /> */}
@@ -60,22 +66,36 @@ const CardTaskFileContent = () => {
           Resubmit
         </Button> */}
 
-        {/* JIKA ADMIN */}
+        {/* ADMIN */}
+
+        {/* Jika Belum Ada File Submit */}
+        {/* <Typography variant='body2' sx={{ marginTop: 20, marginBottom: 15 }} style={{ display: isFile ? 'none' : 'block' }}>
+            No submitted file.
+          </Typography> */}
+
+        {/* Jika Sudah Ada File Submit */}
         <br></br>
-        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
-        <Typography variant='body2'>File name</Typography>
-        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
+        <Link href='#' sx={{ color: '#171717' }} className='FileResult'>
+          <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh', fontSize: 50, marginTop: 1 }} />
+          <Typography sx={{ marginBottom: 5 }} variant='body2'>
+            File name
+          </Typography>
+        </Link>
+        
+        <Divider sx={{ marginTop: 10, marginBottom: 6.75 }} />
+
         <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <form action='#'>
-            <Button type='submit' variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }} style={{ marginRight: 3 }}>
-              Revise
-            </Button>
-          </form>
-          <form action='#'>
-            <Button type='submit' variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
-              Accept
-            </Button>
-          </form>
+          <Button
+            type='submit'
+            variant='contained'
+            sx={{ padding: theme => theme.spacing(1.75, 5.5) }}
+            style={{ marginRight: 3 }}
+          >
+            Revise
+          </Button>
+          <Button type='submit' variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+            Accept
+          </Button>
         </Box>
       </CardContent>
       <CardActions className='card-action-dense'>

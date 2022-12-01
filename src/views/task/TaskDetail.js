@@ -150,7 +150,7 @@ const TaskDetailPage = props => {
               <CardComment comments={props.task} />
             </Grid>
             <Grid item xs={12} md={4} lg={4} sx={{ paddingRight: 0 }}>
-              <CardTaskFile />
+              <CardTaskFile title='Result'/>
             </Grid>
           </Grid>
           {/* Admin */}
