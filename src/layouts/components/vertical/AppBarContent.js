@@ -176,7 +176,7 @@ const AppBarContent = props => {
             </Typography>
           </Box>
         ) : null}
-        {route.asPath === '/meeting/' ? (
+        {route.asPath === '/meeting-schedule/' ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
@@ -200,7 +200,7 @@ const AppBarContent = props => {
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
-            <VideoOutline />
+            <MessageVideo />
             <Typography variant='h6' sx={{ marginLeft: 3 }}>
               Create Meeting
             </Typography>
@@ -216,7 +216,7 @@ const AppBarContent = props => {
             </Typography>
           </Box>
         ) : null}
-        {route.asPath.indexOf('/meeting-detail/') !== -1 ? (
+        {route.asPath.indexOf('/meeting-admin-detail/') !== -1 ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >

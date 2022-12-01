@@ -69,7 +69,7 @@ const Navigation = () => {
       {
         title: 'Meeting Scedule',
         icon: MessageVideo,
-        path: '/meeting'
+        path: '/meeting-schedule'
       },
       {
         title: 'Meeting Setting',

@@ -32,5 +32,9 @@ code[class*='language-'] {
 {
     z-index: 100000000000 !important;   
 }
+.FileResult:hover{
+  color: #737373;
+  transition: 0.1s ease-in-out;
+}
 
 
