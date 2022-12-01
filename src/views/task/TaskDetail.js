@@ -22,6 +22,7 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import CardActions from '@mui/material/CardActions'
 
+
 // ** Icons Imports
 import TrendingUp from 'mdi-material-ui/TrendingUp'
 import StarOutline from 'mdi-material-ui/StarOutline'
@@ -32,23 +33,15 @@ import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 import DatePicker from 'react-datepicker'
 import Swal from 'sweetalert2'
 
-// Styled Box component
-const StyledBox = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: {
-    borderRight: `1px solid ${theme.palette.divider}`
-  }
-}))
-
-// Pendefinisian warna untuk status progress task
 const statusObj = {
-  assigned: { color: 'secondary' },
-  on_progress: { color: 'info' },
-  turned_in: { color: 'warning' },
-  revision: { color: 'primary' },
-  done: { color: 'success' },
-  late: { color: 'error' },
-  turned_in_late: { color: 'warning' },
-  done_late: { color: 'success' }
+  0: { color: 'secondary', status: 'Assigned' },
+  1: { color: 'info', status: 'On Progress' },
+  2: { color: 'warning', status: 'Turned In' },
+  3: { color: 'primary', status: 'Revision' },
+  4: { color: 'success', status: 'Done' },
+  5: { color: 'error', status: 'Late' },
+  6: { color: 'warning', status: 'Turned In Late' },
+  7: { color: 'success', status: 'Done Late' }
 }
 
 const style = {
@@ -111,9 +104,9 @@ const TaskDetailPage = props => {
                 {props.task.task.title}
               </Typography>
               <Chip
-                label={getLabelStatus('on_progress')} //fungsi getLabelStatus ini buatan sendiri, fungsinya ada di bawah
+                label={statusObj[props.task.task.status].status} //fungsi getLabelStatus ini buatan sendiri, fungsinya ada di bawah
                 //   color={statusObj['row.status'].color}
-                color={statusObj['on_progress'].color} //kalau mau ganti backgroud status task tinggal ganti 'on_progress' dengan status task
+                color={statusObj[(props.task.task.status)].color} //kalau mau ganti backgroud status task tinggal ganti 'on_progress' dengan status task
                 sx={{
                   height: 24,
                   fontSize: '0.75rem',
@@ -297,34 +290,3 @@ const TaskDetailPage = props => {
 }
 
 export default TaskDetailPage
-
-function getLabelStatus(status) {
-  switch (status) {
-    case 'assigned':
-      return 'Assigned'
-      break
-    case 'on_progress':
-      return 'On Progress'
-      break
-    case 'turned_in':
-      return 'Turned In'
-      break
-    case 'revision':
-      return 'Revision'
-      break
-    case 'done':
-      return 'Done'
-      break
-    case 'late':
-      return 'Late'
-      break
-    case 'turned_in_late':
-      return 'Turned In Late'
-      break
-    case 'done_late':
-      return 'Done Late'
-      break
-    default:
-      break
-  }
-}
