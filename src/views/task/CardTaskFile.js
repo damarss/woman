@@ -36,7 +36,7 @@ const CardTaskFileContent = () => {
       <CardHeader title='Your Work' sx={{ textAlign: 'center', backgroundColor: 'primary.main', paddingY: 3 }} />
       <CardContent sx={{ textAlign: 'center' }}>
         {/* BUAT UPLOAD FILE */}
-        <DragAndDrop />
+        {/* <DragAndDrop /> */}
 
         {/* JIKA FILE SUDAH TURNED IN */}
         {/* <Typography variant='body2' sx={{ marginTop: 4 }}>
@@ -61,18 +61,22 @@ const CardTaskFileContent = () => {
         </Button> */}
 
         {/* JIKA ADMIN */}
-        {/* <br></br>
+        <br></br>
         <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
         <Typography variant='body2'>File name</Typography>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
-        <Box style={{display:'flex', justifyContent:'space-between'}}>
-          <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }} style={{marginRight:3}}>
-            Revise
-          </Button>
-          <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
-            Accept
-          </Button>
-        </Box> */}
+        <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <form action='#'>
+            <Button type='submit' variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }} style={{ marginRight: 3 }}>
+              Revise
+            </Button>
+          </form>
+          <form action='#'>
+            <Button type='submit' variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+              Accept
+            </Button>
+          </form>
+        </Box>
       </CardContent>
       <CardActions className='card-action-dense'>
         {/* <Button>Location</Button>

@@ -104,6 +104,7 @@ const CreateProjectTask = props => {
       })
 
       if (res.status === 201) {
+        setOpen(false)
         Swal.fire({
           title: 'Create Task Success',
           text: 'Press OK to continue',

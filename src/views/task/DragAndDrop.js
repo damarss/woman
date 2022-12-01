@@ -20,6 +20,8 @@ const DragAndDrop = () => {
 
   const [isFile, setIsFile] = useState(true)
 
+  let inputRef;
+
   const handleFile = e => {
     setIsFile(false)
     setShowUpload(false)
@@ -28,7 +30,7 @@ const DragAndDrop = () => {
     let file = e.target.files
 
     for (let i = 0; i < file.length; i++) {
-      setFile([...files, file[i]])
+      setFile(files=>[...files, file[i]])
     }
   }
 
@@ -37,6 +39,7 @@ const DragAndDrop = () => {
     setShowUpload(true)
     setShowButton(false)
     setFile(files.filter(x => x.name !== i))
+    inputRef.value=null
   }
 
   return (
@@ -45,7 +48,7 @@ const DragAndDrop = () => {
         <link rel='stylesheet' href='https://cdn.tailwindcss.com/3.0.12'></link>
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css' />
       </head>
-      <form action='/target' className='dropzone'>
+      <form action='#' className='dropzone'>
         <div className='py-3 w-full rounded-md'>
           <span className='flex justify-center items-center bg-white text-[12px] mb-1 text-red-500'>{message}</span>
           <div
@@ -56,7 +59,7 @@ const DragAndDrop = () => {
               type='file'
               onChange={handleFile}
               className='h-full w-full bg-green-200 opacity-0 z-10 absolute'
-              name='files[]'
+              ref={refParam => inputRef = refParam}
             />
             <div className='h-full w-full absolute z-1 flex justify-center items-center top-0 cursor-pointer'>
               <div className='flex flex-col'>
@@ -68,7 +71,7 @@ const DragAndDrop = () => {
           <div className='flex flex-wrap gap-2 mt-2'>
             {files.map((file, key) => {
               return (
-                <div key={key} className='w-full h-16 flex items-center justify-between rounded bg-white'>
+                <div key={file.name} className='w-full h-16 flex items-center justify-between rounded bg-white'>
                   <div className='flex flex-row justify-center items-center gap-2'>
                     <div className='h-12 w-12'>
                       <img
@@ -103,6 +106,7 @@ const DragAndDrop = () => {
           </Typography>
           <Divider sx={{ marginTop: 0, marginBottom: 6.75 }} />
           <Button
+            type='submit'
             variant='contained'
             sx={{ padding: theme => theme.spacing(1.75, 5.5) }}
             style={{ display: showButton ? 'block' : 'none' }}
