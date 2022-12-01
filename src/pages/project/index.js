@@ -53,19 +53,33 @@ export async function getServerSideProps(context) {
     }
   }
 
-  const projects = await prisma.userProject.findMany({
-    where: {
-      userId: token.uid
-    },
-    include: {
-      project: {
-        include: {
-          projectLeader: true,
-          UserProject: true,
-        }
+  let projects
+  if (token.role !== 'admin') {
+    projects = await prisma.userProject.findMany({
+      where: {
+        userId: token.uid
       },
-    }
-  })
+      include: {
+        project: {
+          include: {
+            projectLeader: true,
+            UserProject: true,
+          }
+        },
+      }
+    })
+  } else {
+    projects = await prisma.userProject.findMany({
+      include: {
+        project: {
+          include: {
+            projectLeader: true,
+            UserProject: true,
+          }
+        },
+      }
+    })
+  }
 
   console.log(projects)
 
