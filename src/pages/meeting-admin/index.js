@@ -7,6 +7,7 @@ import Button from '@mui/material/Button'
 
 // ** Meeting Components Imports
 import MeetingTable from 'src/views/meeting-admin/MeetingTable'
+import { getToken } from 'next-auth/jwt'
 
 const MeetingPage = () => {
   return (
@@ -17,6 +18,32 @@ const MeetingPage = () => {
       <MeetingTable />
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/pages/login',
+        permanent: false
+      }
+    }
+  }
+
+  if (token.role !== 'admin') {
+    return {
+      redirect: {
+        destination: '/401',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }
 
 export default MeetingPage

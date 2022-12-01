@@ -28,11 +28,13 @@ import Tableprojectdetail from 'src/views/tables/Tableprojectdetail'
 // third party import
 import Swal from 'sweetalert2'
 import { getToken } from 'next-auth/jwt'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import prisma from 'src/pages/db'
+import { useSession } from 'next-auth/react'
 
 const CardBasic = ({ data }) => {
   const [project, setProject] = useState(JSON.parse(data))
+  const session = useSession()
 
   return (
     <Grid container spacing={6}>
@@ -57,44 +59,46 @@ const CardBasic = ({ data }) => {
       </Grid>
 
       {/* Admin */}
-      <Grid item xs={12} sm={12} md={12}>
-        <Box sx={{ display: 'flex', justifyContent: 'start' }}>
-          <Button
-            size='medium'
-            type='submit'
-            sx={{ mr: 7 }}
-            variant='contained'
-            color='primary'
-            onClick={() => {
-              Swal.fire({
-                title: 'Hapus Project?',
-                text: 'Tekan tombol "Hapus Project" untuk mengirim notifikasi kepada peserta Project',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#68B92E',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus Project',
-                cancelButtonText: 'Tidak, Kembali',
-                reverseButtons: true
-              }).then(result => {
-                if (result.isConfirmed) {
-                  Swal.fire('', 'Project berhasil dihapus. Tekan "OK" untuk melanjutkan.', 'success')
-                } else if (
-                  /* Read more about handling dismissals below */
-                  result.dismiss === Swal.DismissReason.cancel
-                ) {
-                  Swal.fire('Cancelled!', 'Project tidak dihapus. Tekan "OK" untuk melanjutkan.', 'error')
-                }
-              })
-            }}
-          >
-            Delete
-          </Button>
-          <Button href='/edit-project' size='medium' type='submit' variant='contained' color='primary'>
-            Edit
-          </Button>
-        </Box>
-      </Grid>
+      {session.status === 'authenticated' && session.data.role === 'admin' && (
+        <Grid item xs={12} sm={12} md={12}>
+          <Box sx={{ display: 'flex', justifyContent: 'start' }}>
+            <Button
+              size='medium'
+              type='submit'
+              sx={{ mr: 7 }}
+              variant='contained'
+              color='primary'
+              onClick={() => {
+                Swal.fire({
+                  title: 'Hapus Project?',
+                  text: 'Tekan tombol "Hapus Project" untuk mengirim notifikasi kepada peserta Project',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#68B92E',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Ya, Hapus Project',
+                  cancelButtonText: 'Tidak, Kembali',
+                  reverseButtons: true
+                }).then(result => {
+                  if (result.isConfirmed) {
+                    Swal.fire('', 'Project berhasil dihapus. Tekan "OK" untuk melanjutkan.', 'success')
+                  } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                  ) {
+                    Swal.fire('Cancelled!', 'Project tidak dihapus. Tekan "OK" untuk melanjutkan.', 'error')
+                  }
+                })
+              }}
+            >
+              Delete
+            </Button>
+            <Button href='/edit-project' size='medium' type='submit' variant='contained' color='primary'>
+              Edit
+            </Button>
+          </Box>
+        </Grid>
+      )}
     </Grid>
   )
 }
@@ -125,8 +129,6 @@ export async function getServerSideProps(context) {
       UserProject: true
     }
   })
-
-  console.log(project)
 
   return {
     props: {
