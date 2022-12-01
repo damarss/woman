@@ -17,6 +17,8 @@ import Divider from '@mui/material/Divider'
 import CardActions from '@mui/material/CardActions'
 import MenuItem from '@mui/material/MenuItem'
 import Link from 'next/link'
+import PencilOutline from 'mdi-material-ui/PencilOutline'
+import DeleteOutline from 'mdi-material-ui/DeleteOutline'
 
 const statusObj = {
   applied: { color: 'info' },
@@ -36,16 +38,16 @@ const PeopleTable = ({ rows }) => {
               <TableCell align='left' style={{ width: '16rem' }}>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Name</Typography>
               </TableCell>
-              <TableCell align='center' style={{ width: '16rem' }}>
+              <TableCell align='center' style={{ width: '2rem' }}>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Number of Project</Typography>
               </TableCell>
-              <TableCell align='center' style={{ width: '16rem' }}>
+              <TableCell align='center' style={{ width: '2rem' }}>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Number of Task</Typography>
               </TableCell>
-              <TableCell align='center'>
+              <TableCell align='center' style={{ width: '2rem' }}>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Role</Typography>
               </TableCell>
-              <TableCell align='center'>
+              <TableCell align='center' style={{ width: '20rem' }}>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Action</Typography>
               </TableCell>
             </TableRow>
@@ -79,11 +81,11 @@ const PeopleTable = ({ rows }) => {
                   </form>
                 </TableCell>
                 <TableCell align='center'>
-                  <Button size='medium' type='submit' variant='contained' color='primary' sx={{ color: '#FFFFFF' }}>
-                    Update
+                  <Button type='submit' sx={{ mr: 1 }} color='info' variant='text'>
+                    <PencilOutline />
                   </Button>
-                  <Button size='medium' type='submit' variant='contained' color='primary' sx={{ mt: 2 }}>
-                    Delete
+                  <Button type='submit' sx={{ mr: 1 }} color='info' variant='text'>
+                    <DeleteOutline />
                   </Button>
                 </TableCell>
               </TableRow>
