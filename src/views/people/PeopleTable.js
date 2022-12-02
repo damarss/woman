@@ -59,6 +59,8 @@ const statusObj = {
 }
 
 const PeopleTable = ({ rows }) => {
+  const router = useRouter()
+
   const [values, setValues] = useState({
     password: '',
     showPassword: false,
@@ -88,7 +90,7 @@ const PeopleTable = ({ rows }) => {
     }
 
     axios
-      .preventDefault(`user/${id}`, data)
+      .put(`user/${id}`, data)
       .then(res => {
         if (res.status === 200) {
           Swal.fire({
@@ -98,6 +100,8 @@ const PeopleTable = ({ rows }) => {
             confirmButtonText: 'Ok'
           })
         }
+
+        router.push('/people')
       })
       .catch(err => {
         Swal.fire({
@@ -129,6 +133,8 @@ const PeopleTable = ({ rows }) => {
             icon: 'success',
             confirmButtonText: 'Ok'
           })
+
+          router.push('/people')
         }
       })
       .catch(err => {
@@ -300,16 +306,7 @@ const PeopleTable = ({ rows }) => {
                           >
                             Cancel
                           </Button>
-                          <Button
-                            size='large'
-                            type='submit'
-                            sx={{ mr: 2 }}
-                            variant='contained'
-                            onClick={() => {
-                              setEditOpen(false)
-                              Swal.fire('', 'People Information Updated Succesfully!', 'success')
-                            }}
-                          >
+                          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleEdit}>
                             Edit Task
                           </Button>
                         </CardActions>
