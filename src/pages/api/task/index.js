@@ -1,4 +1,6 @@
 import prisma from '../../db'
+import Gmail, { mailOptions } from 'src/services/Gmail'
+import { sendMailTaskAssigned}  from 'src/services/sendEmail'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -33,8 +35,27 @@ export default async function handler(req, res) {
         }
       })
 
-      
+      // mail to user id 
+      const user = await prisma.user.findUnique({
+        where: {
+          id: Number(userId)
+        }
+      })
 
+      // priority 0:low 1:medium 2:high
+      const priorityName = priority == 0 ? 'Low' : priority == 1 ? 'Medium' : 'High'
+
+      mailOptions.to = user.email
+      mailOptions.subject = title
+      mailOptions.title = title
+      mailOptions.description = description
+      mailOptions.duedate = new Date(duedate).toLocaleDateString('id-ID')
+      mailOptions.priority = priorityName
+      mailOptions.status = status
+      mailOptions.userName = user.name
+      mailOptions.link = `${process.env.BASE_URL}/task-detail/${task.id}`
+          
+      sendMailTaskAssigned(mailOptions)
       return res.status(201).json({ success: true, data: task })
     } catch (error) {
       

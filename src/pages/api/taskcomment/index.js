@@ -1,5 +1,7 @@
 import { getToken } from 'next-auth/jwt'
 import prisma from '../../db'
+import { sendMailTaskComment } from 'src/services/sendEmail'
+import { mailOptions } from 'src/services/Gmail'
 
 export default async function handle(req, res) {
   if (req.method === 'GET') {
@@ -30,6 +32,33 @@ export default async function handle(req, res) {
         user: true
       }
     })
+
+    const task = await prisma.task.findUnique({
+      where: {
+        id: taskId
+      },
+      include: {
+        project: true, 
+        user: true
+      }
+    })
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: token.uid
+      }
+    })
+
+    console.log(task)
+    mailOptions.to = task.user.email
+    mailOptions.subject = `New comment`
+    mailOptions.user = user.name
+    mailOptions.project = task.project.name
+    mailOptions.task = task.name
+    mailOptions.comment = comment
+    mailOptions.link = `${process.env.BASE_URL}/task-detail/${task.id}`
+
+    sendMailTaskComment(mailOptions)
 
     if (comments) {
       return res.status(200).json({ success: true, data: comments })
