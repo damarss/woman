@@ -84,7 +84,7 @@ const CardTaskFileContent = props => {
         
         <Divider sx={{ marginTop: 10, marginBottom: 6.75 }} /> */}
 
-        <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box style={{ display: 'flex', justifyContent: 'space-around' }}>
           <Button
             type='submit'
             variant='contained'
