@@ -32,10 +32,35 @@ import { getToken } from 'next-auth/jwt'
 import { useEffect, useState } from 'react'
 import prisma from 'src/pages/db'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const CardBasic = ({ data }) => {
   const [project, setProject] = useState(JSON.parse(data))
   const session = useSession()
+  const router = useRouter()
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: 'Delete Project?',
+      text: 'Press "Delete Project" to send notification to the the participant',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#68B92E',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete Project',
+      cancelButtonText: 'No, Cancel',
+      reverseButtons: true
+    }).then(result => {
+      if (result.isConfirmed) {
+        Swal.fire('', 'Project has been deleted. Press "OK" to continue.', 'success')
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire('Cancelled!', 'Project is not deleted. Press "OK" to continue.', 'error')
+      }
+    })
+  }
 
   return (
     <Grid container spacing={6}>
@@ -51,7 +76,7 @@ const CardBasic = ({ data }) => {
           variant='contained'
           color='primary'
         >
-          <Box sx={{display:'flex', justifyContent: 'space-around'}}> 
+          <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
             <OfficeBuildingCog />
             Manage Task
           </Box>
@@ -65,46 +90,33 @@ const CardBasic = ({ data }) => {
       {/* Admin */}
       {session.status === 'authenticated' && session.data.role === 'admin' && (
         <Grid item xs={12} sm={12} md={12}>
-        <Box sx={{ display: 'flex', justifyContent: 'start' }}>
-          <Button
-            size='medium'
-            type='submit'
-            sx={{ mr: 7 }}
-            variant='contained'
-            color='primary'
-            onClick={() => {
-              Swal.fire({
-                title: 'Delete Project?',
-                text: 'Press "Delete Project" to send notification to the the participant',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#68B92E',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, Delete Project',
-                cancelButtonText: 'No, Cancel',
-                reverseButtons: true
-              }).then(result => {
-                if (result.isConfirmed) {
-                  Swal.fire('', 'Project has been deleted. Press "OK" to continue.', 'success')
-                } else if (
-                  /* Read more about handling dismissals below */
-                  result.dismiss === Swal.DismissReason.cancel
-                ) {
-                  Swal.fire('Cancelled!', 'Project is not deleted. Press "OK" to continue.', 'error')
-                }
-              })
-            }}
-          >
-            Delete
-          </Button>
-          <Button href='/edit-project' sx={{ mr: 7 }} size='medium' type='submit' variant='contained' color='primary'>
-            Edit
-          </Button>
-          <Button href='#' size='medium' type='submit' variant='contained' color='primary'>
-            Achieve
-          </Button>
-        </Box>
-      </Grid>
+          <Box sx={{ display: 'flex', justifyContent: 'start' }}>
+            <Button
+              size='medium'
+              type='submit'
+              sx={{ mr: 7 }}
+              variant='contained'
+              color='primary'
+              onClick={handleDelete}
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={e => router.push(`/edit-project/${project.id}`)}
+              sx={{ mr: 7 }}
+              size='medium'
+              type='submit'
+              variant='contained'
+              color='primary'
+            >
+              Edit
+            </Button>
+
+            <Button href='#' size='medium' type='submit' variant='contained' color='primary'>
+              Archive
+            </Button>
+          </Box>
+        </Grid>
       )}
     </Grid>
   )
@@ -133,7 +145,11 @@ export async function getServerSideProps(context) {
         }
       },
       projectLeader: true,
-      UserProject: true
+      UserProject: {
+        include: {
+          user: true
+        }
+      }
     }
   })
 

@@ -1,5 +1,5 @@
 // ** React Imports
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Card from '@mui/material/Card'
@@ -36,57 +36,8 @@ import Swal from 'sweetalert2'
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-
-const datas = [
-  {
-    name: 'Sally Quinn1',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn2',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn3',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn4',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn5',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn6',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn7',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  },
-  {
-    name: 'Sally Quinn8',
-    nip: '220129129012',
-    projek: 4,
-    tugas: 7
-  }
-]
+import axios from 'src/pages/api/axios'
+import { useRouter } from 'next/router'
 
 const CustomInputStart = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Start Date' autoComplete='on' />
@@ -96,11 +47,93 @@ const CustomInputEnd = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='End Date' autoComplete='off' />
 })
 
-const EditProject = () => {
+const EditProject = props => {
   // ** States
   const [language, setLanguage] = useState([])
-  const [date, setDate] = useState(null)
-  const [tanggal, setDateTwo] = useState(null)
+  const [startDate, setSDate] = useState(new Date(`${props.data.project.startdate}`))
+  const [endDate, setEDate] = useState(new Date(`${props.data.project.enddate}`))
+
+  const router = useRouter()
+
+  const [participants, setParticipants] = useState(
+    props.data.user.map(user => {
+      return {
+        ...user,
+        checked: false
+      }
+    })
+  )
+
+  const [values, setValues] = useState({
+    p_title: props.data.project.title,
+    p_description: props.data.project.description
+  })
+
+  const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
+
+  const handleEdit = e => {
+    e.preventDefault()
+
+    const data = {
+      title: values.p_title,
+      startdate: startDate,
+      enddate: endDate,
+      description: values.p_description
+    }
+
+    axios
+      .put(`/project/${props.data.project.id}`, data)
+      .then(res => {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Project has been updated',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        })
+
+        router.push(`/project-detail/${props.data.project.id}`)
+      })
+      .catch(err => {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Something went wrong',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        })
+      })
+  }
+
+  const handleAddParticipant = e => {
+    e.preventDefault()
+
+    axios
+      .post('project/addparticipants', {
+        project: props.data.project,
+        participants: participants
+      })
+      .then(res => {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Participants added to project',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        })
+
+        router.push(`/project-detail/${props.data.project.id}`)
+      })
+      .catch(err => {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Something went wrong',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        })
+      })
+  }
+
+  useEffect(() => {}, [])
 
   return (
     <Card>
@@ -110,43 +143,88 @@ const EditProject = () => {
           <br></br>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={12} lg={8}>
-              <TextField fullWidth label='Project Title' placeholder='Proyek A' />
+              <TextField
+                fullWidth
+                label='Project Title'
+                placeholder='Proyek A'
+                defaultValue={values.p_title}
+                onChange={handleChange('p_title')}
+                value={values.p_title}
+              />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
-                selected={date}
+                selected={startDate}
                 showYearDropdown
                 showMonthDropdown
                 placeholderText='DD-MM-YYYY'
                 customInput={<CustomInputStart />}
                 id='tanggal-mulai'
-                onChange={date => setDate(date)}
+                onChange={date => setSDate(date)}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
-                selected={tanggal}
+                selected={endDate}
                 showYearDropdown
                 showMonthDropdown
                 placeholderText='DD-MM-YYYY'
                 customInput={<CustomInputEnd />}
                 id='tanggal-berakhir'
-                onChange={tanggal => setDateTwo(tanggal)}
+                onChange={date => setEDate(date)}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-              <TextField fullWidth multiline minRows={3} label='Project Description' placeholder='Bio...' />
+              <TextField
+                fullWidth
+                multiline
+                minRows={3}
+                label='Project Description'
+                defaultValue={values.p_description}
+                onChange={handleChange('p_description')}
+                placeholder='Description...'
+                value={values.p_description}
+              />
             </Grid>
           </Grid>
+          <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
+            <Button size='large' type='submit' variant='contained' onClick={handleEdit}>
+              Edit Project
+            </Button>
+          </CardActions>
+          <Divider sx={{ margin: 0 }} />
           <br></br>
+
           {/* Daftar Peserta */}
-          <Typography variant='h6'>Project Participant</Typography>
+          <Typography variant='h6'>Add Project Participant</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 50 }} aria-label='simple table'>
               <TableHead>
                 <TableRow>
                   <TableCell align='left'>
-                    <FormControlLabel control={<Checkbox defaultChecked />} label='All' />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          defaultChecked
+                          checked={
+                            participants.filter(participant => participant.checked === true).length ===
+                            participants.length
+                          }
+                          onChange={e => {
+                            let checked = e.target.checked
+                            setParticipants(
+                              participants.map(participant => {
+                                return {
+                                  ...participant,
+                                  checked: checked
+                                }
+                              })
+                            )
+                          }}
+                        />
+                      }
+                      label='All'
+                    />
                   </TableCell>
                   <TableCell align='center'>NIP</TableCell>
                   <TableCell align='center'>Name</TableCell>
@@ -155,9 +233,9 @@ const EditProject = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {datas.map(data => (
+                {participants.map(user => (
                   <TableRow
-                    key={data.name}
+                    key={user.name}
                     sx={{
                       '&:last-of-type td, &:last-of-type th': {
                         border: 0
@@ -165,15 +243,34 @@ const EditProject = () => {
                     }}
                   >
                     <TableCell align='left'>
-                      <FormControlLabel control={<Checkbox />} label='' />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={user.checked}
+                            onChange={e => {
+                              let checked = e.target.checked
+                              setParticipants(
+                                participants.map(participant => {
+                                  if (participant.id === user.id) {
+                                    participant.checked = checked
+                                  }
+
+                                  return participant
+                                })
+                              )
+                            }}
+                          />
+                        }
+                        label=''
+                      />
                     </TableCell>
-                    <TableCell align='center'>{data.nip}</TableCell>
+                    <TableCell align='center'>{user.nip}</TableCell>
                     <TableCell component='th' scope='row' align='center'>
-                      {data.name}
+                      {user.name}
                     </TableCell>
-                    <TableCell align='center'>{data.projek}</TableCell>
+                    <TableCell align='center'>{user.UserProject.length}</TableCell>
                     <TableCell component='th' scope='row' align='center'>
-                      {data.tugas}
+                      {user.taskToDo.length}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -184,12 +281,8 @@ const EditProject = () => {
 
         <Divider sx={{ margin: 0 }} />
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-          <Button  size='large'
-            type='submit'
-            sx={{ mr: 2 }}
-            variant='contained' 
-            href='/edit-project-task'>
-            Next
+          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleAddParticipant}>
+            Add Participant
           </Button>
         </CardActions>
       </form>
@@ -197,4 +290,4 @@ const EditProject = () => {
   )
 }
 
-export default EditProject 
+export default EditProject
