@@ -197,11 +197,13 @@ const CreateProject = props => {
                 id='form-layouts-separator-select'
                 labelId='form-layouts-separator-select-label'
               >
-                {props.users.map(user => (
-                  <MenuItem key={user.id} value={user.id}>
-                    {user.name}
-                  </MenuItem>
-                ))}
+                {props.users
+                  .filter(user => user.role === 'admin')
+                  .map(user => (
+                    <MenuItem key={user.id} value={user.id}>
+                      {user.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
