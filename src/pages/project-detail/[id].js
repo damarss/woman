@@ -33,6 +33,7 @@ import { useEffect, useState } from 'react'
 import prisma from 'src/pages/db'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import axios from '../api/axios'
 
 const CardBasic = ({ data }) => {
   const [project, setProject] = useState(JSON.parse(data))
@@ -52,7 +53,16 @@ const CardBasic = ({ data }) => {
       reverseButtons: true
     }).then(result => {
       if (result.isConfirmed) {
-        Swal.fire('', 'Project has been deleted. Press "OK" to continue.', 'success')
+        axios
+          .delete(`/project/${project.id}`)
+          .then(res => {
+            Swal.fire('Deleted', 'Project has been deleted. Press "OK" to continue.', 'success')
+
+            router.push('/project')
+          })
+          .catch(err => {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error')
+          })
       } else if (
         /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
