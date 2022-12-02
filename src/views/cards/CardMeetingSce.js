@@ -9,7 +9,7 @@ import CardContent from '@mui/material/CardContent'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 import ClockOutline from 'mdi-material-ui/ClockOutline'
 
-const CardSupport = () => {
+const CardSupport = props => {
   return (
     <Card>
       <CardContent
@@ -28,14 +28,15 @@ const CardSupport = () => {
           <ClockOutline sx={{ fontSize: '2rem' }} />
         </Avatar>
         <Typography variant='body2' sx={{ marginBottom: 2.75 }}>
-          12-11-2022
+          {new Date(props.meet.date).toLocaleDateString()}
         </Typography>
-        <Typography variant='h2' sx={{ marginBottom: 6 }}>
-          10:00
+        <Typography variant='h4' sx={{ marginBottom: 6 }}>
+          {new Date(props.meet.date).toLocaleTimeString()}
         </Typography>
-        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+        <a style={{textDecoration: 'none'}} href={props.meet.link}><Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
           Join Meeting
-        </Button>
+        </Button></a>
+        
       </CardContent>
     </Card>
   )
