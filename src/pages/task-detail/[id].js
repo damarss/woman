@@ -53,8 +53,9 @@ export async function getServerSideProps(context) {
       user: true
     }
   })
+  console.log(task.userId)
 
-  if ((task.project.projectLeaderId || task.userId) !== token.uid && token.role !== 'admin') {
+  if (((task.project.projectLeaderId !== token.uid) && (task.userId !== token.uid)) && (token.role !== 'admin')) {
     return {
       redirect: {
         destination: '/401',

@@ -84,9 +84,8 @@ const CardTaskFileContent = props => {
         </Link>
         
         <Divider sx={{ marginTop: 10, marginBottom: 6.75 }} /> */}
-
+        {props.userInfo.idUser === props.userInfo.task.project.projectLeaderId  && (
         <Box style={{ display: 'flex', justifyContent: 'space-around' }}>
-        {props.userInfo.idUser === props.userInfo.task.userId  && (
           <Button
             type='submit'
             variant='contained'
@@ -94,12 +93,11 @@ const CardTaskFileContent = props => {
             style={{ marginRight: 3 }}
           >
             Revise
-          </Button>)}
-          {props.userInfo.idUser === props.userInfo.task.project.projectLeaderId  && (
+          </Button>
           <Button type='submit' variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
             Accept
-          </Button>)}
-        </Box>
+          </Button>
+        </Box>)}
       </CardContent>
       <CardActions className='card-action-dense'>
         {/* <Button>Location</Button>
