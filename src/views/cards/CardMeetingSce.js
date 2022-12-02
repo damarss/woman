@@ -19,18 +19,18 @@ const CardSupport = props => {
   let link
   if (props.meet) {
     date = new Date(props.meet.date).toLocaleDateString()
-    time = new Date(props.meet.date).toLocaleTimeString()
+    time = new Date(props.meet.date)
     link = props.meet.link
   } else {
     date = 'No Upcoming Meeting'
   }
 
   return (
-    <Card>
+    <Card sx={{minHeight:300}}>
       {date !== 'No Upcoming Meeting' ? (
         <a style={{ textDecoration: 'none', display: 'flex', justifyContent: 'end', margin: 10 }} href={link}>
           <Avatar
-            sx={{ width: 30, height: 30, marginBottom: 2.25, color: 'common.white', backgroundColor: 'primary.main' }}
+            sx={{ width: 30, height: 30, marginBottom: 0, color: 'common.white', backgroundColor: 'primary.main' }}
           >
             <InformationOutline sx={{ fontSize: '2rem' }} />
           </Avatar>
@@ -42,8 +42,8 @@ const CardSupport = props => {
           textAlign: 'center',
           alignItems: 'center',
           flexDirection: 'column',
-          minHeight: 300,
-          padding: theme => `${theme.spacing(9.75, 5, 9.25)} !important`
+          minHeight: 200,
+          padding: theme => `${theme.spacing(0, 0, 9.25)} !important`
         }}
       >
         <Avatar
@@ -55,9 +55,8 @@ const CardSupport = props => {
           {date}
         </Typography>
         <Typography variant='h4' sx={{ marginBottom: 6 }}>
-          {time}
+          {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
         </Typography>
-        
           <a style={{ textDecoration: 'none', display: date !== 'No Upcoming Meeting' ? 'block': 'none' }} href={link}>
             <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
               Join Meeting
