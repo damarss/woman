@@ -39,7 +39,7 @@ const Dashboard = ({ data }) => {
           </Card>
         </Grid>
         <Grid item xs={12} md={4}>
-          <CardMeetingSce />
+          <CardMeetingSce meet={dashboard.meet}/>
         </Grid>
       </Grid>
     </ApexChartWrapper>
@@ -76,7 +76,56 @@ export async function getServerSideProps(context) {
     }
   })
 
-  const data = { projects: [...projects], tasks: [...tasks] }
+  const meet = await prisma.userMeet.findMany({
+    where: {
+      userId: token.uid
+    },
+    include: {
+      meet: true
+    }
+  })
+
+  const dateMeet = []
+
+  meet.forEach(date => {
+    dateMeet.push({
+      date: date.meet.startDate,
+      link: date.meet.link
+    })
+  })
+  const target = new Date()
+
+  function nearestDate (dates, target) {
+    if (!target) {
+      target = Date.now()
+    } else if (target instanceof Date) {
+      target = target
+    }
+  
+    let nearest = Infinity
+    let winner = -1
+  
+    dates.forEach(function (date, index) {
+      if (date.date instanceof Date) {
+        date = date.date
+      }
+      if (date > target){
+        let distance = Math.abs(date - target)
+      if (distance < nearest) {
+        nearest = distance
+        winner = index
+      }
+      }
+    })
+  
+    return winner
+  }
+
+  const nearestDates = dateMeet[nearestDate(dateMeet)]
+  console.log(nearestDates)
+
+  const data = { projects: [...projects], tasks: [...tasks], meet: nearestDates }
+  console.log(data)
 
   return {
     props: {

@@ -26,7 +26,6 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
 import { useEffect, useRef, useState } from 'react'
 import axios from 'src/pages/api/axios'
-import Swal from 'sweetalert2'
 
 const CardCommentPageTask = props => {
   const [currentComment, setCurrentComment] = useState('')
@@ -47,20 +46,9 @@ const CardCommentPageTask = props => {
 
         if (res.status === 200) {
           setComments([...comments, res.data.data])
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Comment has been added'
-          })
         }
       })
-      .catch(err => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: err.response.data.message
-        })
-      })
+      .catch(err => {})
   }
 
   useEffect(() => {

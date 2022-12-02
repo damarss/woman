@@ -45,7 +45,7 @@ const CardMembership = props => {
           <Grid item xs={12} sm={5} md={4} lg={3}>
             <StyledBox>
               <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-                <Typography variant='body2'>Meeting End</Typography>
+                <Typography variant='body2'>Meeting Start</Typography>
               </Box>
               <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
                 <Typography variant='body2'>Meeting End</Typography>

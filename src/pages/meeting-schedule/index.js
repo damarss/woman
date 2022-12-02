@@ -22,31 +22,32 @@ import {
   AppointmentForm,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-// ** Demo Components Imports
-const schedulerData = [
-  { startDate: '2022-11-11T09:30', endDate: '2022-11-11T11:00', title: 'Meeting Ketiga' },
-  { startDate: '2022-11-12T12:00', endDate: '2022-11-12T13:30', title: 'Meeting Keempat' },
-  { startDate: '2022-11-10T15:00', endDate: '2022-11-10T18:00', title: 'Meeting Kedua' },
-  { startDate: '2022-11-09T14:00', endDate: '2022-11-09T16:00', title: 'Meeting Perdana' },
-  { startDate: '2022-11-07T11:00', endDate: '2022-11-07T15:00', title: 'Rencana Proyek' },
-  { startDate: '2022-11-08T10:00', endDate: '2022-11-08T16:00', title: 'Inisiasi Proyek' },
-];
-
 const Meeting = ({data}) => {
   const [currentDate, setCurrentDate] = useState(new Date);
   const currentDateChange = (currentDate) => { setCurrentDate(currentDate); };
   const [meet, setMeet] = useState([])
 
+
   useEffect(() => {
     setMeet(JSON.parse(data))
     console.log(JSON.parse(data))
-    console.log(schedulerData)
   }, [data])
+
+  const meetView = []
+
+  meet.forEach(meet => {
+    meetView.push({
+      startDate: meet.startDate,
+      endDate: meet.endDate,
+      location: meet.description,
+      title: meet.title
+    })
+  })
 
   return (
     <Paper>
       <Scheduler
-        data={meet}
+        data={meetView}
         height={660}
       >
         <ViewState
@@ -54,8 +55,8 @@ const Meeting = ({data}) => {
           onCurrentDateChange={currentDateChange}
         />
         <WeekView
-          startDayHour={9}
-          endDayHour={19}
+          startDayHour={7}
+          endDayHour={21}
         />
         <Toolbar />
         <DateNavigator />

@@ -22,5 +22,19 @@ code:not([class*='language-']):after {
 code[class*='language-'] {
   padding: 0;
 }
+.swal2-container {
+  z-index: 100000 !important;
+}
+::ng-deep.swal2-container {
+  z-index: 1000000;
+}
+.swal-overlay  
+{
+    z-index: 100000000000 !important;   
+}
+.FileResult:hover{
+  color: #737373;
+  transition: 0.1s ease-in-out;
+}
 
 

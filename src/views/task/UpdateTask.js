@@ -62,7 +62,7 @@ const rows = [
   }
 ]
 
-const UpdateTask = () => {
+const UpdateTask = (props) => {
   const [date, setDate] = useState(null)
 
   const [Open, setOpen] = useState(false)
@@ -77,7 +77,7 @@ const UpdateTask = () => {
       <Modal open={Open} onClose={handleClose}>
         <Card sx={style}>
           {/* form edit task */}
-          <form onSubmit={e => e.preventDefault()}>
+          <form onSubmit={props.action}>
             <CardContent>
               <Typography variant='h6'>Update Task</Typography>
               <br></br>

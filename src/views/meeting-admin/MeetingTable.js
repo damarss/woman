@@ -94,7 +94,7 @@ const MeetingTable = (props) => {
             {props.data.map(row => (
               <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell align='left'>
-                  <Link href={`/meeting-detail/${row.id}`}>
+                  <Link href={`/meeting-admin-detail/${row.id}`}>
                     <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
                   </Link>
                 </TableCell>

@@ -86,7 +86,7 @@ const AppBarContent = props => {
             </Typography>
           </Box>
         ) : null}
-        {route.asPath === '/projec-detail/' ? (
+        {route.asPath.indexOf('/project-detail/') !== -1 ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
@@ -102,37 +102,37 @@ const AppBarContent = props => {
           >
             <TextBoxMultipleOutline />
             <Typography variant='h6' sx={{ marginLeft: 3 }}>
-              Create Project-Step 1
+              Create Project
             </Typography>
           </Box>
         ) : null}
-        {route.asPath === '/create-project-task/' ? (
+        {route.asPath.indexOf('/create-project-task/') !== -1 ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
             <TextBoxMultipleOutline />
             <Typography variant='h6' sx={{ marginLeft: 3 }}>
-              Create Project-Step 2
+              Add Task
             </Typography>
           </Box>
         ) : null}
-        {route.asPath === '/edit-project/' ? (
+        {route.asPath.indexOf('/edit-project/') !== -1 ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
             <TextBoxMultipleOutline />
             <Typography variant='h6' sx={{ marginLeft: 3 }}>
-              Change Project-Step 1
+              Edit Project
             </Typography>
           </Box>
         ) : null}
-        {route.asPath === '/edit-project-task/' ? (
+        {route.asPath.indexOf('/edit-project-task/') !== -1 ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
             <TextBoxMultipleOutline />
             <Typography variant='h6' sx={{ marginLeft: 3 }}>
-              Change Project-Step 2
+              Edit Task
             </Typography>
           </Box>
         ) : null}
@@ -146,7 +146,7 @@ const AppBarContent = props => {
             </Typography>
           </Box>
         ) : null}
-        {route.asPath === '/task-detail/' ? (
+        {route.asPath.indexOf('/task-detail/') !== -1 ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
@@ -166,7 +166,7 @@ const AppBarContent = props => {
             </Typography>
           </Box>
         ) : null}
-        {route.asPath === '/edit-task/' ? (
+        {route.asPath.indexOf('/edit-task/') !== -1 ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
@@ -176,7 +176,7 @@ const AppBarContent = props => {
             </Typography>
           </Box>
         ) : null}
-        {route.asPath === '/meeting/' ? (
+        {route.asPath === '/meeting-schedule/' ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
@@ -200,13 +200,13 @@ const AppBarContent = props => {
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
-            <VideoOutline />
+            <MessageVideo />
             <Typography variant='h6' sx={{ marginLeft: 3 }}>
               Create Meeting
             </Typography>
           </Box>
         ) : null}
-        {route.asPath === '/edit-meeting/' ? (
+        {route.asPath.indexOf('/edit-meeting/') !== -1 ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
@@ -216,7 +216,7 @@ const AppBarContent = props => {
             </Typography>
           </Box>
         ) : null}
-        {route.asPath === '/meeting-detail/' ? (
+        {route.asPath.indexOf('/meeting-admin-detail/') !== -1 ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
@@ -233,6 +233,26 @@ const AppBarContent = props => {
             <AccountGroupOutline />
             <Typography variant='h6' sx={{ marginLeft: 3 }}>
               Members
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/add-people/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <AccountGroupOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Add Members
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath.indexOf('/edit-people/') !== -1 ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <AccountGroupOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Edit Members
             </Typography>
           </Box>
         ) : null}

@@ -99,7 +99,7 @@ const CreateMeeting = props => {
           icon: 'success',
           confirmButtonColor: '#68B92E',
           confirmButtonText: 'OK'
-        })
+        })        
       }
     } catch (error) {
       Swal.fire({
@@ -129,7 +129,7 @@ const CreateMeeting = props => {
                 fullWidth
                 label='Meeting Title'
                 placeholder='Title'
-                defaultValue={values.m_title}
+                value={values.m_title}
                 onChange={handleChange('m_title')}
               />
             </Grid>
@@ -138,7 +138,7 @@ const CreateMeeting = props => {
                 fullWidth
                 label='Meeting Place'
                 placeholder='zoom/'
-                defaultValue={values.m_link}
+                value={values.m_link}
                 onChange={handleChange('m_link')} />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
@@ -191,7 +191,7 @@ const CreateMeeting = props => {
                 minRows={3}
                 label='Meeting Description'
                 placeholder='Description'
-                defaultValue={values.m_description}
+                value={values.m_description}
                 onChange={handleChange('m_description')} />
             </Grid>
           </Grid>
@@ -208,7 +208,7 @@ const CreateMeeting = props => {
                       control={
 
                         <Checkbox
-                          defaultChecked
+                          // defaultChecked
                           checked={
                             participants.filter(participant => participant.checked === true).length ===
                             participants.length

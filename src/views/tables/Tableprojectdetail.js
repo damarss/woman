@@ -12,11 +12,14 @@ import TableContainer from '@mui/material/TableContainer'
 import Link from '@mui/material/Link'
 
 const statusObj = {
-  0: { color: 'default', status: 'Assign' },
-  1: { color: 'error', status: 'Revision' },
-  2: { color: 'primary', status: 'Turned In' },
-  3: { color: 'warning', status: 'Done' },
-  4: { color: 'success', status: 'Approved' }
+  0: { color: 'secondary', status: 'Assigned' },
+  1: { color: 'info', status: 'On Progress' },
+  2: { color: 'warning', status: 'Turned In' },
+  3: { color: 'primary', status: 'Revision' },
+  4: { color: 'success', status: 'Done' },
+  5: { color: 'error', status: 'Late' },
+  6: { color: 'warning', status: 'Turned In Late' },
+  7: { color: 'success', status: 'Done Late' }
 }
 
 const priorities = ['Low', 'Medium', 'High']
