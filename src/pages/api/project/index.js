@@ -1,5 +1,6 @@
 import prisma from '../../db'
 import Gmail, { mailOptions } from 'src/services/Gmail'
+import { sendMailProjectCreated } from 'src/services/sendEmail'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -45,19 +46,22 @@ export default async function handler(req, res) {
         }
       })
       mailOptions.subject = title
-      mailOptions.html = `<p>Anda telah ditambahkan ke dalam project ${title} untuk tanggal ${new Date(
-        startdate
-      ).toLocaleDateString()} hingga tanggal ${new Date(enddate).toLocaleDateString()}.
-      <br />
-      Informasi mengenai projet dapat dilihat di <a href='${process.env.BASE_URL}/project-detail/'>link ini</a></p>` 
+      mailOptions.title = title
+      mailOptions.description = description
+      mailOptions.startdate = new Date(startdate).toLocaleDateString('id-ID')
+      mailOptions.enddate = new Date(enddate).toLocaleDateString('id-ID')
+      mailOptions.link = `${process.env.BASE_URL}/project-detail/${project.id}`
 
-      Gmail.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error)
-        } else {
-          console.log('Email sent: ' + info.response)
-        }
-      })
+
+      // Gmail.sendMail(mailOptions, function (error, info) {
+      //   if (error) {
+      //     console.log(error)
+      //   } else {
+      //     console.log('Email sent: ' + info.response)
+      //   }
+      // })
+
+      sendMailProjectCreated(mailOptions)
 
       return res.status(201).json({ success: true, data: project })
     } catch (error) {

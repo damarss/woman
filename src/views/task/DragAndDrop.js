@@ -53,12 +53,12 @@ const DragAndDrop = () => {
           <span className='flex justify-center items-center bg-white text-[12px] mb-1 text-red-500'>{message}</span>
           <div
             style={{ display: showUpload ? 'flex' : 'none' }}
-            className='h-32 w-full relative border-2 flex justify-center items-center rounded-md cursor-pointer border-gray-400 border-solid'
+            className='h-32 w-full relative border-2 flex justify-center items-center rounded-md border-gray-400 border-solid'
           >
             <input
               type='file'
               onChange={handleFile}
-              className='h-full w-full bg-green-200 opacity-0 z-10 absolute'
+              className='h-full w-full bg-green-200 opacity-0 z-10 absolute cursor-pointer'
               ref={refParam => inputRef = refParam}
             />
             <div className='h-full w-full absolute z-1 flex justify-center items-center top-0 cursor-pointer'>

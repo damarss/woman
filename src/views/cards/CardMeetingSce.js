@@ -19,7 +19,7 @@ const CardSupport = props => {
   } else {
     date = 'Not Found';
   }
-
+  
   return (
     <Card>
       <CardContent
@@ -46,10 +46,9 @@ const CardSupport = props => {
         <a style={{textDecoration: 'none'}} href={link}><Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
           Join Meeting
         </Button></a>
-        
       </CardContent>
     </Card>
-  )
+  )      
 }
 
 export default CardSupport
