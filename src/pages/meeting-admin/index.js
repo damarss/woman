@@ -17,6 +17,7 @@ const MeetingPage = ({data}) => {
     setMeet(JSON.parse(data))
     console.log(JSON.parse(data))
   }, [])
+  
   return (
     <>
       <MeetingTable data={meet}/>
@@ -36,9 +37,16 @@ export async function getServerSideProps(context) {
     }
   }
 
-  const meet = await prisma.meet.findMany()
+  if (token.role !== 'admin') {
+    return {
+      redirect: {
+        destination: '/401',
+        permanent: false
+      }
+    }
+  }
 
-  console.log(meet)
+  const meet = await prisma.meet.findMany()
 
   return {
     props: {

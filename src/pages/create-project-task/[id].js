@@ -3,7 +3,6 @@ import { getToken } from 'next-auth/jwt'
 import { useState } from 'react'
 import prisma from 'src/pages/db'
 
-
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -19,7 +18,7 @@ const CreateProjectTaskPage = ({ data }) => {
 
   return (
     <>
-        <CreateProjectTask data={project}/>
+      <CreateProjectTask data={project} />
     </>
   )
 }
@@ -54,8 +53,6 @@ export async function getServerSideProps(context) {
       }
     }
   })
-
-  console.log(project)
 
   return {
     props: {

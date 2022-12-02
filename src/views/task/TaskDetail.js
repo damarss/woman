@@ -145,16 +145,16 @@ const TaskDetailPage = props => {
               {props.task.task.description}
             </Grid>
           </Grid>
-          <Grid item container xs={12} sx={{ marginX: 5, marginTop: 5 }} spacing={6}>
-            <Grid item xs={12} md={8} lg={8} sx={{ paddingRight: 0 }}>
+          <Grid container xs={12} sx={{ marginX: 5, marginTop: 5 }} spacing={6}>
+            <Grid item xs={12} md={8} lg={8} sx={{ paddingLeft: 0 }}>
               <CardComment comments={props.task} />
             </Grid>
-            <Grid item xs={12} md={4} lg={4} sx={{ paddingRight: 0 }}>
+            <Grid item xs={12} md={4} lg={4} sx={{ paddingLeft: 0 }}>
               <CardTaskFile title='Result'/>
             </Grid>
           </Grid>
           {/* Admin */}
-          <Grid item container xs={12} sm={12} md={12} sx={{ marginX: 10, marginTop: 2, marginBottom: 8 }}>
+          <Grid item container xs={12} sm={12} md={12} sx={{ marginX: 5, marginTop: 2, marginBottom: 8 }}>
             <Box sx={{ display: 'flex', justifyContent: 'start' }}>
               <Button
                 size='medium'
