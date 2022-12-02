@@ -17,6 +17,7 @@ const MeetingPage = ({data}) => {
     setMeet(JSON.parse(data))
     console.log(JSON.parse(data))
   }, [])
+  
   return (
     <>
       <MeetingTable data={meet}/>
