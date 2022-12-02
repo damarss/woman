@@ -58,14 +58,12 @@ const TaskHome = props => {
             {props.tasks.map(row => (
               <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
-                  <Link onClick={e => router.push(`/task-detail/${row.id}`)}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                      <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
-                    </Box>
+                  <Link onClick={e => router.push(`/task-detail/${row.id}`)} sx={{ cursor: 'pointer' }}>
+                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <Link onClick={e => router.push(`/project-detail/${row.project.id}`)}>
+                  <Link onClick={e => router.push(`/project-detail/${row.project.id}`)} sx={{ cursor: 'pointer' }}>
                     <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
                       {row.project.title}
                     </Typography>
