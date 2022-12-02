@@ -1,5 +1,6 @@
 import prisma from '../../db'
 import Gmail, { mailOptions } from 'src/services/Gmail'
+import { sendMailMeetCreated}  from 'src/services/sendEmail'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -46,31 +47,34 @@ export default async function handler(req, res) {
             return participant.email
           }
         })
-        mailOptions.subject = title
-        mailOptions.html = `<p>Anda telah ditambahkan ke dalam Meeeting ${title} untuk tanggal ${new Date(
-          startDate
-        ).toLocaleDateString()} sampai pukul ${new Date(endDate).toLocaleDateString()} menit.
-        <br />
-        Informasi mengenai meeting dapat dilihat di <a href='${process.env.BASE_URL}/meeting/'>link ini</a></p>`
 
-        Gmail.sendMail(mailOptions, function (error, info) {
-          if (error) {
-            console.log(error)
-          } else {
-            console.log('Email sent: ' + info.response)
-          }
-        })
+        mailOptions.subject = title 
+        mailOptions.title = title
+        mailOptions.description = description
+        mailOptions.startdate = new Date(startDate).toLocaleDateString('id-ID')
+        mailOptions.starttime = new Date(startDate).getHours()+':'+(new Date(startDate).getMinutes() < 10 ? '0' : '') + new Date(endDate).getMinutes()
+        mailOptions.endtime = new Date(endDate).getHours()+':'+(new Date(endDate).getMinutes() < 10 ? '0' : '') + new Date(endDate).getMinutes()
+        mailOptions.enddate = new Date(endDate).toLocaleDateString('id-ID')
+        mailOptions.link = link 
+        mailOptions.duration = duration
+        mailOptions.userId = userId 
 
-        res.status(201).json({ success: true, data: meet })
-      } catch (error) {
-        console.log(error)
+        // Gmail.sendMail(mailOptions, function (error, info) {
+        //   if (error) {
+        //     console.log(error)
+        //   } else {
+        //     console.log('Email sent: ' + info.response)
+        //   }
+        // })
 
-        return res.status(400).json({ success: false })
-      }
+        sendMailMeetCreated(mailOptions)
+      return res.status(201).json({ success: true, data: meet })
+    } catch (error) {
+      console.log(error)
 
-      break
-    default:
-      res.setHeader('Allow', ['GET', 'POST'])
-      res.status(405).end(`Method ${method} Not Allowed`)
+      return res.status(400).json({ success: false })
+    }
+
+    return res.status(200).json({ success: true, data: req.body })
   }
 }

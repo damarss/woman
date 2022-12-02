@@ -39,7 +39,7 @@
                                                 <td style="padding-bottom: 20px;" align="center" valign="top"
                                                     class="imgHero">
                                                     <a href="#" style="text-decoration:none" target="_blank">
-                                                        <img alt="" border="0" src="img/logo.png"
+                                                        <img alt="" border="0" src={{logo}}
                                                             style="width:30%;max-width:600px;height:auto;display:block;color: #f9f9f9;"
                                                             width="0">
                                                     </a>
@@ -51,7 +51,8 @@
                                                     <h4 class="text"
                                                         style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:28px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">
                                                         <span>
-                                                            Lutfil Alfyandis Nugroho
+                                                            <!-- user name -->\
+                                                            {{userid}}
                                                         </span>
                                                     </h4>
                                                 </td>
@@ -72,7 +73,7 @@
                                                     <h3 class="text"
                                                         style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:28px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">
                                                         <span>
-                                                            Rapat Rutin Direktorat Import
+                                                            {{title}}
                                                         </span>
                                                     </h3>
                                                 </td>
@@ -84,7 +85,7 @@
                                                     <h2 class="text"
                                                         style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:28px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">
                                                         <span>
-                                                            12 April 2021, 10:00 - 11:00
+                                                            {{startdate}}, {{starttime}}- {{endtime}}
                                                         </span>
                                                     </h2>
                                                 </td>
@@ -117,7 +118,7 @@
                                                                         <tr>
                                                                             <td style="background-color: #EB891B; padding: 12px 35px; border-radius: 50px;"
                                                                                 align="center" class="ctaButton"> <a
-                                                                                    href="#"
+                                                                                    href={{link}}
                                                                                     style="color:#fff;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;font-style:normal;letter-spacing:1px;line-height:20px;text-transform:uppercase;text-decoration:none;display:block"
                                                                                     target="_blank" class="text">Join
                                                                                     Meeting</a>

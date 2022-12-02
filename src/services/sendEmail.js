@@ -41,4 +41,82 @@ const sendMailProjectCreated = async payload => {
   })
 }
 
-export { sendMailProjectCreated, mailOptions }
+const sendMailMeetCreated = async payload => {
+  const template = fs.readFileSync(path.resolve(__dirname, '../../../../src/views/email/email_rapat.html'), 'utf8')
+
+  payload.logo = 'cid:womanrpl@gmail.com'
+
+  const mail = {
+    to: payload.to,
+    from: payload.from,
+    subject: payload.subject,
+    html: mustache.render(template, { ...payload }),
+    attachments: [{
+      filename: 'logo.png',
+      path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
+      cid: 'womanrpl@gmail.com'
+    }]
+  }
+
+  Gmail.sendMail(mail, function (error, info) {
+    if (error) {
+      console.log(error)
+    } else {
+      console.log('Email sent: ' + info.response)
+    }
+  })
+}
+
+const sendMailTaskAssigned = async payload => {
+  const template = fs.readFileSync(path.resolve(__dirname, '../../../../src/views/email/email_task.html'), 'utf8')
+
+  payload.logo = 'cid:womanrpl@gmail.com'
+
+  const mail = {
+    to: payload.to,
+    from: payload.from,
+    subject: payload.subject,
+    html: mustache.render(template, { ...payload }),
+    attachments: [{
+      filename: 'logo.png',
+      path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
+      cid: 'womanrpl@gmail.com'
+    }]
+  }
+
+  Gmail.sendMail(mail, function (error, info) {
+    if (error) {
+      console.log(error)
+    } else {
+      console.log('Email sent: ' + info.response)
+    }
+  })
+}
+
+const sendMailTaskComment = async payload => {
+  const template = fs.readFileSync(path.resolve(__dirname, '../../../../src/views/email/email_task_comment.html'), 'utf8')
+
+  payload.logo = 'cid:womanrpl@gmail.com'
+
+  const mail = {
+    to: payload.to,
+    from: payload.from,
+    subject: payload.subject,
+    html: mustache.render(template, { ...payload }),
+    attachments: [{
+      filename: 'logo.png',
+      path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
+      cid: 'womanrpl@gmail.com'
+    }]
+  }
+
+  Gmail.sendMail(mail, function (error, info) {
+    if (error) {
+      console.log(error)
+    } else {
+      console.log('Email sent: ' + info.response)
+    }
+  })
+}
+
+export { sendMailProjectCreated, sendMailMeetCreated,sendMailTaskAssigned,sendMailTaskComment, Gmail, mailOptions }
