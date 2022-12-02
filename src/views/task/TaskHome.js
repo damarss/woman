@@ -10,6 +10,7 @@ import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
 import Link from '@mui/material/Link'
+import { useRouter } from 'next/dist/client/router'
 
 const statusObj = {
   0: { color: 'secondary', status: 'Assigned' },
@@ -25,6 +26,7 @@ const statusObj = {
 const priorities = ['Low', 'Medium', 'High']
 
 const TaskHome = props => {
+  const router = useRouter()
   return (
     <Card>
       <TableContainer>
@@ -56,14 +58,14 @@ const TaskHome = props => {
             {props.tasks.map(row => (
               <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
-                  <Link href={`/task-detail/${row.id}`}>
+                  <Link onClick={e => router.push(`/task-detail/${row.id}`)}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
                     </Box>
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <Link href={`/project-detail/${row.project.id}`}>
+                  <Link onClick={e => router.push(`/project-detail/${row.project.id}`)}>
                     <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
                       {row.project.title}
                     </Typography>
