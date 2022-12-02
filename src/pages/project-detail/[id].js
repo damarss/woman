@@ -29,11 +29,13 @@ import OfficeBuildingCog from 'mdi-material-ui//OfficeBuildingCog'
 // third party import
 import Swal from 'sweetalert2'
 import { getToken } from 'next-auth/jwt'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import prisma from 'src/pages/db'
+import { useSession } from 'next-auth/react'
 
 const CardBasic = ({ data }) => {
   const [project, setProject] = useState(JSON.parse(data))
+  const session = useSession()
 
   return (
     <Grid container spacing={6}>
@@ -61,7 +63,8 @@ const CardBasic = ({ data }) => {
       </Grid>
 
       {/* Admin */}
-      <Grid item xs={12} sm={12} md={12}>
+      {session.status === 'authenticated' && session.data.role === 'admin' && (
+        <Grid item xs={12} sm={12} md={12}>
         <Box sx={{ display: 'flex', justifyContent: 'start' }}>
           <Button
             size='medium'
@@ -102,6 +105,7 @@ const CardBasic = ({ data }) => {
           </Button>
         </Box>
       </Grid>
+      )}
     </Grid>
   )
 }
@@ -132,8 +136,6 @@ export async function getServerSideProps(context) {
       UserProject: true
     }
   })
-
-  console.log(project)
 
   return {
     props: {
