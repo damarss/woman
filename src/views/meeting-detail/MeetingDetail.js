@@ -29,18 +29,14 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 const CardMembership = props => {
   let startDate
-  let startTime
   let endDate
-  let endTime
   let link
   if (props.data) {
-    startDate = new Date(props.data.startDate).toLocaleDateString()
-    startTime = new Date(props.data.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-    endDate = new Date(props.data.endDate).toLocaleDateString()
-    endTime = new Date(props.data.endDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    startDate = new Date(props.data.startDate).toLocaleDateString() + " " + new Date(props.data.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    endDate = new Date(props.data.endDate).toLocaleDateString() + " " + new Date(props.data.endDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     link = props.data.link
   } else {
-    date = 'No Upcoming Meeting'
+    
   }
 
   const [listName, setListName] = useState('')
@@ -79,16 +75,18 @@ const CardMembership = props => {
           </Grid>
           <Grid item xs={12} sm={7} md={8} lg={9}>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>{startDate} {startTime}</Typography>
+              <Typography variant='body2'>{startDate}</Typography>
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>{endDate} {endTime}</Typography>
+              <Typography variant='body2'>{endDate}</Typography>
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
               <Typography variant='body2'>{props.data.description}</Typography>
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>{props.data.link}</Typography>
+              <a style={{ textDecoration: 'none'}} href={link}>
+                <Typography variant='body2'>{link}</Typography>
+              </a>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant='body2'>{listName}</Typography>
