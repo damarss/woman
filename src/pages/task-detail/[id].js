@@ -15,16 +15,6 @@ import CardStatisticsVerticalComponent from 'src/@core/components/card-statistic
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
-// ** Demo Components Imports
-import TaskHome from 'src/views/task/TaskHome'
-import Trophy from 'src/views/dashboard/Trophy'
-import TotalEarning from 'src/views/dashboard/TotalEarning'
-import StatisticsCard from 'src/views/dashboard/StatisticsCard'
-import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
-import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
-import SalesByCountries from 'src/views/dashboard/SalesByCountries'
-import Tugas from 'src/views/dashboard/Tugas'
-import Typography from 'src/@core/theme/typography'
 import TaskDetail from 'src/views/task/TaskDetail'
 
 // ** Third Party Styles Imports
@@ -59,6 +49,15 @@ export async function getServerSideProps(context) {
       id: parseInt(context.params.id)
     }
   })
+
+  if (task.userId !== token.uid && token.role !== 'admin') {
+    return {
+      redirect: {
+        destination: '/401',
+        permanent: false
+      }
+    }
+  }
 
   const comments = await prisma.taskComment.findMany({
     where: {

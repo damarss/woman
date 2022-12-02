@@ -42,7 +42,7 @@ const CardTaskFileContent = props => {
       <CardHeader title={props.title} sx={{ textAlign: 'center', backgroundColor: 'primary.main', paddingY: 3 }} />
       <CardContent sx={{ textAlign: 'center' }}>
         {/* BUAT UPLOAD FILE */}
-        {/* <DragAndDrop /> */}
+        <DragAndDrop />
 
         {/* JIKA FILE SUDAH TURNED IN */}
         {/* <Typography variant='body2' sx={{ marginTop: 4 }}>
@@ -75,14 +75,14 @@ const CardTaskFileContent = props => {
 
         {/* Jika Sudah Ada File Submit */}
         <br></br>
-        <Link href='#' sx={{ color: '#171717' }} className='FileResult'>
+        {/* <Link href='#' sx={{ color: '#171717' }} className='FileResult'>
           <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh', fontSize: 50, marginTop: 1 }} />
           <Typography sx={{ marginBottom: 5 }} variant='body2'>
             File name
           </Typography>
         </Link>
         
-        <Divider sx={{ marginTop: 10, marginBottom: 6.75 }} />
+        <Divider sx={{ marginTop: 10, marginBottom: 6.75 }} /> */}
 
         <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Button
