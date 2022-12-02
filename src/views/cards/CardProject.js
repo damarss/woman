@@ -82,7 +82,7 @@ const CardMembership = props => {
             <Box>
               <Box sx={{ mb: 3.5, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
                 <Typography variant='h6' sx={{ lineHeight: 1, fontWeight: 600, fontSize: '3.75rem !important' }}>
-                  {props.project.progress}%
+                  {Math.round(Number(props.project.progress))}%
                 </Typography>
               </Box>
               <Typography variant='body2' sx={{ mb: 13.75, display: 'flex', flexDirection: 'column' }}>
