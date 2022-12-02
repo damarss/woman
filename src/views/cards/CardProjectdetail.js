@@ -34,14 +34,14 @@ const CardNavigation = props => {
     <Card>
       <TabContext value={value}>
         <TabList onChange={handleChange} aria-label='card navigation example'>
-          <Tab value='1' label='Project Detail' />
+          <Tab value='1' label='Info' />
           <Tab value='2' label='Timeline' />
-          <Tab value='3' label='Project Description' />
+          <Tab value='3' label='Description' />
         </TabList>
         <CardContent>
           <TabPanel value='1' sx={{ p: 0 }}>
             <Typography variant='h6' sx={{ marginBottom: 2 }}>
-              Project Detail
+            {props.project.title}
             </Typography>
             <Typography variant='body2' sx={{ marginBottom: 2, fontWeight: '600' }}>
               Team Leader : {props.project.projectLeader.name}
