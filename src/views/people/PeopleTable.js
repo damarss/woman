@@ -38,7 +38,7 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 
 import Swal from 'sweetalert2'
 
-import axios from 'src/pages/api/axios'
+
 
 const style = {
   position: 'absolute',
@@ -107,7 +107,6 @@ const PeopleTable = ({ rows }) => {
         Swal.fire({
           title: 'Edit People Failed',
           text: err.message,
-          icon: 'error',
           confirmButtonColor: '#d33',
           confirmButtonText: 'OK'
         })
@@ -156,6 +155,7 @@ const PeopleTable = ({ rows }) => {
   const [date, setDate] = useState(null)
 
   const [editOpen, setEditOpen] = useState(false)
+  // const handleEditOpen = () => setEditOpen(true)
   const handleEditOpen = () => setEditOpen(true)
   const handleEditClose = () => setEditOpen(false)
 
