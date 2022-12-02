@@ -29,7 +29,7 @@ const TaskHome = props => {
   const router = useRouter()
   return (
     <Card>
-      <TableContainer>
+      <TableContainer sx={{ height: '40vh', overflowY: 'auto' }}>
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
