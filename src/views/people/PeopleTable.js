@@ -124,6 +124,13 @@ const PeopleTable = ({ rows }) => {
 
   return (
     <Card>
+      <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
+        <Link passHref href='/add-people'>
+          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
+            Add People
+          </Button>
+        </Link>
+      </CardActions>
       <TableContainer>
         <Table sx={{ minWidth: 50 }} aria-label='table in dashboard'>
           <TableHead>
@@ -269,7 +276,7 @@ const PeopleTable = ({ rows }) => {
                             variant='contained'
                             onClick={() => {
                               setEditOpen(false)
-                              Swal.fire('', 'Task Updated Succesfully!', 'success')
+                              Swal.fire('', 'People Information Updated Succesfully!', 'success')
                             }}
                           >
                             Edit Task
@@ -308,14 +315,14 @@ const PeopleTable = ({ rows }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Divider sx={{ margin: 0 }} />
+      {/* <Divider sx={{ margin: 0 }} />
       <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
         <Link passHref href='/add-people'>
           <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
             Add People
           </Button>
         </Link>
-      </CardActions>
+      </CardActions> */}
     </Card>
   )
 }
