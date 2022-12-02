@@ -93,6 +93,7 @@ export async function getServerSideProps(context) {
       link: date.meet.link
     })
   })
+  
   const target = new Date()
 
   function nearestDate (dates, target) {

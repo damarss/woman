@@ -32,7 +32,8 @@ import { useState } from 'react'
 import prisma from 'src/pages/db'
 
 const CardBasic = ({ data }) => {
-  const [project, setProject] = useState(JSON.parse(data))
+  const [project, setProject] = useState(JSON.parse(data.data))
+  const isAdmin = data.role;
 
   return (
     <Grid container spacing={6}>
@@ -57,7 +58,8 @@ const CardBasic = ({ data }) => {
       </Grid>
 
       {/* Admin */}
-      <Grid item xs={12} sm={12} md={12}>
+      {isAdmin ? (
+        <Grid item xs={12} sm={12} md={12}>
         <Box sx={{ display: 'flex', justifyContent: 'start' }}>
           <Button
             size='medium'
@@ -95,6 +97,11 @@ const CardBasic = ({ data }) => {
           </Button>
         </Box>
       </Grid>
+      ) : (
+        <Box></Box>
+      )}
+
+      
     </Grid>
   )
 }
@@ -109,6 +116,14 @@ export async function getServerSideProps(context) {
         permanent: false
       }
     }
+  }
+
+
+  let users_role = false
+  if (token.role !== 'admin') {
+    users_role = false
+  } else {
+    users_role = true
   }
 
   const project = await prisma.project.findUnique({
@@ -130,7 +145,10 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      data: JSON.stringify(project)
+      data: {
+        data: JSON.stringify(project),
+        role: users_role
+      }
     }
   }
 }

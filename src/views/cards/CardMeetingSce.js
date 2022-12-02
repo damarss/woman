@@ -10,6 +10,16 @@ import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 import ClockOutline from 'mdi-material-ui/ClockOutline'
 
 const CardSupport = props => {
+
+  let date;
+  let link;
+  if (props.meet) {
+    date = new Date(props.meet.date).toLocaleTimeString();
+    link = props.meet.link;
+  } else {
+    date = 'Not Found';
+  }
+
   return (
     <Card>
       <CardContent
@@ -28,12 +38,12 @@ const CardSupport = props => {
           <ClockOutline sx={{ fontSize: '2rem' }} />
         </Avatar>
         <Typography variant='body2' sx={{ marginBottom: 2.75 }}>
-          {new Date(props.meet.date).toLocaleDateString()}
+          {date}
         </Typography>
         <Typography variant='h4' sx={{ marginBottom: 6 }}>
-          {new Date(props.meet.date).toLocaleTimeString()}
+          {date}
         </Typography>
-        <a style={{textDecoration: 'none'}} href={props.meet.link}><Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+        <a style={{textDecoration: 'none'}} href={link}><Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
           Join Meeting
         </Button></a>
         
