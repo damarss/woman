@@ -228,9 +228,9 @@ const CreateMeeting = props => {
                       }
                       label='All' />
                   </TableCell>
-                  <TableCell align='left'>Name</TableCell>
-                  <TableCell align='left'>NIP</TableCell>
-                  <TableCell align='left'>Number Of Meeting</TableCell>
+                  <TableCell align='center'>Name</TableCell>
+                  <TableCell align='center'>NIP</TableCell>
+                  <TableCell align='center'>Number Of Meeting</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

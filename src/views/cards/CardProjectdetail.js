@@ -43,13 +43,13 @@ const CardNavigation = props => {
             <Typography variant='h6' sx={{ marginBottom: 2 }}>
               Project Detail
             </Typography>
-            <Typography variant='body2' sx={{ marginBottom: 2 }}>
+            <Typography variant='body2' sx={{ marginBottom: 2, fontWeight: '600' }}>
               Team Leader : {props.project.projectLeader.name}
             </Typography>
-            <Typography variant='body2' sx={{ marginBottom: 2 }}>
+            <Typography variant='body2' sx={{ marginBottom: 2, fontWeight: '600' }}>
               Project Participant: {props.project.UserProject.length}
             </Typography>
-            <Typography variant='body2' sx={{ marginBottom: 2 }}>
+            <Typography variant='body2' sx={{ marginBottom: 2, fontWeight: '600' }}>
               Tasks: {props.project.Task.length}
             </Typography>
           </TabPanel>
@@ -69,7 +69,7 @@ const CardNavigation = props => {
                         color: 'success.main'
                       }}
                     >
-                      <Typography variant='body2'>Date Started</Typography>
+                      <Typography variant='body1'>Date Started</Typography>
                       <Typography variant='body2'>
                         {new Date(props.project.startdate).toLocaleDateString('id')}
                       </Typography>
@@ -87,7 +87,7 @@ const CardNavigation = props => {
                       textAlign: 'left'
                     }}
                   >
-                    <Typography variant='body2'>Date Finished</Typography>
+                    <Typography variant='body1'>Date Finished</Typography>
                     <Typography variant='body2'>{new Date(props.project.enddate).toLocaleDateString('id')}</Typography>
                   </Box>
                 </Grid>
@@ -106,7 +106,7 @@ const CardNavigation = props => {
                         textAlign: 'left'
                       }}
                     >
-                      <Typography variant='body2'>Time Left</Typography>
+                      <Typography variant='body1'>Time Left</Typography>
                       <Typography variant='body2'>
                         {Math.ceil((new Date(props.project.enddate) - new Date()) / (1000 * 3600 * 24))} days
                       </Typography>
@@ -124,7 +124,7 @@ const CardNavigation = props => {
                       textAlign: 'left'
                     }}
                   >
-                    <Typography variant='body2'>Duration</Typography>
+                    <Typography variant='body1'>Duration</Typography>
                     <Typography variant='body2'>
                       {Math.ceil((new Date() - new Date(props.project.startdate)) / (1000 * 3600 * 24))} days
                     </Typography>
@@ -137,8 +137,7 @@ const CardNavigation = props => {
             <Typography variant='h6' sx={{ marginBottom: 2 }}>
               Project Descriptions
             </Typography>
-            <Typography variant='body2' sx={{ marginBottom: 4 }}>
-              Project Description: <br />
+            <Typography variant='body2' sx={{ marginBottom: 4, height: 80, overflowY: 'scroll'}}>
               {props.project.description}
             </Typography>
           </TabPanel>

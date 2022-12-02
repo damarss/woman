@@ -1,3 +1,6 @@
+// ** React Imports
+import { useState } from 'react'
+
 // ** MUI Imports
 import Card from '@mui/material/Card'
 import Avatar from '@mui/material/Avatar'
@@ -7,6 +10,7 @@ import CardContent from '@mui/material/CardContent'
 
 // ** Icons Imports
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
+import InformationOutline from 'mdi-material-ui/InformationOutline'
 import ClockOutline from 'mdi-material-ui/ClockOutline'
 
 const CardSupport = props => {
@@ -18,11 +22,20 @@ const CardSupport = props => {
     time = new Date(props.meet.date).toLocaleTimeString()
     link = props.meet.link
   } else {
-    date = 'Not Found'
+    date = 'No Upcoming Meeting'
   }
 
   return (
     <Card>
+      {date !== 'No Upcoming Meeting' ? (
+        <a style={{ textDecoration: 'none', display: 'flex', justifyContent: 'end', margin: 10 }} href={link}>
+          <Avatar
+            sx={{ width: 30, height: 30, marginBottom: 2.25, color: 'common.white', backgroundColor: 'primary.main' }}
+          >
+            <InformationOutline sx={{ fontSize: '2rem' }} />
+          </Avatar>
+        </a>
+      ) : null}
       <CardContent
         sx={{
           display: 'flex',
@@ -44,9 +57,12 @@ const CardSupport = props => {
         <Typography variant='h4' sx={{ marginBottom: 6 }}>
           {time}
         </Typography>
-        <a style={{textDecoration: 'none'}} href={link}><Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
-          Join Meeting
-        </Button></a>
+        
+          <a style={{ textDecoration: 'none', display: date !== 'No Upcoming Meeting' ? 'block': 'none' }} href={link}>
+            <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+              Join Meeting
+            </Button>
+          </a>
       </CardContent>
     </Card>
   )
