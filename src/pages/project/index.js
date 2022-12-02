@@ -25,9 +25,6 @@ const Project = ({ data }) => {
 
   return (
     <Grid container spacing={6}>
-      <Grid item xs={12} sx={{ paddingBottom: 4 }}>
-        <Typography variant='h5'>My Project</Typography>
-      </Grid>
       {projects.length > 0 ? (
         projects.map(project => (
           <Grid key={project.project.id} item xs={12} md={6}>
@@ -63,7 +60,8 @@ export async function getServerSideProps(context) {
         project: {
           include: {
             projectLeader: true,
-            UserProject: true
+            UserProject: true,
+            Task: true
           }
         }
       }
@@ -77,7 +75,8 @@ export async function getServerSideProps(context) {
         project: {
           include: {
             projectLeader: true,
-            UserProject: true
+            UserProject: true,
+            Task: true
           }
         }
       }
@@ -92,6 +91,19 @@ export async function getServerSideProps(context) {
       projects.push(project)
     })
   }
+
+  projects.map(project => {
+    let done = 0
+
+    project.project.Task.map(task => {
+      if (task.status == 7) {
+        done++
+      }
+    })
+
+    project.project.progress =
+      (done / Number(project.project.Task.length)) * 100 ? (done / Number(project.project.Task.length)) * 100 : 0
+  })
 
   return {
     props: {
