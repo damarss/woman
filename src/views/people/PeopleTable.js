@@ -38,6 +38,8 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 
 import Swal from 'sweetalert2'
 
+import axios from 'src/pages/api/axios'
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -57,6 +59,8 @@ const statusObj = {
 }
 
 const PeopleTable = ({ rows }) => {
+  const router = useRouter()
+
   const [values, setValues] = useState({
     password: '',
     showPassword: false,
@@ -76,33 +80,66 @@ const PeopleTable = ({ rows }) => {
     event.preventDefault()
   }
 
-  const handleRegister = async e => {
-    e.preventDefault()
-
+  const handleEdit = async id => {
     const data = {
       name: values.name,
       nip: values.nip,
       email: values.email,
-      password: values.password
+      password: values.password,
+      id: values.id
     }
 
     axios
-      .post('auth/register', data)
+      .put(`user/${id}`, data)
       .then(res => {
         if (res.status === 200) {
           Swal.fire({
-            title: 'Add People Success',
+            title: 'Edit People Success',
+            text: 'Press OK to continue',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          })
+        }
+
+        router.push('/people')
+      })
+      .catch(err => {
+        Swal.fire({
+          title: 'Edit People Failed',
+          text: err.message,
+          icon: 'error',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        })
+      })
+  }
+
+  const handleDelete = async id => {
+    const data = {
+      name: values.name,
+      nip: values.nip,
+      email: values.email,
+      password: values.password,
+      id: values.id
+    }
+
+    axios
+      .delete(`user/${id}`, data)
+      .then(res => {
+        if (res.status === 200) {
+          Swal.fire({
+            title: 'Delete People Success',
             text: 'Press OK to continue',
             icon: 'success',
             confirmButtonText: 'Ok'
           })
 
-          router.push('/pages/login')
+          router.push('/people')
         }
       })
       .catch(err => {
         Swal.fire({
-          title: 'Add People Failed',
+          title: 'Delete People Failed',
           text: err.message,
           icon: 'error',
           confirmButtonColor: '#d33',
@@ -124,6 +161,13 @@ const PeopleTable = ({ rows }) => {
 
   return (
     <Card>
+      <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
+        <Link passHref href='/add-people'>
+          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
+            Add People
+          </Button>
+        </Link>
+      </CardActions>
       <TableContainer>
         <Table sx={{ minWidth: 50 }} aria-label='table in dashboard'>
           <TableHead>
@@ -262,16 +306,7 @@ const PeopleTable = ({ rows }) => {
                           >
                             Cancel
                           </Button>
-                          <Button
-                            size='large'
-                            type='submit'
-                            sx={{ mr: 2 }}
-                            variant='contained'
-                            onClick={() => {
-                              setEditOpen(false)
-                              Swal.fire('', 'Task Updated Succesfully!', 'success')
-                            }}
-                          >
+                          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleEdit}>
                             Edit Task
                           </Button>
                         </CardActions>
@@ -284,7 +319,7 @@ const PeopleTable = ({ rows }) => {
                     sx={{ mr: 1 }}
                     color='error'
                     variant='text'
-                    onClick={() => {
+                    onClick={e => {
                       Swal.fire({
                         title: 'Delete Member?',
                         text: 'Click "Delete Member" for Delete member',
@@ -295,7 +330,7 @@ const PeopleTable = ({ rows }) => {
                         confirmButtonText: 'Delete Member'
                       }).then(result => {
                         if (result.isConfirmed) {
-                          Swal.fire('', 'Member Deleted. Click "Ok" to continue', 'success')
+                          handleDelete(user.id)
                         }
                       })
                     }}
@@ -308,14 +343,14 @@ const PeopleTable = ({ rows }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Divider sx={{ margin: 0 }} />
+      {/* <Divider sx={{ margin: 0 }} />
       <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
         <Link passHref href='/add-people'>
           <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
             Add People
           </Button>
         </Link>
-      </CardActions>
+      </CardActions> */}
     </Card>
   )
 }

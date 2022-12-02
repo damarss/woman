@@ -57,7 +57,6 @@ export default async function handler(req, res) {
         mailOptions.enddate = new Date(endDate).toLocaleDateString('id-ID')
         mailOptions.link = link 
         mailOptions.duration = duration
-        mailOptions.userId = userId 
 
         // Gmail.sendMail(mailOptions, function (error, info) {
         //   if (error) {
@@ -68,6 +67,7 @@ export default async function handler(req, res) {
         // })
 
         sendMailMeetCreated(mailOptions)
+
       return res.status(201).json({ success: true, data: meet })
     } catch (error) {
       console.log(error)

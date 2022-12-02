@@ -44,6 +44,7 @@ export default async function handle(req, res) {
 
     return res.json(user)
   } else if (req.method === 'DELETE') {
+    console.log(id)
     try {
       const user = await prisma.user.delete({
         where: {
@@ -63,6 +64,7 @@ export default async function handle(req, res) {
         }
       }
 
+      console.log(err)
       
 
       return res.status(500).json({ message: 'Something went wrong' })
