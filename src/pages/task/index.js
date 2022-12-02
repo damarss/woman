@@ -16,7 +16,9 @@ import prisma from 'src/pages/db'
 import { getToken } from 'next-auth/jwt'
 
 const Task = ({ data }) => {
-  const [tasks, setTasks] = useState(JSON.parse(data))
+  const [tasks, setTasks] = useState(
+    JSON.parse(data).filter(task => new Date(task.duedate).toDateString() !== new Date().toDateString())
+    )
 
   const [todayTasks, setTodayTasks] = useState(
     JSON.parse(data).filter(task => new Date(task.duedate).toDateString() === new Date().toDateString())

@@ -56,7 +56,7 @@ const CardMembership = props => {
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <TrendingUp sx={{ color: 'primary.main', marginRight: 2.75 }} fontSize='small' />
-                  <Typography variant='body2'>Lifetime Free Update</Typography>
+                  <Typography variant='body2'>{props.project.Task.length} Task</Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -82,7 +82,7 @@ const CardMembership = props => {
             <Box>
               <Box sx={{ mb: 3.5, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
                 <Typography variant='h6' sx={{ lineHeight: 1, fontWeight: 600, fontSize: '3.75rem !important' }}>
-                  50%
+                  {Math.round(Number(props.project.progress))}%
                 </Typography>
               </Box>
               <Typography variant='body2' sx={{ mb: 13.75, display: 'flex', flexDirection: 'column' }}>

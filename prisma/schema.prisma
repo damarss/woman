@@ -38,9 +38,9 @@ model Meet {
 
 model UserMeet {
   id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId Int
-  meet   Meet @relation(fields: [meetId], references: [id])
+  meet   Meet @relation(fields: [meetId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   meetId Int
 }
 
@@ -51,7 +51,7 @@ model Project {
   enddate         DateTime      @db.Date
   description     String?       @db.LongText
   isArchived      Boolean       @db.TinyInt()
-  projectLeader   User          @relation("projectToLead", fields: [projectLeaderId], references: [id])
+  projectLeader   User          @relation("projectToLead", fields: [projectLeaderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   projectLeaderId Int
   UserProject     UserProject[]
   Task            Task[]
@@ -59,9 +59,9 @@ model Project {
 
 model UserProject {
   id        Int     @id @default(autoincrement())
-  user      User    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    Int
-  project   Project @relation(fields: [projectId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   projectId Int
 }
 
@@ -73,9 +73,9 @@ model Task {
   description String?       @db.LongText
   status      Int           @db.Int
   taskfile    String?       @db.VarChar(255)
-  project     Project       @relation(fields: [projectId], references: [id])
+  project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   projectId   Int
-  user        User          @relation("taskToDo", fields: [userId], references: [id])
+  user        User          @relation("taskToDo", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      Int
   TaskComment TaskComment[]
 }
@@ -83,9 +83,9 @@ model Task {
 model TaskComment {
   id      Int    @id @default(autoincrement())
   comment String @db.LongText
-  task    Task   @relation(fields: [taskId], references: [id])
+  task    Task   @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   taskId  Int
-  user    User   @relation(fields: [userId], references: [id])
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId  Int
 }
 
@@ -96,6 +96,6 @@ model Notification {
   type      String   @db.VarChar(24)
   createdAt DateTime @default(now())
   isRead    Boolean  @default(false) @db.TinyInt()
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    Int
 }
