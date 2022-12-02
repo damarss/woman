@@ -10,6 +10,9 @@ import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 import ClockOutline from 'mdi-material-ui/ClockOutline'
 
 const CardSupport = props => {
+  // if meet exists
+  if (props.meet) {
+
   return (
     <Card>
       <CardContent
@@ -40,6 +43,35 @@ const CardSupport = props => {
       </CardContent>
     </Card>
   )
+      } else {
+        return (
+          <Card>
+            <CardContent
+              sx={{
+                display: 'flex',
+                textAlign: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                minHeight: 300,
+                padding: theme => `${theme.spacing(9.75, 5, 9.25)} !important`
+              }}
+            >
+              <Avatar
+                sx={{ width: 50, height: 50, marginBottom: 2.25, color: 'common.white', backgroundColor: 'primary.main' }}
+              >
+                <HelpCircleOutline sx={{ fontSize: '2rem' }} />
+              </Avatar>
+              <Typography variant='body2' sx={{ marginBottom: 2.75 }}>
+                No Meeting Today
+              </Typography>
+              <Typography variant='h4' sx={{ marginBottom: 6 }}>
+                Have a nice day!
+              </Typography>
+            </CardContent>
+          </Card>
+        )
+      }
+      
 }
 
 export default CardSupport
