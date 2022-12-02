@@ -83,7 +83,7 @@ const MeetingTable = (props) => {
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Start Date</Typography>
               </TableCell>
               <TableCell align='left' style={{ width: '16rem' }}>
-                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>End Time</Typography>
+                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>End Date</Typography>
               </TableCell>
               <TableCell align='left'>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Meeting Link</Typography>
@@ -100,16 +100,16 @@ const MeetingTable = (props) => {
                 </TableCell>
                 <TableCell align='left'>
                   <Link href=''>
-                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.startDate}</Typography>
+                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{new Date(row.startDate).toLocaleString()}</Typography>
                   </Link>
                 </TableCell>
                 <TableCell align='left'>
                   <Link href=''>
-                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.endDate}</Typography>
+                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{new Date(row.endDate).toLocaleString()}</Typography>
                   </Link>
                 </TableCell>
                 <TableCell align='left'>
-                  <Link href=''>
+                  <Link href={row.link}>
                     <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.link}</Typography>
                   </Link>
                 </TableCell>

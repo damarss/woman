@@ -12,9 +12,11 @@ import ClockOutline from 'mdi-material-ui/ClockOutline'
 const CardSupport = props => {
 
   let date;
+  let time;
   let link;
   if (props.meet) {
-    date = new Date(props.meet.date).toLocaleTimeString();
+    date = new Date(props.meet.date).toLocaleDateString();
+    time = new Date(props.meet.date).toLocaleTimeString();
     link = props.meet.link;
   } else {
     date = 'Not Found';
@@ -41,7 +43,7 @@ const CardSupport = props => {
           {date}
         </Typography>
         <Typography variant='h4' sx={{ marginBottom: 6 }}>
-          {date}
+          {time}
         </Typography>
         <a style={{textDecoration: 'none'}} href={link}><Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
           Join Meeting
