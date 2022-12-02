@@ -36,6 +36,7 @@ import { color } from '@mui/system'
 
 const CardTaskFileContent = props => {
   const [isFile, setIsFile] = useState(true)
+  console.log(props.userInfo.task.userId)
 
   return (
     <Card>
@@ -85,6 +86,7 @@ const CardTaskFileContent = props => {
         <Divider sx={{ marginTop: 10, marginBottom: 6.75 }} /> */}
 
         <Box style={{ display: 'flex', justifyContent: 'space-around' }}>
+        {props.userInfo.idUser === props.userInfo.task.project.projectLeaderId  && (
           <Button
             type='submit'
             variant='contained'
@@ -92,7 +94,7 @@ const CardTaskFileContent = props => {
             style={{ marginRight: 3 }}
           >
             Revise
-          </Button>
+          </Button>)}
           <Button type='submit' variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
             Accept
           </Button>

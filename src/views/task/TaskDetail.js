@@ -32,6 +32,7 @@ import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 // ** Third Party Imports
 import DatePicker from 'react-datepicker'
 import Swal from 'sweetalert2'
+import { useSession } from 'next-auth/react'
 
 const statusObj = {
   0: { color: 'secondary', status: 'Assigned' },
@@ -79,6 +80,7 @@ const rows = [
 
 const TaskDetailPage = props => {
   const [date, setDate] = useState(null)
+  const session = useSession()
 
   const [Open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
@@ -150,10 +152,11 @@ const TaskDetailPage = props => {
               <CardComment comments={props.task} />
             </Grid>
             <Grid item xs={12} md={4} lg={4} sx={{ paddingLeft: 0 }}>
-              <CardTaskFile title='Result'/>
+              <CardTaskFile title='Result' userInfo={props.task}/>
             </Grid>
           </Grid>
           {/* Admin */}
+          {session.status === 'authenticated' && session.data.role === 'admin' && (
           <Grid item container xs={12} sm={12} md={12} sx={{ marginX: 5, marginTop: 2, marginBottom: 8 }}>
             <Box sx={{ display: 'flex', justifyContent: 'start' }}>
               <Button
@@ -282,7 +285,7 @@ const TaskDetailPage = props => {
                 </Card>
               </Modal>
             </Box>
-          </Grid>
+          </Grid>)}
         </Grid>
       </Card>
     </Grid>

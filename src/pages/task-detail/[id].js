@@ -47,6 +47,10 @@ export async function getServerSideProps(context) {
   const task = await prisma.task.findUnique({
     where: {
       id: parseInt(context.params.id)
+    },
+    include: {
+      project: true,
+      user: true
     }
   })
 
@@ -76,12 +80,15 @@ export async function getServerSideProps(context) {
 
   const data = {
     task,
-    comments
+    comments,
+    idUser: token.uid
   }
+  console.log(data)
 
   return {
     props: {
       data: JSON.stringify(data)
+
     }
   }
 }
