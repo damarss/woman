@@ -38,6 +38,8 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 
 import Swal from 'sweetalert2'
 
+import axios from 'src/pages/api/axios'
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -76,33 +78,62 @@ const PeopleTable = ({ rows }) => {
     event.preventDefault()
   }
 
-  const handleRegister = async e => {
-    e.preventDefault()
-
+  const handleEdit = async id => {
     const data = {
       name: values.name,
       nip: values.nip,
       email: values.email,
-      password: values.password
+      password: values.password,
+      id: values.id
     }
 
     axios
-      .post('auth/register', data)
+      .preventDefault(`user/${id}`, data)
       .then(res => {
         if (res.status === 200) {
           Swal.fire({
-            title: 'Add People Success',
+            title: 'Edit People Success',
             text: 'Press OK to continue',
             icon: 'success',
             confirmButtonText: 'Ok'
           })
-
-          router.push('/pages/login')
         }
       })
       .catch(err => {
         Swal.fire({
-          title: 'Add People Failed',
+          title: 'Edit People Failed',
+          text: err.message,
+          icon: 'error',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        })
+      })
+  }
+
+  const handleDelete = async id => {
+    const data = {
+      name: values.name,
+      nip: values.nip,
+      email: values.email,
+      password: values.password,
+      id: values.id
+    }
+
+    axios
+      .delete(`user/${id}`, data)
+      .then(res => {
+        if (res.status === 200) {
+          Swal.fire({
+            title: 'Delete People Success',
+            text: 'Press OK to continue',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          })
+        }
+      })
+      .catch(err => {
+        Swal.fire({
+          title: 'Delete People Failed',
           text: err.message,
           icon: 'error',
           confirmButtonColor: '#d33',
@@ -291,7 +322,7 @@ const PeopleTable = ({ rows }) => {
                     sx={{ mr: 1 }}
                     color='error'
                     variant='text'
-                    onClick={() => {
+                    onClick={e => {
                       Swal.fire({
                         title: 'Delete Member?',
                         text: 'Click "Delete Member" for Delete member',
@@ -302,7 +333,7 @@ const PeopleTable = ({ rows }) => {
                         confirmButtonText: 'Delete Member'
                       }).then(result => {
                         if (result.isConfirmed) {
-                          Swal.fire('', 'Member Deleted. Click "Ok" to continue', 'success')
+                          handleDelete(user.id)
                         }
                       })
                     }}
