@@ -25,22 +25,21 @@ import {
 const Meeting = ({data}) => {
   const [currentDate, setCurrentDate] = useState(new Date);
   const currentDateChange = (currentDate) => { setCurrentDate(currentDate); };
-  const [meet, setMeet] = useState([])
+  const [meets, setMeets] = useState([])
 
 
   useEffect(() => {
-    setMeet(JSON.parse(data))
-    console.log(JSON.parse(data))
+    setMeets(JSON.parse(data))
   }, [data])
 
   const meetView = []
 
-  meet.forEach(meet => {
+  meets.forEach(meets => {
     meetView.push({
-      startDate: meet.startDate,
-      endDate: meet.endDate,
-      location: meet.description,
-      title: meet.title
+      startDate: meets.meet.startDate,
+      endDate: meets.meet.endDate,
+      location: meets.meet.description,
+      title: meets.meet.title
     })
   })
 
@@ -82,13 +81,43 @@ export async function getServerSideProps(context) {
     }
   }
 
-  const meet = await prisma.meet.findMany()
 
-  console.log(meet)
+
+  let meets
+  if (token.role !== 'admin') {
+    meets = await prisma.userMeet.findMany({
+      where: {
+        userId: token.uid
+      },
+      include: {
+        meet: true
+      }
+    })
+  } else {
+    const key = []
+    meets = []
+
+    const meetGet = await prisma.userMeet.findMany({
+      include: {
+        meet: true
+      }
+    })
+
+    meetGet.map(meet => {
+      if (key.includes(meet.meet.id)) {
+        return
+      }
+
+      key.push(meet.meet.id)
+      meets.push(meet)
+    })
+  }
+
+  console.log(meets)
 
   return {
     props: {
-      data: JSON.stringify(meet)
+      data: JSON.stringify(meets)
     }
   }
 }
