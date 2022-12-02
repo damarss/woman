@@ -33,10 +33,11 @@ const CardSupport = props => {
         <Typography variant='h4' sx={{ marginBottom: 6 }}>
           {new Date(props.meet.date).toLocaleTimeString()}
         </Typography>
-        <a style={{textDecoration: 'none'}} href={props.meet.link}><Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
-          Join Meeting
-        </Button></a>
-        
+        <a style={{ textDecoration: 'none' }} href={props.meet.link}>
+          <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+            Join Meeting
+          </Button>
+        </a>
       </CardContent>
     </Card>
   )
