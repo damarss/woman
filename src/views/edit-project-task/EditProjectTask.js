@@ -101,9 +101,12 @@ const CustomInputStart = forwardRef((props, ref) => {
 const EditProjectTask = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
-  const handleClose = () => {setOpen(false); Swal.fire('Cancelled', 'Task is not created!', 'error')}
+  const handleClose = () => {
+    setOpen(false)
+    Swal.fire('Cancelled', 'Task is not created!', 'error')
+  }
   const [date, setDate] = useState(null)
-  
+
   const [editOpen, setEditOpen] = useState(false)
   const handleEditOpen = () => setEditOpen(true)
   const handleEditClose = () => setEditOpen(false)
@@ -163,7 +166,7 @@ const EditProjectTask = () => {
                         <PencilOutline />
                       </Button>
                       {/* Modal Edit Task */}
-                      <Modal open={editOpen} onClose={handleEditClose} >
+                      <Modal open={editOpen} onClose={handleEditClose}>
                         <Card sx={style}>
                           {/* form edit task */}
                           <form onSubmit={e => e.preventDefault()}>
@@ -183,9 +186,11 @@ const EditProjectTask = () => {
                                       id='form-layouts-separator-asigned'
                                       labelId='form-layouts-separator-asigned-label-edit'
                                     >
-                                    {rows.map(row => (
-                                      <MenuItem key={row.name} value={row.name}>{row.name}</MenuItem>
-                                    ))}
+                                      {rows.map(row => (
+                                        <MenuItem key={row.name} value={row.name}>
+                                          {row.name}
+                                        </MenuItem>
+                                      ))}
                                     </Select>
                                   </FormControl>
                                 </Grid>
@@ -260,30 +265,26 @@ const EditProjectTask = () => {
                         </Card>
                       </Modal>
                       {/* Delete Task */}
-                      <Button 
-                      type='submit' 
-                      sx={{ mr: 1 }} 
-                      color='error' 
-                      variant='text' 
-                      onClick={() => {
+                      <Button
+                        type='submit'
+                        sx={{ mr: 1 }}
+                        color='error'
+                        variant='text'
+                        onClick={() => {
                           Swal.fire({
-                            title: 'Hapus Tugas?',
-                            text: 'Tekan tombol "Hapus Tugas" untuk menghapus tugas',
+                            title: 'Delete Task?',
+                            text: 'Click "Delete Task" for Delete Task',
                             icon: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
-                            confirmButtonText: 'Ya, Hapus Tugas'
-                          }).then((result) => {
+                            confirmButtonText: 'Delete Task'
+                          }).then(result => {
                             if (result.isConfirmed) {
-                              Swal.fire(
-                                '',
-                                'Tugas berhasil dihapus. Tekan "OK" untuk melanjutkan.',
-                                'success'
-                              )
+                              Swal.fire('', 'Task Deleted. Click "Ok to continue', 'success')
                             }
                           })
-                      }}
+                        }}
                       >
                         <DeleteOutline />
                       </Button>
@@ -320,7 +321,9 @@ const EditProjectTask = () => {
                           labelId='form-layouts-separator-asigned-label'
                         >
                           {rows.map(row => (
-                            <MenuItem key={row.name} value={row.name}>{row.name}</MenuItem>
+                            <MenuItem key={row.name} value={row.name}>
+                              {row.name}
+                            </MenuItem>
                           ))}
                         </Select>
                       </FormControl>

@@ -1,3 +1,5 @@
+import { forwardRef, useState } from 'react'
+
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -19,6 +21,32 @@ import MenuItem from '@mui/material/MenuItem'
 import Link from 'next/link'
 import PencilOutline from 'mdi-material-ui/PencilOutline'
 import DeleteOutline from 'mdi-material-ui/DeleteOutline'
+import Modal from '@mui/material/Modal'
+import CardContent from '@mui/material/CardContent'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import InputAdornment from '@mui/material/InputAdornment'
+import IconButton from '@mui/material/IconButton'
+import EyeOutline from 'mdi-material-ui/EyeOutline'
+import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
+
+import DatePicker from 'react-datepicker'
+
+import { useRouter } from 'next/router'
+import OutlinedInput from '@mui/material/OutlinedInput'
+
+import Swal from 'sweetalert2'
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4
+}
 
 const statusObj = {
   applied: { color: 'info' },
@@ -29,6 +57,71 @@ const statusObj = {
 }
 
 const PeopleTable = ({ rows }) => {
+  const [values, setValues] = useState({
+    password: '',
+    showPassword: false,
+    email: '',
+    name: '',
+    nip: ''
+  })
+  const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword })
+  }
+
+  const handleMouseDownPassword = event => {
+    event.preventDefault()
+  }
+
+  const handleRegister = async e => {
+    e.preventDefault()
+
+    const data = {
+      name: values.name,
+      nip: values.nip,
+      email: values.email,
+      password: values.password
+    }
+
+    axios
+      .post('auth/register', data)
+      .then(res => {
+        if (res.status === 200) {
+          Swal.fire({
+            title: 'Add People Success',
+            text: 'Press OK to continue',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          })
+
+          router.push('/pages/login')
+        }
+      })
+      .catch(err => {
+        Swal.fire({
+          title: 'Add People Failed',
+          text: err.message,
+          icon: 'error',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        })
+      })
+  }
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => {
+    setOpen(false)
+    Swal.fire('Cancelled', 'Task is not created!', 'error')
+  }
+  const [date, setDate] = useState(null)
+
+  const [editOpen, setEditOpen] = useState(false)
+  const handleEditOpen = () => setEditOpen(true)
+  const handleEditClose = () => setEditOpen(false)
+
   return (
     <Card>
       <TableContainer>
@@ -81,10 +174,132 @@ const PeopleTable = ({ rows }) => {
                   </form>
                 </TableCell>
                 <TableCell align='center'>
-                  <Button type='submit' sx={{ mr: 1 }} color='info' variant='text'>
+                  <Button type='submit' sx={{ mr: 1 }} color='info' variant='text' onClick={handleEditOpen}>
                     <PencilOutline />
                   </Button>
-                  <Button type='submit' sx={{ mr: 1 }} color='info' variant='text'>
+                  <Modal open={editOpen} onClose={handleEditClose}>
+                    <Card sx={style}>
+                      {/* form edit task */}
+                      <CardContent>
+                        <Typography variant='h6'>Edit people information</Typography>
+                        <br></br>
+                        <Grid container spacing={2}>
+                          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
+                            <Grid item xs={12} sm={12} lg={12}>
+                              <TextField
+                                autoFocus
+                                fullWidth
+                                id='name'
+                                label='Name'
+                                sx={{ marginBottom: 4 }}
+                                onChange={handleChange('name')}
+                              />
+                            </Grid>
+                            <TextField
+                              fullWidth
+                              type='email'
+                              label='Email'
+                              sx={{ marginBottom: 4 }}
+                              onChange={handleChange('email')}
+                            />
+                            <TextField
+                              fullWidth
+                              id='nip'
+                              label='NIP'
+                              sx={{ marginBottom: 4 }}
+                              onChange={handleChange('nip')}
+                            />
+                            <FormControl fullWidth>
+                              <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
+                              <OutlinedInput
+                                label='Password'
+                                value={values.password}
+                                id='auth-register-password'
+                                onChange={handleChange('password')}
+                                type={values.showPassword ? 'text' : 'password'}
+                                endAdornment={
+                                  <InputAdornment position='end'>
+                                    <IconButton
+                                      edge='end'
+                                      onClick={handleClickShowPassword}
+                                      onMouseDown={handleMouseDownPassword}
+                                      aria-label='toggle password visibility'
+                                    >
+                                      {values.showPassword ? (
+                                        <EyeOutline fontSize='small' />
+                                      ) : (
+                                        <EyeOffOutline fontSize='small' />
+                                      )}
+                                    </IconButton>
+                                  </InputAdornment>
+                                }
+                              />
+                            </FormControl>
+                            {/* 
+                            <Button
+                              fullWidth
+                              size='large'
+                              type='submit'
+                              variant='contained'
+                              sx={{ marginTop: 5 }}
+                              onClick={handleRegister}
+                            >
+                              Add People
+                            </Button> */}
+                          </form>
+                        </Grid>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <CardActions style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
+                          <Button
+                            size='large'
+                            color='secondary'
+                            sx={{ mr: 2 }}
+                            variant='outlined'
+                            onClick={handleEditClose}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            size='large'
+                            type='submit'
+                            sx={{ mr: 2 }}
+                            variant='contained'
+                            onClick={() => {
+                              setEditOpen(false)
+                              Swal.fire('', 'Task Updated Succesfully!', 'success')
+                            }}
+                          >
+                            Edit Task
+                          </Button>
+                        </CardActions>
+                      </CardContent>
+                      {/* end form edit task */}
+                    </Card>
+                  </Modal>
+                  <Button
+                    type='submit'
+                    sx={{ mr: 1 }}
+                    color='error'
+                    variant='text'
+                    onClick={() => {
+                      Swal.fire({
+                        title: 'Delete Member?',
+                        text: 'Click "Delete Member" for Delete member',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Delete Member'
+                      }).then(result => {
+                        if (result.isConfirmed) {
+                          Swal.fire('', 'Member Deleted. Click "Ok" to continue', 'success')
+                        }
+                      })
+                    }}
+                  >
                     <DeleteOutline />
                   </Button>
                 </TableCell>
