@@ -24,6 +24,7 @@ import CardProject from 'src/views/cards/CardProject'
 import CardProjectdetail from 'src/views/cards/CardProjectdetail'
 import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 import Tableprojectdetail from 'src/views/tables/Tableprojectdetail'
+import OfficeBuildingCog from 'mdi-material-ui//OfficeBuildingCog'
 
 // third party import
 import Swal from 'sweetalert2'
@@ -50,7 +51,10 @@ const CardBasic = ({ data }) => {
           variant='contained'
           color='primary'
         >
-          Edit Task
+          <Box sx={{display:'flex', justifyContent: 'space-around'}}> 
+            <OfficeBuildingCog />
+            Manage Task
+          </Box>
         </Button>
       </Grid>
 
@@ -61,43 +65,46 @@ const CardBasic = ({ data }) => {
       {/* Admin */}
       {session.status === 'authenticated' && session.data.role === 'admin' && (
         <Grid item xs={12} sm={12} md={12}>
-          <Box sx={{ display: 'flex', justifyContent: 'start' }}>
-            <Button
-              size='medium'
-              type='submit'
-              sx={{ mr: 7 }}
-              variant='contained'
-              color='primary'
-              onClick={() => {
-                Swal.fire({
-                  title: 'Hapus Project?',
-                  text: 'Tekan tombol "Hapus Project" untuk mengirim notifikasi kepada peserta Project',
-                  icon: 'warning',
-                  showCancelButton: true,
-                  confirmButtonColor: '#68B92E',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Ya, Hapus Project',
-                  cancelButtonText: 'Tidak, Kembali',
-                  reverseButtons: true
-                }).then(result => {
-                  if (result.isConfirmed) {
-                    Swal.fire('', 'Project berhasil dihapus. Tekan "OK" untuk melanjutkan.', 'success')
-                  } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                  ) {
-                    Swal.fire('Cancelled!', 'Project tidak dihapus. Tekan "OK" untuk melanjutkan.', 'error')
-                  }
-                })
-              }}
-            >
-              Delete
-            </Button>
-            <Button href='/edit-project' size='medium' type='submit' variant='contained' color='primary'>
-              Edit
-            </Button>
-          </Box>
-        </Grid>
+        <Box sx={{ display: 'flex', justifyContent: 'start' }}>
+          <Button
+            size='medium'
+            type='submit'
+            sx={{ mr: 7 }}
+            variant='contained'
+            color='primary'
+            onClick={() => {
+              Swal.fire({
+                title: 'Delete Project?',
+                text: 'Press "Delete Project" to send notification to the the participant',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#68B92E',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete Project',
+                cancelButtonText: 'No, Cancel',
+                reverseButtons: true
+              }).then(result => {
+                if (result.isConfirmed) {
+                  Swal.fire('', 'Project has been deleted. Press "OK" to continue.', 'success')
+                } else if (
+                  /* Read more about handling dismissals below */
+                  result.dismiss === Swal.DismissReason.cancel
+                ) {
+                  Swal.fire('Cancelled!', 'Project is not deleted. Press "OK" to continue.', 'error')
+                }
+              })
+            }}
+          >
+            Delete
+          </Button>
+          <Button href='/edit-project' sx={{ mr: 7 }} size='medium' type='submit' variant='contained' color='primary'>
+            Edit
+          </Button>
+          <Button href='#' size='medium' type='submit' variant='contained' color='primary'>
+            Achieve
+          </Button>
+        </Box>
+      </Grid>
       )}
     </Grid>
   )
