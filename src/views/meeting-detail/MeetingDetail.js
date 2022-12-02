@@ -27,13 +27,20 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }))
 
+const options = {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+
 const CardMembership = props => {
   let startDate
   let endDate
   let link
   if (props.data) {
-    startDate = new Date(props.data.startDate).toLocaleDateString() + " " + new Date(props.data.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-    endDate = new Date(props.data.endDate).toLocaleDateString() + " " + new Date(props.data.endDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    startDate = new Date(props.data.startDate).toLocaleDateString("en-EN", options) + " at " + new Date(props.data.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    endDate = new Date(props.data.endDate).toLocaleDateString("en-EN", options) + " at " + new Date(props.data.endDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     link = props.data.link
   } else {
     

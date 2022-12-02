@@ -69,6 +69,13 @@ const statusObj = {
   professional: { color: 'success' }
 }
 
+const options = {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+
 const MeetingTable = (props) => {
   let startDate
   let startTime
@@ -98,8 +105,8 @@ const MeetingTable = (props) => {
           </TableHead>
           <TableBody>
             {props.data.map(row => (
-              startDate = new Date(row.startDate).toLocaleDateString() + " " + new Date(row.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-              endDate = new Date(row.endDate).toLocaleDateString() + " " + new Date(row.endDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+              startDate = new Date(row.startDate).toLocaleDateString("en-EN", options) + " at " + new Date(row.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+              endDate = new Date(row.endDate).toLocaleDateString("en-EN", options) + " at " + new Date(row.endDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
               link = row.link,
               <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell align='left'>
