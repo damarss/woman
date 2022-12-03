@@ -7,14 +7,14 @@ import MeetingDetail from 'src/views/meeting-detail/MeetingDetail'
 import Swal from 'sweetalert2'
 import { getToken } from 'next-auth/jwt'
 import { useState } from 'react'
-import prisma from 'src/pages/db'
+import prisma from 'src/services/db'
 
-const MeetingPage = ({data}) => {
+const MeetingPage = ({ data }) => {
   const [meet, setMeet] = useState(JSON.parse(data))
-  
+
   return (
     <>
-      <MeetingDetail data={meet}/>
+      <MeetingDetail data={meet} />
     </>
   )
 }

@@ -15,7 +15,8 @@ import 'react-datepicker/dist/react-datepicker.css'
 import EditProject from 'src/views/edit-project/EditProject'
 
 import { getSession } from 'next-auth/react'
-import prisma from '../db'
+import prisma from '../../services/db'
+import { getToken } from 'next-auth/jwt'
 
 const EditProjectPage = ({ data }) => {
   return (
@@ -31,7 +32,7 @@ const EditProjectPage = ({ data }) => {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context)
+  const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
 
   const project = await prisma.project.findUnique({
     where: {
@@ -42,7 +43,8 @@ export async function getServerSideProps(context) {
     }
   })
 
-  if (project.projectLeaderId !== session.user.id && session.role !== 'admin') {
+
+  if (project.projectLeaderId !== token.uid && token.role !== 'admin') {
     return {
       redirect: {
         destination: '/401',

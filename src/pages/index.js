@@ -13,7 +13,7 @@ import TaskTable from 'src/views/dashboard/TaskTable'
 import { getToken } from 'next-auth/jwt'
 import { useEffect, useState } from 'react'
 
-import prisma from './db'
+import prisma from '../services/db'
 
 const Dashboard = ({ data }) => {
   const [dashboard, setDashboard] = useState(JSON.parse(data))
@@ -39,7 +39,7 @@ const Dashboard = ({ data }) => {
           </Card>
         </Grid>
         <Grid item xs={12} md={4}>
-          <CardMeetingSce meet={dashboard.meet}/>
+          <CardMeetingSce meet={dashboard.meet} />
         </Grid>
       </Grid>
     </ApexChartWrapper>
@@ -95,29 +95,29 @@ export async function getServerSideProps(context) {
   })
   const target = new Date()
 
-  function nearestDate (dates, target) {
+  function nearestDate(dates, target) {
     if (!target) {
       target = Date.now()
     } else if (target instanceof Date) {
       target = target
     }
-  
+
     let nearest = Infinity
     let winner = -1
-  
+
     dates.forEach(function (date, index) {
       if (date.date instanceof Date) {
         date = date.date
       }
-      if (date > target){
+      if (date > target) {
         let distance = Math.abs(date - target)
-      if (distance < nearest) {
-        nearest = distance
-        winner = index
-      }
+        if (distance < nearest) {
+          nearest = distance
+          winner = index
+        }
       }
     })
-  
+
     return winner
   }
 

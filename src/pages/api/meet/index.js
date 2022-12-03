@@ -1,5 +1,5 @@
-import prisma from '../../db'
-import { mailOptions, sendMailMeetCreated}  from 'src/services/sendEmail'
+import prisma from '../../../services/db'
+import { mailOptions, sendMailMeetCreated } from 'src/services/sendEmail'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -47,14 +47,22 @@ export default async function handler(req, res) {
           }
         })
 
-        mailOptions.subject = title 
+        mailOptions.subject = title
         mailOptions.title = title
         mailOptions.description = description
         mailOptions.startdate = new Date(startDate).toLocaleDateString('id-ID')
-        mailOptions.starttime = new Date(startDate).getHours()+':'+(new Date(startDate).getMinutes() < 10 ? '0' : '') + new Date(endDate).getMinutes()
-        mailOptions.endtime = new Date(endDate).getHours()+':'+(new Date(endDate).getMinutes() < 10 ? '0' : '') + new Date(endDate).getMinutes()
+        mailOptions.starttime =
+          new Date(startDate).getHours() +
+          ':' +
+          (new Date(startDate).getMinutes() < 10 ? '0' : '') +
+          new Date(endDate).getMinutes()
+        mailOptions.endtime =
+          new Date(endDate).getHours() +
+          ':' +
+          (new Date(endDate).getMinutes() < 10 ? '0' : '') +
+          new Date(endDate).getMinutes()
         mailOptions.enddate = new Date(endDate).toLocaleDateString('id-ID')
-        mailOptions.link = link 
+        mailOptions.link = link
         mailOptions.duration = duration
 
         // Gmail.sendMail(mailOptions, function (error, info) {
@@ -67,13 +75,13 @@ export default async function handler(req, res) {
 
         sendMailMeetCreated(mailOptions)
 
-      return res.status(201).json({ success: true, data: meet })
-    } catch (error) {
-      console.log(error)
+        return res.status(201).json({ success: true, data: meet })
+      } catch (error) {
+        console.log(error)
 
-      return res.status(400).json({ success: false })
-    }
+        return res.status(400).json({ success: false })
+      }
 
-    return res.status(200).json({ success: true, data: req.body })
+      return res.status(200).json({ success: true, data: req.body })
   }
 }

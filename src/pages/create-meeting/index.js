@@ -1,6 +1,6 @@
 // ** React Imports
 import { useState } from 'react'
-import prisma from '../db'
+import prisma from '../../services/db'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
@@ -16,14 +16,14 @@ import Button from '@mui/material/Button'
 import CreateMeeting from 'src/views/create-meeting/CreateMeeting'
 import { getToken } from 'next-auth/jwt'
 
-const CreateMeetingPage = ({users}) => {
+const CreateMeetingPage = ({ users }) => {
   return (
     <>
       <DatePickerWrapper>
         {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
         <h2>Create Meeting</h2>
       </Box> */}
-        <CreateMeeting users={users}/>
+        <CreateMeeting users={users} />
       </DatePickerWrapper>
     </>
   )

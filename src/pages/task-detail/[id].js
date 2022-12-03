@@ -20,7 +20,7 @@ import TaskDetail from 'src/views/task/TaskDetail'
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
 import { getToken } from 'next-auth/jwt'
-import prisma from '../db'
+import prisma from '../../services/db'
 
 const TaskDetailPage = ({ data }) => {
   return (
@@ -62,7 +62,7 @@ export async function getServerSideProps(context) {
     }
   })
 
-  if (((task.project.projectLeaderId !== token.uid) && (task.userId !== token.uid)) && (token.role !== 'admin')) {
+  if (task.project.projectLeaderId !== token.uid && task.userId !== token.uid && token.role !== 'admin') {
     return {
       redirect: {
         destination: '/401',
@@ -96,7 +96,6 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data: JSON.stringify(data)
-
     }
   }
 }

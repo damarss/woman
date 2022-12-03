@@ -4,12 +4,12 @@ import Typography from '@mui/material/Typography'
 
 // ** Hooks
 import { useEffect, useState } from 'react'
-import prisma from 'src/pages/db'
+import prisma from 'src/services/db'
 import { getToken } from 'next-auth/jwt'
 
 // ** Scheduler
-import Paper from '@mui/material/Paper';
-import { ViewState } from '@devexpress/dx-react-scheduler';
+import Paper from '@mui/material/Paper'
+import { ViewState } from '@devexpress/dx-react-scheduler'
 import {
   Scheduler,
   MonthView,
@@ -19,14 +19,15 @@ import {
   Appointments,
   AppointmentTooltip,
   TodayButton,
-  AppointmentForm,
-} from '@devexpress/dx-react-scheduler-material-ui';
+  AppointmentForm
+} from '@devexpress/dx-react-scheduler-material-ui'
 
-const Meeting = ({data}) => {
-  const [currentDate, setCurrentDate] = useState(new Date);
-  const currentDateChange = (currentDate) => { setCurrentDate(currentDate); };
+const Meeting = ({ data }) => {
+  const [currentDate, setCurrentDate] = useState(new Date())
+  const currentDateChange = currentDate => {
+    setCurrentDate(currentDate)
+  }
   const [meet, setMeet] = useState([])
-
 
   useEffect(() => {
     setMeet(JSON.parse(data))
@@ -46,25 +47,14 @@ const Meeting = ({data}) => {
 
   return (
     <Paper>
-      <Scheduler
-        data={meetView}
-        height={660}
-      >
-        <ViewState
-          currentDate={currentDate}
-          onCurrentDateChange={currentDateChange}
-        />
-        <WeekView
-          startDayHour={7}
-          endDayHour={21}
-        />
+      <Scheduler data={meetView} height={660}>
+        <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
+        <WeekView startDayHour={7} endDayHour={21} />
         <Toolbar />
         <DateNavigator />
         <TodayButton />
         <Appointments />
-        <AppointmentTooltip
-          showCloseButton
-        />
+        <AppointmentTooltip showCloseButton />
       </Scheduler>
     </Paper>
   )

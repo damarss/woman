@@ -1,4 +1,4 @@
-import prisma from '../../db'
+import prisma from '../../../services/db'
 
 export default async function handler(req, res) {
   const id = req.query.id
@@ -13,12 +13,8 @@ export default async function handler(req, res) {
     })
 
     if (!task) {
-      
-
       return res.status(400).json({ success: false, message: 'Task not found' })
     }
-
-    
 
     return res.status(200).json({ success: true, data: task })
   } else if (method === 'PUT') {
@@ -41,11 +37,8 @@ export default async function handler(req, res) {
         }
       })
 
-      
-
       return res.status(200).json({ success: true, data: task })
     } catch (error) {
-      
       console.log(error)
 
       return res.status(400).json({ success: false })
@@ -58,11 +51,8 @@ export default async function handler(req, res) {
         }
       })
 
-      
-
       return res.status(200).json({ success: true, message: 'Task deleted' })
     } catch (error) {
-      
       console.log(error)
 
       return res.status(400).json({ success: false, message: 'Task not found' })
