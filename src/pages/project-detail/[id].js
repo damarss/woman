@@ -40,6 +40,50 @@ const CardBasic = ({ data }) => {
   const session = useSession()
   const router = useRouter()
 
+  const handleArchive = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this action!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, archive it!'
+    }).then(result => {
+      if (result.isConfirmed) {
+        Swal.fire('Archived!', 'Your project has been archived.', 'success')
+
+        axios.put(`project/${project.id}`, { isArchived: true }).then(res => {
+          if (res.status === 200) {
+            router.push('/project')
+          }
+        })
+      }
+    })
+  }
+
+  const handleUnarchive = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this action!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, unarchive it!'
+    }).then(result => {
+      if (result.isConfirmed) {
+        Swal.fire('Archived!', 'Your project has been unarchived.', 'success')
+
+        axios.put(`project/${project.id}`, { isArchived: false }).then(res => {
+          if (res.status === 200) {
+            router.push('/project')
+          }
+        })
+      }
+    })
+  }
+
   const handleDelete = () => {
     Swal.fire({
       title: 'Delete Project?',
@@ -78,19 +122,22 @@ const CardBasic = ({ data }) => {
         <CardProjectdetail project={project} />
       </Grid>
       <Grid item xs={12} sm={12} md={4} lg={4} alignItems='center' justify='center'>
-        {session.status === 'authenticated' && (session.data.uid == project.projectLeaderId || session.data.role === 'admin') && <Button
-          sx={{ height: '100%' }}
-          fullWidth
-          href={`/create-project-task/${project.id}`}
-          type='submit'
-          variant='contained'
-          color='primary'
-        >
-          <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-            <OfficeBuildingCog />
-            Manage Task
-          </Box>
-        </Button>}
+        {session.status === 'authenticated' &&
+          (session.data.uid == project.projectLeaderId || session.data.role === 'admin') && (
+            <Button
+              sx={{ height: '100%' }}
+              fullWidth
+              href={`/create-project-task/${project.id}`}
+              type='submit'
+              variant='contained'
+              color='primary'
+            >
+              <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+                <OfficeBuildingCog />
+                Manage Task
+              </Box>
+            </Button>
+          )}
       </Grid>
 
       <Grid item xs={12} sm={12} md={12}>
@@ -122,8 +169,14 @@ const CardBasic = ({ data }) => {
               Edit
             </Button>
 
-            <Button href='#' size='medium' type='submit' variant='contained' color='primary'>
-              Archive
+            <Button
+              onClick={project.isArchived ? handleUnarchive : handleArchive}
+              size='medium'
+              type='submit'
+              variant='contained'
+              color='primary'
+            >
+              {project.isArchived ? 'Unarchive' : 'Archive'}
             </Button>
           </Box>
         </Grid>
@@ -162,6 +215,15 @@ export async function getServerSideProps(context) {
       }
     }
   })
+
+  if (!project) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false
+      }
+    }
+  }
 
   return {
     props: {

@@ -12,17 +12,34 @@ export default async function handler(req, res) {
       }
     })
     if (!project) {
-      
-
       return res.status(400).json({ success: false, message: 'Project not found' })
     }
 
-    
-
     return res.status(200).json({ success: true, data: project })
   } else if (method === 'PUT') {
-    const { title, startdate, enddate, description } = req.body
-    const isArchived = req.body.isArchived === 'true'
+    const { title, startdate, enddate, description, isArchived } = req.body
+
+    if (isArchived) {
+      try {
+        const project = await prisma.project.update({
+          where: {
+            id: Number(id)
+          },
+          data: {
+            isArchived: isArchived
+          }
+        })
+
+        return res.status(200).json({ success: true, data: project })
+      } catch (error) {
+        if (error instanceof PrismaClientKnownRequestError) {
+          return res.status(400).json({ success: false, message: error.message })
+        }
+
+        return res.status(500).json({ success: false, message: error.message })
+      }
+    }
+
     try {
       const project = await prisma.project.update({
         where: {
@@ -37,13 +54,8 @@ export default async function handler(req, res) {
         }
       })
 
-      
-
       return res.status(200).json({ success: true, data: project })
     } catch (error) {
-      
-      console.log(error)
-
       return res.status(400).json({ success: false })
     }
   } else if (method === 'DELETE') {
@@ -54,12 +66,8 @@ export default async function handler(req, res) {
         }
       })
 
-      
-
       return res.status(200).json({ success: true, message: 'Project deleted' })
     } catch (error) {
-      
-
       return res.status(400).json({ success: false, message: 'Project not found' })
     }
   }
