@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -20,6 +20,9 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import KeyOutline from 'mdi-material-ui/KeyOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
+import { useSession } from 'next-auth/react'
+import Swal from 'sweetalert2'
+import axios from 'src/pages/api/axios'
 
 const TabSecurity = () => {
   // ** States
@@ -31,6 +34,10 @@ const TabSecurity = () => {
     showCurrentPassword: false,
     showConfirmNewPassword: false
   })
+
+  const session = useSession()
+
+  const [uid, setUid] = useState('')
 
   // Handle Current Password
   const handleCurrentPasswordChange = prop => event => {
@@ -70,6 +77,57 @@ const TabSecurity = () => {
   const handleMouseDownConfirmNewPassword = event => {
     event.preventDefault()
   }
+
+  const handleEditPassword = e => {
+    e.preventDefault()
+
+    if (values.newPassword !== values.confirmNewPassword) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Password must be same!'
+      })
+
+      return
+    }
+
+    const data = {
+      currentPassword: values.currentPassword,
+      password: values.newPassword
+    }
+
+    axios
+      .put(`/user/${uid}`, data)
+      .then(res => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Password has been changed!'
+        })
+
+        setValues({
+          newPassword: '',
+          currentPassword: '',
+          showNewPassword: false,
+          confirmNewPassword: '',
+          showCurrentPassword: false,
+          showConfirmNewPassword: false
+        })
+      })
+      .catch(err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: err.response.data.message
+        })
+      })
+  }
+
+  useEffect(() => {
+    if (session.status === 'authenticated') {
+      setUid(session.data.uid)
+    }
+  }, [session, uid])
 
   return (
     <form>
@@ -163,44 +221,8 @@ const TabSecurity = () => {
             <img width={183} alt='avatar' height={256} src='/images/pages/pose-m-1.png' />
           </Grid>
         </Grid>
-      </CardContent>
-
-      <Divider sx={{ margin: 0 }} />
-
-      <CardContent>
-        <Box sx={{ mt: 1.75, display: 'flex', alignItems: 'center' }}>
-          <KeyOutline sx={{ marginRight: 3 }} />
-          <Typography variant='h6'>Two-factor authentication</Typography>
-        </Box>
-
-        <Box sx={{ mt: 5.75, display: 'flex', justifyContent: 'center' }}>
-          <Box
-            sx={{
-              maxWidth: 368,
-              display: 'flex',
-              textAlign: 'center',
-              alignItems: 'center',
-              flexDirection: 'column'
-            }}
-          >
-            <Avatar
-              variant='rounded'
-              sx={{ width: 48, height: 48, color: 'common.white', backgroundColor: 'primary.main' }}
-            >
-              <LockOpenOutline sx={{ fontSize: '1.75rem' }} />
-            </Avatar>
-            <Typography sx={{ fontWeight: 600, marginTop: 3.5, marginBottom: 3.5 }}>
-              Two factor authentication is not enabled yet.
-            </Typography>
-            <Typography variant='body2'>
-              Two-factor authentication adds an additional layer of security to your account by requiring more than just
-              a password to log in. Learn more.
-            </Typography>
-          </Box>
-        </Box>
-
         <Box sx={{ mt: 11 }}>
-          <Button variant='contained' sx={{ marginRight: 3.5 }}>
+          <Button variant='contained' type='submit' sx={{ marginRight: 3.5 }} onClick={handleEditPassword}>
             Save Changes
           </Button>
           <Button

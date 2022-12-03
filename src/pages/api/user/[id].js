@@ -18,7 +18,7 @@ export default async function handle(req, res) {
 
     return res.status(200).json(user)
   } else if (req.method === 'PUT') {
-    const { name, password, email, nip, role } = req.body
+    const { name, password, email, nip, role, currentPassword } = req.body
 
     if (role) {
       try {
@@ -34,6 +34,43 @@ export default async function handle(req, res) {
         return res.status(200).json(user)
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
+          return res.status(400).json({ message: error.message })
+        }
+
+        return res.status(500).json({ message: error.message })
+      }
+    }
+
+    if (currentPassword) {
+      let passwordHash
+
+      try {
+        const existUser = await prisma.user.findUnique({
+          where: {
+            id: Number(id)
+          }
+        })
+
+        const isValid = await argon2.verify(existUser.password, currentPassword)
+
+        console.log('valid: ', isValid)
+
+        if (!isValid) {
+          return res.status(400).json({ message: 'Password is incorrect' })
+        }
+
+        passwordHash = await argon2.hash(password)
+
+        const user = await prisma.user.update({
+          where: {
+            id: Number(id)
+          },
+          data: {
+            password: passwordHash
+          }
+        })
+      } catch (error) {
+        if (error) {
           return res.status(400).json({ message: error.message })
         }
 

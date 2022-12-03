@@ -115,29 +115,41 @@ const PeopleTable = ({ rows }) => {
       password: values.password
     }
 
-    axios
-      .put(`user/${values.uid}`, data)
-      .then(res => {
-        if (res.status === 200) {
-          Swal.fire({
-            title: 'Edit People Success',
-            text: 'Press OK to continue',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-          })
-        }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, update it!'
+    }).then(result => {
+      if (result.isConfirmed) {
+        axios
+          .put(`user/${values.uid}`, data)
+          .then(res => {
+            if (res.status === 200) {
+              Swal.fire({
+                title: 'Edit People Success',
+                text: 'Press OK to continue',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              })
+            }
 
-        setEditOpen(false)
-        router.push('/people')
-      })
-      .catch(err => {
-        Swal.fire({
-          title: 'Edit People Failed',
-          text: err.message,
-          confirmButtonColor: '#d33',
-          confirmButtonText: 'OK'
-        })
-      })
+            setEditOpen(false)
+            router.push('/people')
+          })
+          .catch(err => {
+            Swal.fire({
+              title: 'Edit People Failed',
+              text: err.message,
+              confirmButtonColor: '#d33',
+              confirmButtonText: 'OK'
+            })
+          })
+      }
+    })
   }
 
   const handleDelete = async id => {
