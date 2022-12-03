@@ -28,6 +28,7 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 import FormControlLabel from '@mui/material/FormControlLabel'
+
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
@@ -39,6 +40,7 @@ import Swal from 'sweetalert2'
 
 import { useRouter } from 'next/router'
 import OutlinedInput from '@mui/material/OutlinedInput'
+
 const statusObj = {
   applied: { color: 'info' },
   rejected: { color: 'error' },
@@ -93,7 +95,7 @@ const PeopleTable = ({ rows }) => {
             confirmButtonText: 'Ok'
           })
 
-          router.push('/pages/login')
+          router.push('/people')
         }
       })
       .catch(err => {
@@ -106,6 +108,7 @@ const PeopleTable = ({ rows }) => {
         })
       })
   }
+
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>

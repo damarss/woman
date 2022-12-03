@@ -14,7 +14,7 @@ model User {
   id            Int            @id @default(autoincrement())
   email         String         @unique
   name          String         @db.VarChar(64)
-  nip           String         @db.Char(18)
+  nip           String         @db.Char(18) @unique
   password      String         @db.VarChar(255)
   role          String         @default("employee") @db.VarChar(64)
   UserMeet      UserMeet[]

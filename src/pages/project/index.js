@@ -56,9 +56,15 @@ export async function getServerSideProps(context) {
       where: {
         userId: token.uid
       },
-      include: {
+      select: {
         project: {
-          include: {
+          select: {
+            title: true,
+            id: true,
+            description: true,
+            startdate: true,
+            enddate: true,
+            isArchived: true,
             projectLeader: true,
             UserProject: true,
             Task: true
@@ -66,14 +72,26 @@ export async function getServerSideProps(context) {
         }
       }
     })
+
+    // jika bukan admin maka hanya tampilkan project yang belum diarsipkan
+    projects = projects.filter(project => {
+      return !project.project.isArchived
+    })
   } else {
     const key = []
     projects = []
 
     const projectsGet = await prisma.userProject.findMany({
-      include: {
+      select: {
         project: {
-          include: {
+          select: {
+            title: true,
+            id: true,
+            description: true,
+            startdate: true,
+            enddate: true,
+            isArchived: true,
+            UserProject: true,
             projectLeader: true,
             UserProject: true,
             Task: true
@@ -103,6 +121,15 @@ export async function getServerSideProps(context) {
 
     project.project.progress =
       (done / Number(project.project.Task.length)) * 100 ? (done / Number(project.project.Task.length)) * 100 : 0
+  })
+
+  projects.sort((a, b) => {
+    return (
+      a.project.isArchived - b.project.isArchived || // urutkan berdasarkan project yang belum diarsipkan
+      a.project.enddate - b.project.enddate || // urutkan berdasarkan deadline terdekat
+      a.project.startdate - b.project.startdate || // urutkan berdasarkan waktu mulai tercepat
+      b.project.progress - a.project.progress // urutkan berdasarkan progress terbesar
+    )
   })
 
   return {

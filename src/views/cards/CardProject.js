@@ -36,7 +36,7 @@ const CardMembership = props => {
         <Grid item xs={12} sm={7}>
           <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5.75, 6.25)} !important` }}>
             <Typography variant='h5' sx={{ marginBottom: 3.5, fontWeight: 600 }}>
-              {props.project.title.toUpperCase()}
+              {props.project.title.toUpperCase()} {props.project.isArchived && <Typography variant='body2' sx={{ marginBottom: 3.5, fontWeight: 500, color: 'common.white', backgroundColor: 'primary.main', display: 'inline-block', padding: '4px 12px', borderRadius: '1rem'}}>ARCHIVED</Typography>}
             </Typography>
             <Typography variant='body2'>{props.project.description}</Typography>
             <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />

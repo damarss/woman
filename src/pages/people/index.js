@@ -9,7 +9,7 @@ import PeopleTable from 'src/views/people/PeopleTable'
 const PeoplePage = ({ people }) => {
   return (
     <Card>
-      <PeopleTable rows={people} />
+      <PeopleTable rows={JSON.parse(people)} />
     </Card>
   )
 }
@@ -36,31 +36,24 @@ export async function getServerSideProps(context) {
   }
 
   const user = await prisma.user.findMany({
+    where: {
+      id: {
+        not: 212
+      }
+    },
     include: {
       UserProject: true,
       taskToDo: true
     }
   })
 
-  const userView = []
-
-  user.forEach(user => {
-    userView.push({
-      id: user.id,
-      name: user.name,
-      role: user.role,
-      project: user.UserProject.length,
-      task: user.taskToDo.length
-    })
-  })
-
-  userView.sort((a, b) => {
-    return a.task - b.task || a.project - b.project
+  user.sort((a, b) => {
+    return a.taskToDo.length - b.taskToDo.length || a.UserProject.length - b.UserProject.length
   })
 
   return {
     props: {
-      people: userView
+      people: JSON.stringify(user)
     }
   }
 }

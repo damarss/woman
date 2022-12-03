@@ -197,94 +197,101 @@ const EditProject = props => {
 
           {/* Daftar Peserta */}
           <Typography variant='h6'>Add Project Participant</Typography>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 50 }} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell align='left'>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          defaultChecked
-                          checked={
-                            participants.filter(participant => participant.checked === true).length ===
-                            participants.length
+          {props.data.user.length > 0 ? (
+            <>
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 50 }} aria-label='simple table'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align='left'>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              defaultChecked
+                              checked={
+                                participants.filter(participant => participant.checked === true).length ===
+                                participants.length
+                              }
+                              onChange={e => {
+                                let checked = e.target.checked
+                                setParticipants(
+                                  participants.map(participant => {
+                                    return {
+                                      ...participant,
+                                      checked: checked
+                                    }
+                                  })
+                                )
+                              }}
+                            />
                           }
-                          onChange={e => {
-                            let checked = e.target.checked
-                            setParticipants(
-                              participants.map(participant => {
-                                return {
-                                  ...participant,
-                                  checked: checked
-                                }
-                              })
-                            )
-                          }}
+                          label='All'
                         />
-                      }
-                      label='All'
-                    />
-                  </TableCell>
-                  <TableCell align='center'>NIP</TableCell>
-                  <TableCell align='center'>Name</TableCell>
-                  <TableCell align='center'>Number of Projek</TableCell>
-                  <TableCell align='center'>Number of Task</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {participants.map(user => (
-                  <TableRow
-                    key={user.name}
-                    sx={{
-                      '&:last-of-type td, &:last-of-type th': {
-                        border: 0
-                      }
-                    }}
-                  >
-                    <TableCell align='left'>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={user.checked}
-                            onChange={e => {
-                              let checked = e.target.checked
-                              setParticipants(
-                                participants.map(participant => {
-                                  if (participant.id === user.id) {
-                                    participant.checked = checked
-                                  }
+                      </TableCell>
+                      <TableCell align='center'>NIP</TableCell>
+                      <TableCell align='center'>Name</TableCell>
+                      <TableCell align='center'>Number of Projek</TableCell>
+                      <TableCell align='center'>Number of Task</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {participants.map(user => (
+                      <TableRow
+                        key={user.name}
+                        sx={{
+                          '&:last-of-type td, &:last-of-type th': {
+                            border: 0
+                          }
+                        }}
+                      >
+                        <TableCell align='left'>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={user.checked}
+                                onChange={e => {
+                                  let checked = e.target.checked
+                                  setParticipants(
+                                    participants.map(participant => {
+                                      if (participant.id === user.id) {
+                                        participant.checked = checked
+                                      }
 
-                                  return participant
-                                })
-                              )
-                            }}
+                                      return participant
+                                    })
+                                  )
+                                }}
+                              />
+                            }
+                            label=''
                           />
-                        }
-                        label=''
-                      />
-                    </TableCell>
-                    <TableCell align='center'>{user.nip}</TableCell>
-                    <TableCell component='th' scope='row' align='center'>
-                      {user.name}
-                    </TableCell>
-                    <TableCell align='center'>{user.UserProject.length}</TableCell>
-                    <TableCell component='th' scope='row' align='center'>
-                      {user.taskToDo.length}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                        </TableCell>
+                        <TableCell align='center'>{user.nip}</TableCell>
+                        <TableCell component='th' scope='row' align='center'>
+                          {user.name}
+                        </TableCell>
+                        <TableCell align='center'>{user.UserProject.length}</TableCell>
+                        <TableCell component='th' scope='row' align='center'>
+                          {user.taskToDo.length}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Divider sx={{ margin: 0 }} />
+              <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
+                <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleAddParticipant}>
+                  Add Participant
+                </Button>
+              </CardActions>
+            </>
+          ) : (
+            <Typography variant='body1' color='text.secondary' align='center'>
+              No participant to add
+            </Typography>
+          )}
         </CardContent>
-
-        <Divider sx={{ margin: 0 }} />
-        <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleAddParticipant}>
-            Add Participant
-          </Button>
-        </CardActions>
       </form>
     </Card>
   )
