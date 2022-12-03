@@ -1,5 +1,5 @@
-import prisma from '../../db'
-import { mailOptions, sendMailTaskAssigned}  from 'src/services/sendEmail'
+import prisma from '../../../services/db'
+import { mailOptions, sendMailTaskAssigned } from 'src/services/sendEmail'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -7,12 +7,8 @@ export default async function handler(req, res) {
   if (method === 'GET') {
     const tasks = await prisma.task.findMany()
     if (!tasks) {
-      
-
       return res.status(400).json({ success: false })
     }
-
-    
 
     return res.status(200).json({ success: true, data: tasks })
   }
@@ -34,7 +30,7 @@ export default async function handler(req, res) {
         }
       })
 
-      // mail to user id 
+      // mail to user id
       const user = await prisma.user.findUnique({
         where: {
           id: Number(userId)
@@ -53,12 +49,11 @@ export default async function handler(req, res) {
       mailOptions.status = status
       mailOptions.userName = user.name
       mailOptions.link = `${process.env.BASE_URL}/task-detail/${task.id}`
-          
+
       sendMailTaskAssigned(mailOptions)
-      
+
       return res.status(201).json({ success: true, data: task })
     } catch (error) {
-      
       console.log(error)
 
       return res.status(400).json({ success: false })

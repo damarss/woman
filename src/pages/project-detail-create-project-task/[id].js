@@ -1,7 +1,7 @@
 // ** React Imports
 import { getToken } from 'next-auth/jwt'
 import { useState } from 'react'
-import prisma from 'src/pages/db'
+import prisma from 'src/services/db'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'

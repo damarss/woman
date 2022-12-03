@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import argon2 from 'argon2'
-import prisma from '../../db'
+import prisma from '../../../services/db'
 
 const authOptions = {
   session: {

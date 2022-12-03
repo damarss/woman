@@ -1,5 +1,5 @@
 import { getToken } from 'next-auth/jwt'
-import prisma from '../../db'
+import prisma from '../../../services/db'
 import { mailOptions, sendMailTaskComment } from 'src/services/sendEmail'
 
 export default async function handle(req, res) {

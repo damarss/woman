@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import argon2 from 'argon2'
-import prisma from '../../db'
+import prisma from '../../../services/db'
 
 export default async function handle(req, res) {
   const { id } = req.query

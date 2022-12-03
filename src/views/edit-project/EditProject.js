@@ -56,7 +56,7 @@ const EditProject = props => {
   const router = useRouter()
 
   const [participants, setParticipants] = useState(
-    props.data.user.map(user => {
+    props.data?.user.map(user => {
       return {
         ...user,
         checked: false
@@ -197,7 +197,7 @@ const EditProject = props => {
 
           {/* Daftar Peserta */}
           <Typography variant='h6'>Add Project Participant</Typography>
-          {props.data.user.length > 0 ? (
+          {props.data?.user.length > 0 ? (
             <>
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 50 }} aria-label='simple table'>

@@ -1,4 +1,4 @@
-import prisma from '../../db'
+import prisma from '../../../services/db'
 import { mailOptions, sendMailProjectCreated } from 'src/services/sendEmail'
 
 export default async function handler(req, res) {

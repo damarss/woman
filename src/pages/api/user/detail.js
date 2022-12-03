@@ -1,4 +1,4 @@
-import prisma from '../../db'
+import prisma from '../../../services/db'
 import { getToken } from 'next-auth/jwt'
 
 export default async function handle(req, res) {
@@ -22,8 +22,6 @@ export default async function handle(req, res) {
         email: token.email
       }
     })
-
-    
 
     return res.status(200).json(user)
   }

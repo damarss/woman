@@ -1,7 +1,7 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import prisma from '../db'
+import prisma from '../../services/db'
 import { getToken } from 'next-auth/jwt'
 import { useEffect, useState } from 'react'
 

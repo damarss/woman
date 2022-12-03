@@ -1,6 +1,6 @@
 // ** MUI Imports
 import Card from '@mui/material/Card'
-import prisma from '../db'
+import prisma from '../../services/db'
 import { getToken } from 'next-auth/jwt'
 
 // ** People Components Imports

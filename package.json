@@ -83,7 +83,8 @@
     "react-perfect-scrollbar": "^1.5.8",
     "react-popper": "^2.2.5",
     "styled-components": "^5.3.6",
-    "sweetalert2": "^11.6.8"
+    "sweetalert2": "^11.6.8",
+    "tiny-worker": "^2.3.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

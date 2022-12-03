@@ -1,4 +1,4 @@
-import prisma from '../db'
+import prisma from '../../services/db'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'

@@ -1,6 +1,6 @@
 // ** React Imports
 import { useEffect, useState } from 'react'
-import prisma from 'src/pages/db'
+import prisma from 'src/services/db'
 import { getToken } from 'next-auth/jwt'
 
 // ** MUI Imports
@@ -10,17 +10,17 @@ import Button from '@mui/material/Button'
 // ** Meeting Components Imports
 import MeetingTable from 'src/views/meeting-admin/MeetingTable'
 
-const MeetingPage = ({data}) => {
+const MeetingPage = ({ data }) => {
   const [meet, setMeet] = useState([])
 
   useEffect(() => {
     setMeet(JSON.parse(data))
     console.log(JSON.parse(data))
   }, [])
-  
+
   return (
     <>
-      <MeetingTable data={meet}/>
+      <MeetingTable data={meet} />
     </>
   )
 }
