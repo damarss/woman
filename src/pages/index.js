@@ -12,11 +12,13 @@ import CardMeetingSce from 'src/views/cards/CardMeetingSce'
 import TaskTable from 'src/views/dashboard/TaskTable'
 import { getToken } from 'next-auth/jwt'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 import prisma from './db'
 
 const Dashboard = ({ data }) => {
   const [dashboard, setDashboard] = useState(JSON.parse(data))
+  const router = useRouter()
 
   useEffect(() => {}, [])
 
@@ -58,6 +60,24 @@ export async function getServerSideProps(context) {
     }
   }
 
+  let meet
+  if (token.role !== 'admin') {
+    meet = await prisma.userMeet.findMany({
+      where: {
+        userId: token.uid
+      },
+      include: {
+        meet: true
+      }
+    })
+  } else {
+    meet = await prisma.userMeet.findMany({
+      include: {
+        meet: true
+      }
+    })
+  }
+
   const projects = await prisma.userProject.findMany({
     where: {
       userId: token.uid
@@ -76,21 +96,13 @@ export async function getServerSideProps(context) {
     }
   })
 
-  const meet = await prisma.userMeet.findMany({
-    where: {
-      userId: token.uid
-    },
-    include: {
-      meet: true
-    }
-  })
-
   const dateMeet = []
 
   meet.forEach(date => {
     dateMeet.push({
       date: date.meet.startDate,
-      link: date.meet.link
+      link: date.meet.link,
+      id: date.meet.id
     })
   })
   const target = new Date()

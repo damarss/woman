@@ -108,6 +108,12 @@ const CreateMeeting = props => {
           m_link: '',
           m_duration: '0',
         })
+        setParticipants(props.users.map(user => {
+          return {
+            ...user,
+            checked: false
+          }
+        }))
       }
     } catch (error) {
       Swal.fire({

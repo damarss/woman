@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import { getToken } from 'next-auth/jwt'
 import { useState } from 'react'
 import prisma from 'src/pages/db'
+import { getSession } from 'next-auth/react'
 
 const MeetingPage = ({data}) => {
   const [meet, setMeet] = useState(JSON.parse(data))
@@ -20,6 +21,7 @@ const MeetingPage = ({data}) => {
 }
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context)
   const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
 
   if (!token) {
@@ -43,6 +45,15 @@ export async function getServerSideProps(context) {
       }
     }
   })
+
+  if (meet.UserMeet.userId !== session.user.id && session.role !== 'admin') {
+    return {
+      redirect: {
+        destination: '/401',
+        permanent: false
+      }
+    }
+  }
 
   console.log(meet)
 

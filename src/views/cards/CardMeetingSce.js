@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 // ** MUI Imports
 import Card from '@mui/material/Card'
@@ -14,6 +15,8 @@ import InformationOutline from 'mdi-material-ui/InformationOutline'
 import ClockOutline from 'mdi-material-ui/ClockOutline'
 
 const CardSupport = props => {
+  
+  const router = useRouter()
   let date
   let time
   let link
@@ -24,13 +27,16 @@ const CardSupport = props => {
   } else {
     date = 'No Upcoming Meeting'
   }
+  const routeTo = async () => {
+    router.push(`/meeting-admin-detail/${props.meet.id}`)
+  }
 
   return (
     <Card sx={{ minHeight: 300 }}>
       {date !== 'No Upcoming Meeting' ? (
-        <a style={{ textDecoration: 'none', display: 'flex', justifyContent: 'end', margin: 10 }} href={link}>
-          <Avatar
-            sx={{ width: 30, height: 30, marginBottom: 0, color: 'common.white', backgroundColor: 'primary.main' }}
+        <a style={{ textDecoration: 'none', display: 'flex', justifyContent: 'end', margin: 10 }}>
+          <Avatar onClick={routeTo}
+            sx={{cursor: 'pointer', width: 30, height: 30, marginBottom: 0, color: 'common.white', backgroundColor: 'primary.main' }}
           >
             <InformationOutline sx={{ fontSize: '2rem' }} />
           </Avatar>
