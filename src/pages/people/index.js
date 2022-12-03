@@ -4,12 +4,12 @@ import prisma from '../../services/db'
 import { getToken } from 'next-auth/jwt'
 
 // ** People Components Imports
-import PeopleTable from 'src/views/people/PeopleTable'
+import PeopleTableDT from 'src/views/people/PeopleTableDT'
 
 const PeoplePage = ({ people }) => {
   return (
     <Card>
-      <PeopleTable rows={JSON.parse(people)} />
+      <PeopleTableDT rows={JSON.parse(people)} />
     </Card>
   )
 }

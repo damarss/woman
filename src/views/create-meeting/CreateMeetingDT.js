@@ -39,6 +39,9 @@ import TableContainer from '@mui/material/TableContainer'
 import DatePicker from 'react-datepicker'
 import Swal from 'sweetalert2'
 
+import { DataGrid } from '@mui/x-data-grid'
+import Box from '@mui/material/Box'
+
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline' // ** Icons Imports
@@ -70,7 +73,7 @@ const CreateMeeting = props => {
     m_title: '',
     m_description: '',
     m_link: '',
-    m_duration: '0',
+    m_duration: '0'
   })
 
   // ** Hook
@@ -106,14 +109,16 @@ const CreateMeeting = props => {
           m_title: '',
           m_description: '',
           m_link: '',
-          m_duration: '0',
+          m_duration: '0'
         })
-        setParticipants(props.users.map(user => {
-          return {
-            ...user,
-            checked: false
-          }
-        }))
+        setParticipants(
+          props.users.map(user => {
+            return {
+              ...user,
+              checked: false
+            }
+          })
+        )
       }
     } catch (error) {
       Swal.fire({
@@ -130,6 +135,89 @@ const CreateMeeting = props => {
     console.log(participants)
   }, [endDate, participants, startDate, values])
 
+  const rows = participants.map(user => ({
+    id: user.id,
+    username: user.name,
+    nip: user.nip,
+    checked: user.checked
+  }))
+
+  const columns = [
+    {
+      field: 'checked',
+      sortable: false,
+      renderHeader: () => (
+        <FormControlLabel
+          control={
+            <Checkbox
+              defaultChecked
+              checked={participants.filter(participant => participant.checked === true).length === participants.length}
+              onChange={e => {
+                let checked = e.target.checked
+                setParticipants(
+                  participants.map(participant => {
+                    return {
+                      ...participant,
+                      checked: checked
+                    }
+                  })
+                )
+              }}
+            />
+          }
+          label='All'
+        />
+      ),
+      minWidth: 30,
+      flex: 1,
+      renderCell: params => (
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={params.value}
+              onChange={e => {
+                let checked = e.target.checked
+                setParticipants(
+                  participants.map(participant => {
+                    if (participant.id === params.id) {
+                      participant.checked = checked
+                    }
+
+                    return participant
+                  })
+                )
+              }}
+            />
+          }
+          label=''
+        />
+      ),
+      align: 'left'
+    },
+    {
+      field: 'nip',
+      renderHeader: () => (
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>NIP</Typography>
+      ),
+      minWidth: 150,
+      flex: 1,
+      renderCell: params => (
+        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
+      ),
+      align: 'left'
+    },
+    {
+      field: 'username',
+      renderHeader: () => (
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Name</Typography>
+      ),
+      minWidth: 200,
+      flex: 1,
+      renderCell: params => (
+        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
+      )
+    }
+  ]
 
   return (
     <Card>
@@ -153,7 +241,8 @@ const CreateMeeting = props => {
                 label='Meeting Place'
                 placeholder='zoom/'
                 value={values.m_link}
-                onChange={handleChange('m_link')} />
+                onChange={handleChange('m_link')}
+              />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
@@ -161,7 +250,7 @@ const CreateMeeting = props => {
                 showYearDropdown
                 showMonthDropdown
                 showTimeSelect
-                dateFormat="Pp"
+                dateFormat='Pp'
                 placeholderText='DD-MM-YYYY, HH:MM'
                 customInput={<CustomInput />}
                 id='form-layouts-separator-meet'
@@ -174,7 +263,7 @@ const CreateMeeting = props => {
                 showYearDropdown
                 showMonthDropdown
                 showTimeSelect
-                dateFormat="Pp"
+                dateFormat='Pp'
                 placeholderText='DD-MM-YYYY, HH:MM'
                 customInput={<CustomInput2 />}
                 id='form-layouts-separator-meet'
@@ -206,101 +295,42 @@ const CreateMeeting = props => {
                 label='Meeting Description'
                 placeholder='Description'
                 value={values.m_description}
-                onChange={handleChange('m_description')} />
+                onChange={handleChange('m_description')}
+              />
             </Grid>
           </Grid>
           <br></br>
 
           {/* Daftar Peserta */}
           <Typography variant='h6'>Meeting Participant</Typography>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 50 }} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell align='left' sx={{widht: '2rem'}}>
-                    <FormControlLabel
-                      control={
-
-                        <Checkbox
-
-                          // defaultChecked
-                          checked={
-                            participants.filter(participant => participant.checked === true).length ===
-                            participants.length
-                          }
-                          onChange={e => {
-                            let checked = e.target.checked
-                            setParticipants(
-                              participants.map(participant => {
-                                return {
-                                  ...participant,
-                                  checked: checked
-                                }
-                              })
-                            )
-                          }}
-                        />
-                      }
-                      label='All' />
-                  </TableCell>
-                  <TableCell align='center' sx={{widht: '2rem'}}>NIP</TableCell>
-                  <TableCell align='center' sx={{widht: '2rem'}}>Name</TableCell>
-                  {/* <TableCell align='center'>Number Of Meeting</TableCell> */}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {participants.map(user => (
-                  <TableRow
-                    key={user.name}
-                    sx={{
-                      '&:last-of-type td, &:last-of-type th': {
-                        border: 0
-                      }
-                    }}
-                  >
-                    <TableCell align='left'sx={{widht: '2rem'}}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={user.checked}
-                            onChange={e => {
-                              let checked = e.target.checked
-                              setParticipants(
-                                participants.map(participant => {
-                                  if (participant.id === user.id) {
-                                    participant.checked = checked
-                                  }
-
-                                  return participant
-                                })
-                              )
-                            }}
-                          />
-                        }
-                        label=''
-                      />
-                    </TableCell>
-                    <TableCell align='center' sx={{widht: '2rem'}}>{user.nip}</TableCell>
-                    <TableCell align='center' sx={{widht: '2rem'}}>
-                      {user.name}
-                    </TableCell>
-                    {/* <TableCell align='center'>{user.meet}</TableCell> */}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Box sx={{ width: '100%' }}>
+            <DataGrid
+              initialState={{
+                sorting: {
+                  sortModel: [
+                    { field: 'project', sort: 'asc' },
+                    { field: 'task', sort: 'asc' }
+                  ]
+                }
+              }}
+              rows={rows}
+              columns={columns}
+              pprioritySize={5}
+              rowsPerPpriorityOptions={[5]}
+              disableSelectionOnClick
+              experimentalFeatures={{ newEditingApi: true }}
+              sx={{
+                height: rows.length > 5 ? '70vh' : '45vh',
+                overflowY: 'auto',
+                width: '100%'
+              }}
+            />
+          </Box>
         </CardContent>
 
         <Divider sx={{ margin: 0 }} />
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-          <Button
-            size='large'
-            type='submit'
-            sx={{ mr: 2 }}
-            variant='contained'
-            onClick={handleMeeting}
-          >
+          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleMeeting}>
             Create Meeting
           </Button>
         </CardActions>

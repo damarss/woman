@@ -12,7 +12,7 @@ import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 // ** Meeting Components Imports
-import EditProject from 'src/views/edit-project/EditProject'
+import EditProjectDT from 'src/views/edit-project/EditProjectDT'
 
 import { getSession } from 'next-auth/react'
 import prisma from '../../services/db'
@@ -25,7 +25,7 @@ const EditProjectPage = ({ data }) => {
         {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
         <h2>Project Description</h2>
       </Box> */}
-        <EditProject data={JSON.parse(data)} />
+        <EditProjectDT data={JSON.parse(data)} />
       </DatePickerWrapper>
     </>
   )

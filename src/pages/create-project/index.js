@@ -7,14 +7,14 @@ import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 // ** Meeting Components Imports
-import CreateProject from 'src/views/create-project/CreateProject'
+import CreateProjectDT from 'src/views/create-project/CreateProjectDT'
 import { getToken } from 'next-auth/jwt'
 
 const CreateProjectPage = ({ users }) => {
   return (
     <>
       <DatePickerWrapper>
-        <CreateProject users={JSON.parse(users)} />
+        <CreateProjectDT users={JSON.parse(users)} />
       </DatePickerWrapper>
     </>
   )

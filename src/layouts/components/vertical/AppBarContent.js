@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import InputAdornment from '@mui/material/InputAdornment'
 
+// ** Icons Imports
 import Login from 'mdi-material-ui/Login'
 import Table from 'mdi-material-ui/Table'
 import CubeOutline from 'mdi-material-ui/CubeOutline'
@@ -22,10 +23,9 @@ import MessageVideo from 'mdi-material-ui/MessageVideo'
 import Plus from 'mdi-material-ui/Plus'
 import AccountGroupOutline from 'mdi-material-ui/AccountGroupOutline'
 import VideoOutline from 'mdi-material-ui/VideoOutline'
-
-// ** Icons Imports
 import Menu from 'mdi-material-ui/Menu'
 import Magnify from 'mdi-material-ui/Magnify'
+import AccountOutline from 'mdi-material-ui/AccountOutline'
 
 // ** Import Router
 import { useRouter } from 'next/router'
@@ -106,7 +106,7 @@ const AppBarContent = props => {
             </Typography>
           </Box>
         ) : null}
-        {route.asPath.indexOf('/create-project-task/') !== -1 ? (
+        {route.asPath.indexOf('/project-detail-create-project-task/') !== -1 ? (
           <Box
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
           >
@@ -253,6 +253,16 @@ const AppBarContent = props => {
             <AccountGroupOutline />
             <Typography variant='h6' sx={{ marginLeft: 3 }}>
               Edit Members
+            </Typography>
+          </Box>
+        ) : null}
+        {route.asPath === '/account-settings/' ? (
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2, marginLeft: 2 }}
+          >
+            <AccountOutline />
+            <Typography variant='h6' sx={{ marginLeft: 3 }}>
+              Account Settings
             </Typography>
           </Box>
         ) : null}

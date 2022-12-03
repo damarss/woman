@@ -13,7 +13,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 
 // ** Meeting Components Imports
-import CreateMeeting from 'src/views/create-meeting/CreateMeeting'
+import CreateMeetingDT from 'src/views/create-meeting/CreateMeetingDT'
 import { getToken } from 'next-auth/jwt'
 
 const CreateMeetingPage = ({ users }) => {
@@ -23,7 +23,7 @@ const CreateMeetingPage = ({ users }) => {
         {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
         <h2>Create Meeting</h2>
       </Box> */}
-        <CreateMeeting users={users} />
+        <CreateMeetingDT users={users} />
       </DatePickerWrapper>
     </>
   )
