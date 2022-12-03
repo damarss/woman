@@ -12,6 +12,7 @@ import MuiMenu from '@mui/material/Menu'
 import MuiAvatar from '@mui/material/Avatar'
 import MuiMenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
 
 // ** Icons Imports
 import BellOutline from 'mdi-material-ui/BellOutline'
@@ -138,6 +139,15 @@ const NotificationDropdown = () => {
     setNotifications(res.data.filter(notification => !notification.isRead))
   }
 
+  const boxSX = {
+    '&:hover': {
+      color: 'black',
+      backgroundColor: '#EB891B'
+    },
+    backgroundColor: '#EB891B',
+    color: 'white'
+  }
+
   useEffect(() => {
     if (session.status === 'authenticated') {
       getNotifcations()
@@ -146,9 +156,15 @@ const NotificationDropdown = () => {
 
   return (
     <Fragment>
-      <IconButton color='inherit' aria-haspopup='true' onClick={handleDropdownOpen} aria-controls='customized-menu'>
-        <BellOutline />
-      </IconButton>
+      {notifications.length > 0 ? (
+        <IconButton sx={boxSX} aria-haspopup='true' onClick={handleDropdownOpen} aria-controls='customized-menu'>
+          <NotificationsActiveIcon />
+        </IconButton>
+      ) : (
+        <IconButton color='inherit' aria-haspopup='true' onClick={handleDropdownOpen} aria-controls='customized-menu'>
+          <BellOutline />
+        </IconButton>
+      )}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
