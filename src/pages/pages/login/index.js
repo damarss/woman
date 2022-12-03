@@ -181,10 +181,10 @@ const LoginPage = () => {
             <Box
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
-              <FormControlLabel control={<Checkbox />} label='Remember Me' />
-              <Link passHref href='/'>
+              {/* <FormControlLabel control={<Checkbox />} label='Remember Me' /> */}
+              {/* <Link passHref href='/'>
                 <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
-              </Link>
+              </Link> */}
             </Box>
             <Button
               fullWidth
@@ -197,14 +197,14 @@ const LoginPage = () => {
               Login
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Typography variant='body2' sx={{ marginRight: 2 }}>
+              {/* <Typography variant='body2' sx={{ marginRight: 2 }}>
                 New on our platform?
               </Typography>
               <Typography variant='body2'>
                 <Link passHref href='/pages/register'>
                   <LinkStyled>Create an account</LinkStyled>
                 </Link>
-              </Typography>
+              </Typography> */}
             </Box>
           </form>
         </CardContent>
