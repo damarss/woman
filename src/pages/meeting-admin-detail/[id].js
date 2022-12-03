@@ -20,6 +20,7 @@ const MeetingPage = ({ data }) => {
 }
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context)
   const token = await getToken({ req: context.req, secret: process.env.JWT_SECRET })
 
   if (!token) {
@@ -43,6 +44,15 @@ export async function getServerSideProps(context) {
       }
     }
   })
+
+  if (meet.UserMeet.userId !== session.user.id && session.role !== 'admin') {
+    return {
+      redirect: {
+        destination: '/401',
+        permanent: false
+      }
+    }
+  }
 
   console.log(meet)
 

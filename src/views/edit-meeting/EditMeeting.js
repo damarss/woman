@@ -1,5 +1,12 @@
 // ** React Imports
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+// ** Next Imports
+// import Link from 'next/link'
+import { useRouter } from 'next/router'
+import axios from 'src/pages/api/axios'
+import { getSession } from 'next-auth/react'
 
 // ** MUI Imports
 import Card from '@mui/material/Card'
@@ -35,57 +42,91 @@ import Swal from 'sweetalert2'
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'// ** Icons Imports
+import EyeOffOutline from 'mdi-material-ui/EyeOffOutline' // ** Icons Imports
 import Alert from 'mdi-material-ui/Alert'
 
-const datas = [
-  {
-    name: 'Sally Quinn',
-    nip: '220129129012'
-  },
-  {
-    name: 'Sally Quinn',
-    nip: '220129129012'
-  },
-  {
-    name: 'Sally Quinn',
-    nip: '220129129012'
-  },
-  {
-    name: 'Sally Quinn',
-    nip: '220129129012'
-  },
-  {
-    name: 'Sally Quinn',
-    nip: '220129129012'
-  },
-  {
-    name: 'Sally Quinn',
-    nip: '220129129012'
-  },
-  {
-    name: 'Sally Quinn',
-    nip: '220129129012'
-  },
-  {
-    name: 'Sally Quinn',
-    nip: '220129129012'
-  }
-]
-
 const CustomInput = forwardRef((props, ref) => {
-  return <TextField fullWidth {...props} inputRef={ref} label='Waktu Rapat' autoComplete='off' />
+  return <TextField fullWidth {...props} inputRef={ref} label='Start Meeting Time' autoComplete='off' />
 })
 
-const CreateMeeting = () => {
-  // ** States
-  const [language, setLanguage] = useState([])
-  const [date, setDate] = useState(null)
+const CustomInput2 = forwardRef((props, ref) => {
+  return <TextField fullWidth {...props} inputRef={ref} label='End Meeting Time' autoComplete='off' />
+})
 
-  // Handle Select
-  const handleSelectChange = event => {
-    setLanguage(event.target.value)
+const CreateMeeting = props => {
+  // ** States
+  console.log(props.data.meet)
+  const [startDate, setSDate] = useState(new Date(props.data.meet.startDate))
+  const [endDate, setEDate] = useState(new Date(props.data.meet.endDate))
+
+  // const [participants, setParticipants] = useState(
+  //   props.data.user.map(user => {
+  //     return {
+  //       ...user,
+  //       checked: false
+  //     }
+  //   })
+  // )
+
+  const [values, setValues] = useState({
+    m_title: props.data.meet.title,
+    m_description: props.data.meet.description,
+    m_link: props.data.meet.link,
+    m_duration: props.data.meet.duration,
+  })
+
+  // ** Hook
+  const router = useRouter()
+
+  const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
   }
+
+  const handleMeeting = async e => {
+    e.preventDefault()
+
+    try {
+      const res = await axios.put(`/meet/${props.data.meet.id}`, {
+        title: values.m_title,
+        startDate: startDate,
+        endDate: endDate,
+        duration: Math.round(new Date(new Date(endDate) - new Date(startDate)).getTime() / 1000 / 60, 0),
+        link: values.m_link,
+        description: values.m_description,
+      })
+
+      if (res.status === 200) {
+        Swal.fire({
+          title: 'Update Meeting Success',
+          text: 'Press OK to continue',
+          icon: 'success',
+          confirmButtonColor: '#68B92E',
+          confirmButtonText: 'OK'
+        })
+
+        setValues({
+          m_title: '',
+          m_description: '',
+          m_link: '',
+          m_duration: '0',
+        })
+        router.push(`/meeting-admin-detail/${props.data.meet.id}`)
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Update Meeting Failed',
+        text: error,
+        icon: 'error',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+      })
+    }
+  }
+
+  // useEffect(() => {
+  //   console.log(participants)
+  // }, [endDate, startDate, values])
+
 
   return (
     <Card>
@@ -95,64 +136,102 @@ const CreateMeeting = () => {
           <br></br>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={12} lg={6}>
-              <TextField fullWidth label='Meeting Title' placeholder='Rapat IT' />
+              <TextField
+                fullWidth
+                label='Meeting Title'
+                placeholder='Title'
+                value={values.m_title}
+                onChange={handleChange('m_title')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} lg={6}>
+              <TextField
+                fullWidth
+                label='Meeting Place'
+                placeholder='zoom/'
+                value={values.m_link}
+                onChange={handleChange('m_link')} />
             </Grid>
             <Grid item xs={12} sm={12} lg={6}>
               <DatePicker
-                selected={date}
+                selected={startDate}
                 showYearDropdown
                 showMonthDropdown
-                placeholderText='MM-DD-YYYY'
+                showTimeSelect
+                dateFormat="Pp"
+                placeholderText='DD-MM-YYYY, HH:MM'
                 customInput={<CustomInput />}
                 id='form-layouts-separator-meet'
-                onChange={date => setDate(date)}
+                onChange={startDate => setSDate(startDate)}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={12} lg={6}>
-              timepicker
-            </Grid> */}
             <Grid item xs={12} sm={12} lg={6}>
-              <FormControl fullWidth>
-                <InputLabel id='form-layouts-separator-select-label'>Meeting Duration</InputLabel>
-                <Select
-                  label='Durasi Rapat'
-                  defaultValue=''
-                  id='form-layouts-separator-select'
-                  labelId='form-layouts-separator-select-label'
-                >
-                  <MenuItem value='1'>1 Hour</MenuItem>
-                  <MenuItem value='1.5'>1 Our and Half</MenuItem>
-                  <MenuItem value='2'>2 Hour</MenuItem>
-                  <MenuItem value='2.5'>2 Hour and Half</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={12} lg={6}>
-              <TextField fullWidth label='Meeting Link' placeholder='zoom/' />
+              <DatePicker
+                selected={endDate}
+                showYearDropdown
+                showMonthDropdown
+                showTimeSelect
+                dateFormat="Pp"
+                placeholderText='DD-MM-YYYY, HH:MM'
+                customInput={<CustomInput2 />}
+                id='form-layouts-separator-meet'
+                onChange={endDate => setEDate(endDate)}
+              />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-              <TextField fullWidth multiline minRows={3} label='Meeting Description' placeholder='Bio...' />
+              <TextField
+                fullWidth
+                multiline
+                minRows={3}
+                label='Meeting Description'
+                placeholder='Description'
+                value={values.m_description}
+                onChange={handleChange('m_description')} />
             </Grid>
           </Grid>
           <br></br>
 
           {/* Daftar Peserta */}
-          <Typography variant='h6'>Meeting Participant</Typography>
+          {/* <Typography variant='h6'>Meeting Participant</Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 50 }} aria-label='simple table'>
               <TableHead>
                 <TableRow>
                   <TableCell align='left'>
-                    <FormControlLabel control={<Checkbox defaultChecked />} label='All' />
+                    <FormControlLabel
+                      control={
+
+                        <Checkbox
+
+                          // defaultChecked
+                          checked={
+                            participants.filter(participant => participant.checked === true).length ===
+                            participants.length
+                          }
+                          onChange={e => {
+                            let checked = e.target.checked
+                            setParticipants(
+                              participants.map(participant => {
+                                return {
+                                  ...participant,
+                                  checked: checked
+                                }
+                              })
+                            )
+                          }}
+                        />
+                      }
+                      label='All' />
                   </TableCell>
-                  <TableCell align='left'>Name</TableCell>
-                  <TableCell align='left'>NIP</TableCell>
+                  <TableCell align='center'>Name</TableCell>
+                  <TableCell align='center'>NIP</TableCell>
+                  <TableCell align='center'>Number Of Meeting</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {datas.map(data => (
+                {participants.map(user => (
                   <TableRow
-                    key={data.name}
+                    key={user.name}
                     sx={{
                       '&:last-of-type td, &:last-of-type th': {
                         border: 0
@@ -160,18 +239,38 @@ const CreateMeeting = () => {
                     }}
                   >
                     <TableCell align='left'>
-                      <FormControlLabel control={<Checkbox />} label='' />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={user.checked}
+                            onChange={e => {
+                              let checked = e.target.checked
+                              setParticipants(
+                                participants.map(participant => {
+                                  if (participant.id === user.id) {
+                                    participant.checked = checked
+                                  }
+
+                                  return participant
+                                })
+                              )
+                            }}
+                          />
+                        }
+                        label=''
+                      />
                     </TableCell>
-                    <TableCell component='th' scope='row' align='left'>
-                      {data.name}
+                    <TableCell align='center'>{user.nip}</TableCell>
+                    <TableCell component='th' scope='row' align='center'>
+                      {user.name}
                     </TableCell>
-                    <TableCell align='left'>{data.nip}</TableCell>
+                    <TableCell align='center'>{user.meet}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          </TableContainer>
-        </CardContent>
+          </TableContainer>*/}
+        </CardContent> 
 
         <Divider sx={{ margin: 0 }} />
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
@@ -180,25 +279,7 @@ const CreateMeeting = () => {
             type='submit'
             sx={{ mr: 2 }}
             variant='contained'
-            onClick={() => {
-              Swal.fire({
-                title: 'Change this Meeting?',
-                text: 'Make sure all the data is valid. Click "Update Meeting" to send notification to all meeting participants',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#68B92E',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Update Meeting'
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  Swal.fire(
-                    '',
-                    'Meeting updated succesfully. Click "OK" to continue',
-                    'success'
-                  )
-                }
-              })
-            }}
+            onClick={handleMeeting}
           >
             Edit Meeting
           </Button>

@@ -27,6 +27,7 @@ const priorities = ['Low', 'Medium', 'High']
 
 const TaskHome = props => {
   const router = useRouter()
+  
   return (
     <Card>
       <TableContainer sx={{ height: '40vh', overflowY: 'auto' }}>

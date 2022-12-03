@@ -19,6 +19,9 @@ import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 // third party import
 import Swal from 'sweetalert2'
 import { useEffect, useState } from 'react'
+import axios from 'src/pages/api/axios'
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 
 // Styled Box component
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -35,6 +38,8 @@ const options = {
 };
 
 const CardMembership = props => {
+  const router = useRouter()
+  const session = useSession()
   let startDate
   let endDate
   let link
@@ -43,7 +48,39 @@ const CardMembership = props => {
     endDate = new Date(props.data.endDate).toLocaleDateString("en-EN", options) + " at " + new Date(props.data.endDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     link = props.data.link
   } else {
-    
+
+  }
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: 'Hapus Rapat?',
+      text: 'Tekan tombol "Hapus Rapat" untuk mengirim notifikasi kepada peserta rapat',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#68B92E',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Hapus Rapat',
+      cancelButtonText: 'Tidak, Kembali',
+      reverseButtons: true
+    }).then(result => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`/meet/${props.data.id}`)
+          .then(res => {
+            Swal.fire('Deleted', 'Meeting has been deleted. Press "OK" to continue.', 'success')
+
+            router.push('/meeting-admin')
+          })
+          .catch(err => {
+            Swal.fire('Error', 'Something went wrong. Please try again.', 'error')
+          })
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire('Cancelled!', 'Rapat tidak dihapus. Tekan "OK" untuk melanjutkan.', 'error')
+      }
+    })
   }
 
   const [listName, setListName] = useState('')
@@ -51,7 +88,7 @@ const CardMembership = props => {
     const list = []
     props.data.UserMeet.map(row => list.push(row.user.name));
     setListName(list.join(" , "));
-  },[])
+  }, [])
 
   return (
     <Card>
@@ -91,7 +128,7 @@ const CardMembership = props => {
               <Typography variant='body2'>{props.data.description}</Typography>
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <a style={{ textDecoration: 'none'}} href={link}>
+              <a style={{ textDecoration: 'none' }} href={link}>
                 <Typography variant='body2'>{link}</Typography>
               </a>
             </Box>
@@ -100,43 +137,23 @@ const CardMembership = props => {
             </Box>
           </Grid>
         </Grid>
+        {session.data.role === 'admin' && (
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-          <Link href='/edit-meeting'>
-            <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
+            <Button 
+            onClick={e => router.push(`/edit-meeting/${props.data.id}`)}
+            size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
               Edit
             </Button>
-          </Link>
           <Button
             size='large'
             type='submit'
             sx={{ mr: 2 }}
             variant='contained'
-            onClick={() => {
-              Swal.fire({
-                title: 'Hapus Rapat?',
-                text: 'Tekan tombol "Hapus Rapat" untuk mengirim notifikasi kepada peserta rapat',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#68B92E',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus Rapat',
-                cancelButtonText: 'Tidak, Kembali',
-                reverseButtons: true
-              }).then(result => {
-                if (result.isConfirmed) {
-                  Swal.fire('', 'Rapat berhasil dihapus. Tekan "OK" untuk melanjutkan.', 'success')
-                } else if (
-                  /* Read more about handling dismissals below */
-                  result.dismiss === Swal.DismissReason.cancel
-                ) {
-                  Swal.fire('Cancelled!', 'Rapat tidak dihapus. Tekan "OK" untuk melanjutkan.', 'error')
-                }
-              })
-            }}
+            onClick={handleDelete}
           >
             Delete
           </Button>
-        </CardActions>
+        </CardActions>)}
       </CardContent>
     </Card>
   )

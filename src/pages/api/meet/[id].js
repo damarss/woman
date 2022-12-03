@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
     res.status(200).json({ success: true, data: meet })
   } else if (method === 'PUT') {
-    const { title, start, duration, link, description } = req.body
+    const { title, startDate, endDate, duration, link, description } = req.body
     try {
       const meet = await prisma.meet.update({
         where: {
@@ -25,7 +25,8 @@ export default async function handler(req, res) {
         },
         data: {
           title,
-          start,
+          startDate,
+          endDate,
           duration: Number(duration),
           link,
           description
@@ -48,7 +49,7 @@ export default async function handler(req, res) {
 
       res.status(200).json({ success: true, message: 'Meet deleted' })
     } catch (error) {
-      res.status(400).json({ success: false })
+      res.status(400).json({ success: false, message: 'cant delete meet' })
     }
   }
 }
