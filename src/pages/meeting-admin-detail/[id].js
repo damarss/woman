@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import { getToken } from 'next-auth/jwt'
 import { useState } from 'react'
 import prisma from 'src/services/db'
+import { getSession } from 'next-auth/react'
 
 const MeetingPage = ({ data }) => {
   const [meet, setMeet] = useState(JSON.parse(data))
