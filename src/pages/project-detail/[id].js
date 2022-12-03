@@ -78,7 +78,7 @@ const CardBasic = ({ data }) => {
         <CardProjectdetail project={project} />
       </Grid>
       <Grid item xs={12} sm={12} md={4} lg={4} alignItems='center' justify='center'>
-        <Button
+        {session.status === 'authenticated' && (session.data.uid == project.projectLeaderId || session.data.role === 'admin') && <Button
           sx={{ height: '100%' }}
           fullWidth
           href={`/create-project-task/${project.id}`}
@@ -90,7 +90,7 @@ const CardBasic = ({ data }) => {
             <OfficeBuildingCog />
             Manage Task
           </Box>
-        </Button>
+        </Button>}
       </Grid>
 
       <Grid item xs={12} sm={12} md={12}>
