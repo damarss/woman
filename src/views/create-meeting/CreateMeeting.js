@@ -243,8 +243,8 @@ const CreateMeeting = props => {
                       }
                       label='All' />
                   </TableCell>
-                  <TableCell align='center'>Name</TableCell>
                   <TableCell align='center'>NIP</TableCell>
+                  <TableCell align='center'>Name</TableCell>
                   <TableCell align='center'>Number Of Meeting</TableCell>
                 </TableRow>
               </TableHead>
