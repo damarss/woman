@@ -85,6 +85,25 @@ const PeopleTable = ({ rows }) => {
     event.preventDefault()
   }
 
+  const handleChangeRole = (e, id) => {
+    axios
+      .put(`user/${id}`, { role: e.target.value })
+      .then(res => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Role has been updated'
+        })
+      })
+      .catch(err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Something went wrong'
+        })
+      })
+  }
+
   const handleEdit = async id => {
     const data = {
       name: values.name,
@@ -232,6 +251,7 @@ const PeopleTable = ({ rows }) => {
                             defaultValue={user.role}
                             id='form-layouts-separator-role'
                             labelId='form-layouts-separator-role-label'
+                            onChange={e => handleChangeRole(e, user.id)}
                           >
                             <MenuItem value='admin'>Admin</MenuItem>
                             <MenuItem value='employee'>Employee</MenuItem>
