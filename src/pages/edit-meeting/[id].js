@@ -15,7 +15,7 @@ import Button from '@mui/material/Button'
 import EditMeeting from 'src/views/edit-meeting/EditMeeting'
 
 import { getSession } from 'next-auth/react'
-import prisma from '../db'
+import prisma from 'src/services/db'
 
 const EditMeetingPage = ({data}) => {
   return (
