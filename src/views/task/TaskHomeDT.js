@@ -124,7 +124,7 @@ const DataGridDemo = props => {
         rowsPerPpriorityOptions={[5]}
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
-        sx={{ height: props.height, overflowY: 'auto', width: '100%' }}
+        sx={{ height: props.height, overflowY: 'auto', width: '100%', paddingRight: '30px'}}
       />
     </Box>
   )
