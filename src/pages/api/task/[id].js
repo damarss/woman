@@ -30,7 +30,6 @@ apiRoute.use(upload.single('file'))
 
 apiRoute.post(async (req, res) => {
   const id = req.query.id
-  console.log(req.file)
 
   const existTask = await prisma.task.findUnique({
     where: {
@@ -46,7 +45,11 @@ apiRoute.post(async (req, res) => {
 
   // remove old file
   if (existTask.taskfile && existTask.taskfile != taskfile) {
-    await unlinkAsync(`./public/uploads/${existTask.taskfile}`)
+    try {
+      await unlinkAsync(`./public/uploads/${existTask.taskfile}`)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const task = await prisma.task.update({
