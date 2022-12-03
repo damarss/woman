@@ -35,6 +35,7 @@ export async function getServerSideProps(context) {
     }
   }
 
+  
   const project = await prisma.project.findUnique({
     where: {
       id: parseInt(context.params.id)
@@ -53,6 +54,15 @@ export async function getServerSideProps(context) {
       }
     }
   })
+  
+  if (token.uid != project.projectLeaderId && token.uid != 212) {
+    return {
+      redirect: {
+        destination: '/401',
+        permanent: false
+      }
+    }
+  }
 
   return {
     props: {
