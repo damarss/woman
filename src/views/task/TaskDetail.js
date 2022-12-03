@@ -60,24 +60,6 @@ const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Deadline' autoComplete='on' />
 })
 
-const rows = [
-  {
-    name: 'Abidin'
-  },
-  {
-    name: 'Soleh'
-  },
-  {
-    name: 'Umi'
-  },
-  {
-    name: 'Lutpil'
-  },
-  {
-    name: 'Mukidi'
-  }
-]
-
 const TaskDetailPage = props => {
   const [date, setDate] = useState(null)
   const session = useSession()
@@ -90,7 +72,7 @@ const TaskDetailPage = props => {
     <Grid>
       {/* biar ada bg putih */}
       <Card>
-        <Grid container spacing={5}>
+        <Grid container spacing={5} padding={5}>
           <Grid item xs={12}>
             <Box
               sx={{
@@ -213,9 +195,9 @@ const TaskDetailPage = props => {
                               id='form-layouts-separator-asigned'
                               labelId='form-layouts-separator-asigned-label-edit'
                             >
-                              {rows.map(row => (
-                                <MenuItem key={row.name} value={row.name}>
-                                  {row.name}
+                              {props.task.task.project.UserProject.map(row => (
+                                <MenuItem key={row.user.id} value={row.user.name}>
+                                  {row.user.name}
                                 </MenuItem>
                               ))}
                             </Select>
@@ -245,9 +227,9 @@ const TaskDetailPage = props => {
                               id='form-layouts-separator-priority'
                               labelId='form-layouts-separator-priority-label-edit'
                             >
-                              <MenuItem value='High'>High</MenuItem>
-                              <MenuItem value='Medium'>Medium</MenuItem>
-                              <MenuItem value='Low'>Low</MenuItem>
+                              <MenuItem value={2}>High</MenuItem>
+                              <MenuItem value={1}>Medium</MenuItem>
+                              <MenuItem value={0}>Low</MenuItem>
                             </Select>
                           </FormControl>
                         </Grid>
