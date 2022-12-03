@@ -125,10 +125,10 @@ export async function getServerSideProps(context) {
 
   projects.sort((a, b) => {
     return (
+      a.project.isArchived - b.project.isArchived || // urutkan berdasarkan project yang belum diarsipkan
       a.project.enddate - b.project.enddate || // urutkan berdasarkan deadline terdekat
       a.project.startdate - b.project.startdate || // urutkan berdasarkan waktu mulai tercepat
-      b.project.progress - a.project.progress || // urutkan berdasarkan progress terbesar
-      a.project.isArchived - b.project.isArchived // urutkan berdasarkan project yang belum diarsipkan
+      b.project.progress - a.project.progress // urutkan berdasarkan progress terbesar
     )
   })
 
