@@ -5,6 +5,7 @@ import Chip from '@mui/material/Chip'
 import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/dist/client/router'
+import moment from 'moment'
 
 const statusObj = {
   0: { color: 'secondary', status: 'Assigned' },
@@ -29,7 +30,7 @@ const DataGridDemo = props => {
     title: row.title,
     priority: priorities[row.priority],
     status: row.status,
-    deadline: new Date(row.duedate).toLocaleDateString('id')
+    deadline: row.duedate
   }))
 
   const columns = [
@@ -52,9 +53,7 @@ const DataGridDemo = props => {
     {
       field: 'project',
       renderHeader: () => (
-        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
-          Project
-        </Typography>
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Project</Typography>
       ),
       width: 220,
       renderCell: params => (
@@ -68,9 +67,7 @@ const DataGridDemo = props => {
     {
       field: 'priority',
       renderHeader: () => (
-        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
-          Priority
-        </Typography>
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Priority</Typography>
       ),
       width: 220,
       renderCell: params => (
@@ -81,11 +78,9 @@ const DataGridDemo = props => {
     {
       field: 'status',
       renderHeader: () => (
-        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
-          Status
-        </Typography>
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Status</Typography>
       ),
-      width: 220,
+      width: 170,
       align: 'left',
       renderCell: params => (
         <Chip
@@ -104,13 +99,11 @@ const DataGridDemo = props => {
     {
       field: 'deadline',
       renderHeader: () => (
-        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
-          Deadline
-        </Typography>
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Deadline</Typography>
       ),
-      width: 100,
+      width: 150,
       renderCell: params => (
-        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
+        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{moment(params.value).format('DD/MM/YYYY')}</Typography>
       ),
       align: 'left',
       editable: true
@@ -120,6 +113,11 @@ const DataGridDemo = props => {
   return (
     <Box sx={{ width: '100%' }}>
       <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [{ field: 'deadline', sort: 'asc' }]
+          }
+        }}
         rows={rows}
         columns={columns}
         pprioritySize={5}
