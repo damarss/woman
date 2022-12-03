@@ -21,7 +21,7 @@ import { useRouter } from 'next/dist/client/router'
 // Styled Box component
 const StyledBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
-    borderRight: `1px solid ${theme.palette.divider}`
+    
   }
 }))
 
