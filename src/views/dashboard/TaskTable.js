@@ -49,12 +49,12 @@ const DashboardTable = props => {
               .map(row => (
                 <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                   <TableCell>
-                    <Link href={`/task-detail/${row.project.id}`}>
+                    <Link>
                       <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <Link href={`/task-detail/${row.project.id}`}>
+                    <Link>
                       <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
                         {row.project.title}
                       </Typography>
