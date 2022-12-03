@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -37,8 +37,8 @@ import { useRouter } from 'next/router'
 import OutlinedInput from '@mui/material/OutlinedInput'
 
 import Swal from 'sweetalert2'
-
-
+import { useSession } from 'next-auth/react'
+import axios from 'src/pages/api/axios'
 
 const style = {
   position: 'absolute',
@@ -60,6 +60,10 @@ const statusObj = {
 
 const PeopleTable = ({ rows }) => {
   const router = useRouter()
+  const session = useSession()
+
+  const [role, setRole] = useState('')
+  const [id, setId] = useState('')
 
   const [values, setValues] = useState({
     password: '',
@@ -68,6 +72,7 @@ const PeopleTable = ({ rows }) => {
     name: '',
     nip: ''
   })
+
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
@@ -148,6 +153,7 @@ const PeopleTable = ({ rows }) => {
   }
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
+
   const handleClose = () => {
     setOpen(false)
     Swal.fire('Cancelled', 'Task is not created!', 'error')
@@ -155,19 +161,29 @@ const PeopleTable = ({ rows }) => {
   const [date, setDate] = useState(null)
 
   const [editOpen, setEditOpen] = useState(false)
+
   // const handleEditOpen = () => setEditOpen(true)
   const handleEditOpen = () => setEditOpen(true)
   const handleEditClose = () => setEditOpen(false)
 
+  useEffect(() => {
+    if (session.status === 'authenticated') {
+      setRole(session.data.role)
+      setId(session.data.uid)
+    }
+  }, [session])
+
   return (
     <Card>
-      <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
-        <Link passHref href='/add-people'>
-          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
-            Add People
-          </Button>
-        </Link>
-      </CardActions>
+      {id == 212 && (
+        <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
+          <Link passHref href='/add-people'>
+            <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
+              Add People {role} {id}
+            </Button>
+          </Link>
+        </CardActions>
+      )}
       <TableContainer>
         <Table sx={{ minWidth: 50 }} aria-label='table in dashboard'>
           <TableHead>
@@ -181,12 +197,16 @@ const PeopleTable = ({ rows }) => {
               <TableCell align='center' style={{ width: '2rem' }}>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Number of Task</Typography>
               </TableCell>
-              <TableCell align='center' style={{ width: '2rem' }}>
-                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Role</Typography>
-              </TableCell>
-              <TableCell align='center' style={{ width: '20rem' }}>
-                <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Action</Typography>
-              </TableCell>
+              {id == 212 && (
+                <>
+                  <TableCell align='center' style={{ width: '2rem' }}>
+                    <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Role</Typography>
+                  </TableCell>
+                  <TableCell align='center' style={{ width: '20rem' }}>
+                    <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Action</Typography>
+                  </TableCell>
+                </>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -196,148 +216,147 @@ const PeopleTable = ({ rows }) => {
                   <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{user.name}</Typography>
                 </TableCell>
                 <TableCell align='center' style={{ width: '16rem' }}>
-                  {user.project}
+                  {user.UserProject.length}
                 </TableCell>
                 <TableCell align='center' style={{ width: '16rem' }}>
-                  {user.task}
+                  {user.taskToDo.length}
                 </TableCell>
-                <TableCell align='center'>
-                  <form onSubmit={e => e.preventDefault()}>
-                    <FormControl fullWidth>
-                      <InputLabel id='form-layouts-separator-select-label'>role</InputLabel>
-                      <Select
-                        label='role'
-                        defaultValue={user.role}
-                        id='form-layouts-separator-role'
-                        labelId='form-layouts-separator-role-label'
-                      >
-                        <MenuItem value='admin'>Admin</MenuItem>
-                        <MenuItem value='employee'>Employee</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </form>
-                </TableCell>
-                <TableCell align='center'>
-                  <Button type='submit' sx={{ mr: 1 }} color='info' variant='text' onClick={handleEditOpen}>
-                    <PencilOutline />
-                  </Button>
-                  <Modal open={editOpen} onClose={handleEditClose}>
-                    <Card sx={style}>
-                      {/* form edit task */}
-                      <CardContent>
-                        <Typography variant='h6'>Edit people information</Typography>
-                        <br></br>
-                        <Grid container spacing={2}>
-                          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-                            <Grid item xs={12} sm={12} lg={12}>
-                              <TextField
-                                autoFocus
-                                fullWidth
-                                id='name'
-                                label='Name'
-                                sx={{ marginBottom: 4 }}
-                                onChange={handleChange('name')}
-                              />
-                            </Grid>
-                            <TextField
-                              fullWidth
-                              type='email'
-                              label='Email'
-                              sx={{ marginBottom: 4 }}
-                              onChange={handleChange('email')}
-                            />
-                            <TextField
-                              fullWidth
-                              id='nip'
-                              label='NIP'
-                              sx={{ marginBottom: 4 }}
-                              onChange={handleChange('nip')}
-                            />
-                            <FormControl fullWidth>
-                              <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
-                              <OutlinedInput
-                                label='Password'
-                                value={values.password}
-                                id='auth-register-password'
-                                onChange={handleChange('password')}
-                                type={values.showPassword ? 'text' : 'password'}
-                                endAdornment={
-                                  <InputAdornment position='end'>
-                                    <IconButton
-                                      edge='end'
-                                      onClick={handleClickShowPassword}
-                                      onMouseDown={handleMouseDownPassword}
-                                      aria-label='toggle password visibility'
-                                    >
-                                      {values.showPassword ? (
-                                        <EyeOutline fontSize='small' />
-                                      ) : (
-                                        <EyeOffOutline fontSize='small' />
-                                      )}
-                                    </IconButton>
-                                  </InputAdornment>
-                                }
-                              />
-                            </FormControl>
-                            {/* 
-                            <Button
-                              fullWidth
-                              size='large'
-                              type='submit'
-                              variant='contained'
-                              sx={{ marginTop: 5 }}
-                              onClick={handleRegister}
-                            >
-                              Add People
-                            </Button> */}
-                          </form>
-                        </Grid>
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        <CardActions style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
-                          <Button
-                            size='large'
-                            color='secondary'
-                            sx={{ mr: 2 }}
-                            variant='outlined'
-                            onClick={handleEditClose}
+                {id == 212 && (
+                  <>
+                    <TableCell align='center'>
+                      <form onSubmit={e => e.preventDefault()}>
+                        <FormControl fullWidth>
+                          <InputLabel id='form-layouts-separator-select-label'>role</InputLabel>
+                          <Select
+                            label='role'
+                            defaultValue={user.role}
+                            id='form-layouts-separator-role'
+                            labelId='form-layouts-separator-role-label'
                           >
-                            Cancel
-                          </Button>
-                          <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleEdit}>
-                            Edit Task
-                          </Button>
-                        </CardActions>
-                      </CardContent>
-                      {/* end form edit task */}
-                    </Card>
-                  </Modal>
-                  <Button
-                    type='submit'
-                    sx={{ mr: 1 }}
-                    color='error'
-                    variant='text'
-                    onClick={e => {
-                      Swal.fire({
-                        title: 'Delete Member?',
-                        text: 'Click "Delete Member" for Delete member',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Delete Member'
-                      }).then(result => {
-                        if (result.isConfirmed) {
-                          handleDelete(user.id)
-                        }
-                      })
-                    }}
-                  >
-                    <DeleteOutline />
-                  </Button>
-                </TableCell>
+                            <MenuItem value='admin'>Admin</MenuItem>
+                            <MenuItem value='employee'>Employee</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </form>
+                    </TableCell>
+                    <TableCell align='center'>
+                      <Button type='submit' sx={{ mr: 1 }} color='info' variant='text' onClick={handleEditOpen}>
+                        <PencilOutline />
+                      </Button>
+                      <Modal open={editOpen} onClose={handleEditClose}>
+                        <Card sx={style}>
+                          {/* form edit task */}
+                          <CardContent>
+                            <Typography variant='h6'>Edit people information</Typography>
+                            <br></br>
+                            <Grid container spacing={2}>
+                              <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
+                                <Grid item xs={12} sm={12} lg={12}>
+                                  <TextField
+                                    autoFocus
+                                    fullWidth
+                                    id='name'
+                                    label='Name'
+                                    sx={{ marginBottom: 4 }}
+                                    onChange={handleChange('name')}
+                                  />
+                                </Grid>
+                                <TextField
+                                  fullWidth
+                                  type='email'
+                                  label='Email'
+                                  sx={{ marginBottom: 4 }}
+                                  onChange={handleChange('email')}
+                                />
+                                <TextField
+                                  fullWidth
+                                  id='nip'
+                                  label='NIP'
+                                  sx={{ marginBottom: 4 }}
+                                  onChange={handleChange('nip')}
+                                />
+                                <FormControl fullWidth>
+                                  <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
+                                  <OutlinedInput
+                                    label='Password'
+                                    value={values.password}
+                                    id='auth-register-password'
+                                    onChange={handleChange('password')}
+                                    type={values.showPassword ? 'text' : 'password'}
+                                    endAdornment={
+                                      <InputAdornment position='end'>
+                                        <IconButton
+                                          edge='end'
+                                          onClick={handleClickShowPassword}
+                                          onMouseDown={handleMouseDownPassword}
+                                          aria-label='toggle password visibility'
+                                        >
+                                          {values.showPassword ? (
+                                            <EyeOutline fontSize='small' />
+                                          ) : (
+                                            <EyeOffOutline fontSize='small' />
+                                          )}
+                                        </IconButton>
+                                      </InputAdornment>
+                                    }
+                                  />
+                                </FormControl>
+                              </form>
+                            </Grid>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <br></br>
+                            <CardActions style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
+                              <Button
+                                size='large'
+                                color='secondary'
+                                sx={{ mr: 2 }}
+                                variant='outlined'
+                                onClick={handleEditClose}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                size='large'
+                                type='submit'
+                                sx={{ mr: 2 }}
+                                variant='contained'
+                                onClick={handleEdit}
+                              >
+                                Edit Task
+                              </Button>
+                            </CardActions>
+                          </CardContent>
+                          {/* end form edit task */}
+                        </Card>
+                      </Modal>
+                      <Button
+                        type='submit'
+                        sx={{ mr: 1 }}
+                        color='error'
+                        variant='text'
+                        onClick={e => {
+                          Swal.fire({
+                            title: 'Delete Member?',
+                            text: 'Click "Delete Member" for Delete member',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Delete Member'
+                          }).then(result => {
+                            if (result.isConfirmed) {
+                              handleDelete(user.id)
+                            }
+                          })
+                        }}
+                      >
+                        <DeleteOutline />
+                      </Button>
+                    </TableCell>
+                  </>
+                )}
               </TableRow>
             ))}
           </TableBody>

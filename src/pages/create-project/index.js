@@ -42,6 +42,11 @@ export async function getServerSideProps(context) {
   }
 
   const user = await prisma.user.findMany({
+    where: {
+      id: {
+        not: 212
+      }
+    },
     include: {
       UserProject: true,
       taskToDo: true
@@ -51,6 +56,8 @@ export async function getServerSideProps(context) {
   user.sort((a, b) => {
     return a.taskToDo.length - b.taskToDo.length || a.UserProject.length - b.UserProject.length
   })
+
+  console.log(user)
 
   return {
     props: {
