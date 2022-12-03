@@ -1,6 +1,5 @@
 import prisma from '../../db'
-import Gmail, { mailOptions } from 'src/services/Gmail'
-import { sendMailProjectCreated } from 'src/services/sendEmail'
+import { mailOptions, sendMailProjectCreated } from 'src/services/sendEmail'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -51,15 +50,6 @@ export default async function handler(req, res) {
       mailOptions.startdate = new Date(startdate).toLocaleDateString('id-ID')
       mailOptions.enddate = new Date(enddate).toLocaleDateString('id-ID')
       mailOptions.link = `${process.env.BASE_URL}/project-detail/${project.id}`
-
-
-      // Gmail.sendMail(mailOptions, function (error, info) {
-      //   if (error) {
-      //     console.log(error)
-      //   } else {
-      //     console.log('Email sent: ' + info.response)
-      //   }
-      // })
 
       sendMailProjectCreated(mailOptions)
 

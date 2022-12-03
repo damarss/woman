@@ -25,11 +25,41 @@ const sendMailProjectCreated = async payload => {
     from: payload.from,
     subject: payload.subject,
     html: mustache.render(template, { ...payload }),
-    attachments: [{
-      filename: 'logo.png',
-      path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
-      cid: 'womanrpl@gmail.com'
-    }]
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
+        cid: 'womanrpl@gmail.com'
+      }
+    ]
+  }
+
+  Gmail.sendMail(mail, function (error, info) {
+    if (error) {
+      console.log(error)
+    } else {
+      console.log('Email sent: ' + info.response)
+    }
+  })
+}
+
+const sendMailNewParticipantAdded = async payload => {
+  const template = fs.readFileSync(path.resolve(__dirname, '../../../../../src/views/email/email_project.html'), 'utf8')
+
+  payload.logo = 'cid:womanrpl@gmail.com'
+
+  const mail = {
+    to: payload.to,
+    from: payload.from,
+    subject: payload.subject,
+    html: mustache.render(template, { ...payload }),
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: path.resolve(__dirname, '../../../../../src/views/email/img/logo.png'),
+        cid: 'womanrpl@gmail.com'
+      }
+    ]
   }
 
   Gmail.sendMail(mail, function (error, info) {
@@ -51,11 +81,13 @@ const sendMailMeetCreated = async payload => {
     from: payload.from,
     subject: payload.subject,
     html: mustache.render(template, { ...payload }),
-    attachments: [{
-      filename: 'logo.png',
-      path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
-      cid: 'womanrpl@gmail.com'
-    }]
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
+        cid: 'womanrpl@gmail.com'
+      }
+    ]
   }
 
   Gmail.sendMail(mail, function (error, info) {
@@ -77,11 +109,13 @@ const sendMailTaskAssigned = async payload => {
     from: payload.from,
     subject: payload.subject,
     html: mustache.render(template, { ...payload }),
-    attachments: [{
-      filename: 'logo.png',
-      path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
-      cid: 'womanrpl@gmail.com'
-    }]
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
+        cid: 'womanrpl@gmail.com'
+      }
+    ]
   }
 
   Gmail.sendMail(mail, function (error, info) {
@@ -94,7 +128,10 @@ const sendMailTaskAssigned = async payload => {
 }
 
 const sendMailTaskComment = async payload => {
-  const template = fs.readFileSync(path.resolve(__dirname, '../../../../src/views/email/email_task_comment.html'), 'utf8')
+  const template = fs.readFileSync(
+    path.resolve(__dirname, '../../../../src/views/email/email_task_comment.html'),
+    'utf8'
+  )
 
   payload.logo = 'cid:womanrpl@gmail.com'
 
@@ -103,11 +140,13 @@ const sendMailTaskComment = async payload => {
     from: payload.from,
     subject: payload.subject,
     html: mustache.render(template, { ...payload }),
-    attachments: [{
-      filename: 'logo.png',
-      path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
-      cid: 'womanrpl@gmail.com'
-    }]
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: path.resolve(__dirname, '../../../../src/views/email/img/logo.png'),
+        cid: 'womanrpl@gmail.com'
+      }
+    ]
   }
 
   Gmail.sendMail(mail, function (error, info) {
@@ -119,4 +158,12 @@ const sendMailTaskComment = async payload => {
   })
 }
 
-export { sendMailProjectCreated, sendMailMeetCreated,sendMailTaskAssigned,sendMailTaskComment, Gmail, mailOptions }
+export {
+  sendMailProjectCreated,
+  sendMailMeetCreated,
+  sendMailTaskAssigned,
+  sendMailTaskComment,
+  sendMailNewParticipantAdded,
+  Gmail,
+  mailOptions
+}

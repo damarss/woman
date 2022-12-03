@@ -272,16 +272,16 @@ const EditProjectTask = () => {
                         variant='text'
                         onClick={() => {
                           Swal.fire({
-                            title: 'Delete Task?',
-                            text: 'Click "Delete Task" for Delete Task',
+                            title: 'Hapus Tugas?',
+                            text: 'Tekan tombol "Hapus Tugas" untuk menghapus tugas',
                             icon: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
-                            confirmButtonText: 'Delete Task'
+                            confirmButtonText: 'Ya, Hapus Tugas'
                           }).then(result => {
                             if (result.isConfirmed) {
-                              Swal.fire('', 'Task Deleted. Click "Ok to continue', 'success')
+                              Swal.fire('', 'Tugas berhasil dihapus. Tekan "OK" untuk melanjutkan.', 'success')
                             }
                           })
                         }}

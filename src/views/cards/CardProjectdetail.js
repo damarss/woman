@@ -15,6 +15,18 @@ import Divider from '@mui/material/Divider'
 import { styled } from '@mui/material/styles'
 
 import CardContent from '@mui/material/CardContent'
+import { Avatar } from '@mui/material'
+
+// ** Styled component for the title in MenuItems
+const MenuItemTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: 600,
+  flex: '1 1 100%',
+  overflow: 'hidden',
+  fontSize: '0.875rem',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  marginBottom: theme.spacing(0.75)
+}))
 
 const CardNavigation = props => {
   // ** State
@@ -37,17 +49,18 @@ const CardNavigation = props => {
           <Tab value='1' label='Info' />
           <Tab value='2' label='Timeline' />
           <Tab value='3' label='Description' />
+          <Tab value='4' label='Participants' />
         </TabList>
         <CardContent>
           <TabPanel value='1' sx={{ p: 0 }}>
             <Typography variant='h6' sx={{ marginBottom: 2 }}>
-            {props.project.title}
+              {props.project.title}
             </Typography>
             <Typography variant='body2' sx={{ marginBottom: 2, fontWeight: '600' }}>
               Team Leader : {props.project.projectLeader.name}
             </Typography>
             <Typography variant='body2' sx={{ marginBottom: 2, fontWeight: '600' }}>
-              Project Participant: {props.project.UserProject.length}
+              Project Participants: {props.project.UserProject.length}
             </Typography>
             <Typography variant='body2' sx={{ marginBottom: 2, fontWeight: '600' }}>
               Tasks: {props.project.Task.length}
@@ -108,7 +121,9 @@ const CardNavigation = props => {
                     >
                       <Typography variant='body1'>Time Left</Typography>
                       <Typography variant='body2'>
-                        {Math.ceil((new Date(props.project.enddate) - new Date()) / (1000 * 3600 * 24))} days
+                        {Math.ceil((new Date(props.project.enddate) - new Date()) / (1000 * 3600 * 24)) >= 0
+                          ? `${Math.ceil((new Date(props.project.enddate) - new Date()) / (1000 * 3600 * 24))} days`
+                          : 'Project has been finished'}
                       </Typography>
                     </Box>
                   </StyledBox>
@@ -137,8 +152,30 @@ const CardNavigation = props => {
             <Typography variant='h6' sx={{ marginBottom: 2 }}>
               Project Descriptions
             </Typography>
-            <Typography variant='body2' sx={{ marginBottom: 4, height: 80, overflowY: 'scroll'}}>
+            <Typography variant='body2' sx={{ marginBottom: 4, height: 80, overflowY: 'scroll' }}>
               {props.project.description}
+            </Typography>
+          </TabPanel>
+          <TabPanel value='4' sx={{ p: 0 }}>
+            <Typography variant='h6' sx={{ marginBottom: 2 }}>
+              Project Participants
+            </Typography>
+            <Typography
+              variant='body2'
+              sx={{ marginBottom: 4, height: 80, overflowY: 'scroll', display: 'flex', gap: 2, flexWrap: 'wrap' }}
+            >
+              {props.project.UserProject.map((user, index) => (
+                <div key={index}>
+                  <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+                    <Avatar sx={{ color: 'common.white', backgroundColor: 'primary.main' }}>
+                      {user.user.name.slice(0, 1)}
+                    </Avatar>
+                    <Box sx={{ mx: 3, flex: '1 1', display: 'flex', overflow: 'hidden', flexDirection: 'column' }}>
+                      <MenuItemTitle>{user.user.name}</MenuItemTitle>
+                    </Box>
+                  </Box>
+                </div>
+              ))}
             </Typography>
           </TabPanel>
         </CardContent>

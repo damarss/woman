@@ -1,7 +1,6 @@
 import { getToken } from 'next-auth/jwt'
 import prisma from '../../db'
-import { sendMailTaskComment } from 'src/services/sendEmail'
-import { mailOptions } from 'src/services/Gmail'
+import { mailOptions, sendMailTaskComment } from 'src/services/sendEmail'
 
 export default async function handle(req, res) {
   if (req.method === 'GET') {
@@ -38,7 +37,7 @@ export default async function handle(req, res) {
         id: taskId
       },
       include: {
-        project: true, 
+        project: true,
         user: true
       }
     })
@@ -49,7 +48,6 @@ export default async function handle(req, res) {
       }
     })
 
-    console.log(task)
     mailOptions.to = task.user.email
     mailOptions.subject = `New comment`
     mailOptions.user = user.name

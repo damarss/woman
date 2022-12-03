@@ -197,11 +197,12 @@ const CreateProject = props => {
                 id='form-layouts-separator-select'
                 labelId='form-layouts-separator-select-label'
               >
-                {props.users.map(user => (
-                  <MenuItem key={user.id} value={user.id}>
-                    {user.name}
-                  </MenuItem>
-                ))}
+                {props.users
+                  .map(user => (
+                    <MenuItem key={user.id} value={user.id}>
+                      {user.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
@@ -278,9 +279,9 @@ const CreateProject = props => {
                     <TableCell component='th' scope='row' align='center'>
                       {user.name}
                     </TableCell>
-                    <TableCell align='center'>{user.project}</TableCell>
+                    <TableCell align='center'>{user.UserProject.length}</TableCell>
                     <TableCell component='th' scope='row' align='center'>
-                      {user.task}
+                      {user.taskToDo.length}
                     </TableCell>
                   </TableRow>
                 ))}

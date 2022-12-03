@@ -1,6 +1,5 @@
 import prisma from '../../db'
-import Gmail, { mailOptions } from 'src/services/Gmail'
-import { sendMailMeetCreated}  from 'src/services/sendEmail'
+import { mailOptions, sendMailMeetCreated}  from 'src/services/sendEmail'
 
 export default async function handler(req, res) {
   const { method } = req

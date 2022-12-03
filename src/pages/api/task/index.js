@@ -1,6 +1,5 @@
 import prisma from '../../db'
-import Gmail, { mailOptions } from 'src/services/Gmail'
-import { sendMailTaskAssigned}  from 'src/services/sendEmail'
+import { mailOptions, sendMailTaskAssigned}  from 'src/services/sendEmail'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -56,6 +55,7 @@ export default async function handler(req, res) {
       mailOptions.link = `${process.env.BASE_URL}/task-detail/${task.id}`
           
       sendMailTaskAssigned(mailOptions)
+      
       return res.status(201).json({ success: true, data: task })
     } catch (error) {
       

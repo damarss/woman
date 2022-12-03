@@ -11,6 +11,7 @@ import prisma from 'src/pages/db'
 
 const MeetingPage = ({data}) => {
   const [meet, setMeet] = useState(JSON.parse(data))
+  
   return (
     <>
       <MeetingDetail data={meet}/>

@@ -21,6 +21,7 @@ import Button from '@mui/material/Button'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 import axios from 'src/pages/api/axios'
+import Swal from 'sweetalert2'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -52,10 +53,10 @@ const TabAccount = props => {
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
 
   const [user, setUser] = useState({
-    name: 'John Doe',
-    email: 'johndoe@gmail.com',
-    role: 'employee',
-    nip: '1234567890'
+    name: '',
+    email: '',
+    nip: '',
+    role: ''
   })
 
   const onChange = file => {
@@ -84,6 +85,49 @@ const TabAccount = props => {
       })
   }
 
+  const handleEdit = async e => {
+    e.preventDefault()
+
+    const data = {
+      name: user.name,
+      nip: user.nip,
+      email: user.email
+    }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, update it!'
+    }).then(result => {
+      if (result.isConfirmed) {
+        axios
+          .put(`user/${user.id}`, data)
+          .then(res => {
+            if (res.status === 200) {
+              Swal.fire({
+                title: 'Edit People Success',
+                text: 'Press OK to continue',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              })
+            }
+          })
+          .catch(err => {
+            Swal.fire({
+              title: 'Edit People Failed',
+              text: err.message,
+              confirmButtonColor: '#d33',
+              confirmButtonText: 'OK'
+            })
+          })
+      }
+    })
+  }
+
   useEffect(() => {
     getUser()
   }, [])
@@ -96,21 +140,11 @@ const TabAccount = props => {
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <ImgStyled src={imgSrc} alt='Profile Pic' />
               <Box>
-                <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
-                  Upload New Photo
-                  <input
-                    hidden
-                    type='file'
-                    onChange={onChange}
-                    accept='image/png, image/jpeg'
-                    id='account-settings-upload-image'
-                  />
-                </ButtonStyled>
-                <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgSrc('/images/avatars/1.png')}>
-                  Reset
-                </ResetButtonStyled>
-                <Typography variant='body2' sx={{ marginTop: 5 }}>
-                  Allowed PNG or JPEG. Max size of 800K.
+                <Typography variant='h3' sx={{ fontWeight: 'bold' }} gutterBottom>
+                  {user.name}
+                </Typography>
+                <Typography variant='body2' color='textSecondary'>
+                  {user.email}
                 </Typography>
               </Box>
             </Box>
@@ -121,7 +155,7 @@ const TabAccount = props => {
               fullWidth
               label='NIP'
               placeholder='1234567890'
-              defaultValue={user.nip}
+              defaultValue=''
               value={user.nip}
               onChange={handleChange('nip')}
             />
@@ -157,27 +191,8 @@ const TabAccount = props => {
             </FormControl>
           </Grid>
 
-          {openAlert ? (
-            <Grid item xs={12} sx={{ mb: 3 }}>
-              <Alert
-                severity='warning'
-                sx={{ '& a': { fontWeight: 400 } }}
-                action={
-                  <IconButton size='small' color='inherit' aria-label='close' onClick={() => setOpenAlert(false)}>
-                    <Close fontSize='inherit' />
-                  </IconButton>
-                }
-              >
-                <AlertTitle>Your email is not confirmed. Please check your inbox.</AlertTitle>
-                <Link href='/' onClick={e => e.preventDefault()}>
-                  Resend Confirmation
-                </Link>
-              </Alert>
-            </Grid>
-          ) : null}
-
           <Grid item xs={12}>
-            <Button variant='contained' sx={{ marginRight: 3.5 }}>
+            <Button type='submit' variant='contained' sx={{ marginRight: 3.5 }} onClick={handleEdit}>
               Save Changes
             </Button>
             <Button type='reset' variant='outlined' color='secondary' onClick={e => getUser()}>

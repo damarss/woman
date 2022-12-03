@@ -39,8 +39,8 @@ import UpdateTask from 'src/views/task/UpdateTask'
 
 // ** Third Party Imports
 import DatePicker from 'react-datepicker'
-import Swal from 'sweetalert2'
 
+import Swal from 'sweetalert2'
 
 const priorities = ['Low', 'Medium', 'High']
 
@@ -60,15 +60,18 @@ const CustomInputStart = forwardRef((props, ref) => {
 })
 
 const CreateProjectTask = props => {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
-  const handleClose = () => { setOpen(false); Swal.fire('Cancelled', 'Task is not created!', 'error') }
+  const handleClose = () => {
+    setOpen(false)
+    Swal.fire('Cancelled', 'Task is not created!', 'error')
+  }
   const [date, setDate] = useState(null)
 
   const [editOpen, setEditOpen] = useState(false)
   const handleEditOpen = () => setEditOpen(true)
   const handleEditClose = () => setEditOpen(false)
-
 
   // ** States
   const [endDate, setEDate] = useState(new Date())
@@ -78,7 +81,7 @@ const CreateProjectTask = props => {
     t_title: '',
     t_description: '',
     t_user: '',
-    t_priority: '0',
+    t_priority: '0'
   })
 
   // ** Hook
@@ -128,6 +131,32 @@ const CreateProjectTask = props => {
     setProjectId(props.data.id)
   }, [endDate, values])
 
+  const handleDelete = async id => {
+    const data = {}
+    axios
+      .delete(`task/${id}`, data)
+      .then(res => {
+        if (res.status === 200) {
+          Swal.fire({
+            title: 'Delete Task Success',
+            text: 'Press OK to continue',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          })
+
+          router.push('/people')
+        }
+      })
+      .catch(err => {
+        Swal.fire({
+          title: 'Delete Task Failed',
+          text: err.message,
+          icon: 'error',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        })
+      })
+  }
 
   return (
     <Card>
@@ -169,7 +198,9 @@ const CreateProjectTask = props => {
                   </TableCell>
                   <TableCell align='left'>
                     <Link href='#'>
-                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{priorities[row.priority]}</Typography>
+                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>
+                        {priorities[row.priority]}
+                      </Typography>
                     </Link>
                   </TableCell>
                   <TableCell align='left'>
@@ -298,7 +329,7 @@ const CreateProjectTask = props => {
                             confirmButtonText: 'Ya, Hapus Tugas'
                           }).then(result => {
                             if (result.isConfirmed) {
-                              Swal.fire('', 'Tugas berhasil dihapus. Tekan "OK" untuk melanjutkan.', 'success')
+                              handleDelete(row.id)
                             }
                           })
                         }}
@@ -331,7 +362,8 @@ const CreateProjectTask = props => {
                         label='Task Title'
                         placeholder='Title'
                         value={values.t_title}
-                        onChange={handleChange('t_title')} />
+                        onChange={handleChange('t_title')}
+                      />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={6}>
                       <FormControl fullWidth>
@@ -391,7 +423,8 @@ const CreateProjectTask = props => {
                         label='Task Description'
                         placeholder='Description'
                         value={values.t_description}
-                        onChange={handleChange('t_description')} />
+                        onChange={handleChange('t_description')}
+                      />
                     </Grid>
                   </Grid>
                   <br></br>
@@ -399,13 +432,7 @@ const CreateProjectTask = props => {
                     <Button size='large' color='secondary' sx={{ mr: 2 }} variant='outlined' onClick={handleClose}>
                       Cancel
                     </Button>
-                    <Button
-                      size='large'
-                      type='submit'
-                      sx={{ mr: 2 }}
-                      variant='contained'
-                      onClick={handleTask}
-                    >
+                    <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleTask}>
                       Add Task
                     </Button>
                   </CardActions>

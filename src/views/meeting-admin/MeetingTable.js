@@ -69,7 +69,20 @@ const statusObj = {
   professional: { color: 'success' }
 }
 
+const options = {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+
 const MeetingTable = (props) => {
+  let startDate
+  let startTime
+  let endDate
+  let endTime
+  let link
+  
   return (
     <Card>
       <TableContainer>
@@ -92,6 +105,9 @@ const MeetingTable = (props) => {
           </TableHead>
           <TableBody>
             {props.data.map(row => (
+              startDate = new Date(row.startDate).toLocaleDateString("en-EN", options) + " at " + new Date(row.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+              endDate = new Date(row.endDate).toLocaleDateString("en-EN", options) + " at " + new Date(row.endDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+              link = row.link,
               <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell align='left'>
                   <Link href={`/meeting-admin-detail/${row.id}`}>
@@ -100,12 +116,12 @@ const MeetingTable = (props) => {
                 </TableCell>
                 <TableCell align='left'>
                   <Link href=''>
-                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.startDate}</Typography>
+                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{startDate}</Typography>
                   </Link>
                 </TableCell>
                 <TableCell align='left'>
                   <Link href=''>
-                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.endDate}</Typography>
+                    <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{endDate}</Typography>
                   </Link>
                 </TableCell>
                 <TableCell align='left'>

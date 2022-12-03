@@ -47,6 +47,7 @@ import Alert from 'mdi-material-ui/Alert'
 const CustomInput = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='Start Meeting Time' autoComplete='off' />
 })
+
 const CustomInput2 = forwardRef((props, ref) => {
   return <TextField fullWidth {...props} inputRef={ref} label='End Meeting Time' autoComplete='off' />
 })
@@ -86,7 +87,7 @@ const CreateMeeting = props => {
         title: values.m_title,
         startDate: startDate,
         endDate: endDate,
-        duration: values.m_duration,
+        duration: Math.round(new Date(new Date(endDate) - new Date(startDate)).getTime() / 1000 / 60, 0),
         link: values.m_link,
         description: values.m_description,
         participants: participants
@@ -99,7 +100,14 @@ const CreateMeeting = props => {
           icon: 'success',
           confirmButtonColor: '#68B92E',
           confirmButtonText: 'OK'
-        })        
+        })
+
+        setValues({
+          m_title: '',
+          m_description: '',
+          m_link: '',
+          m_duration: '0',
+        })
       }
     } catch (error) {
       Swal.fire({
@@ -208,6 +216,7 @@ const CreateMeeting = props => {
                       control={
 
                         <Checkbox
+
                           // defaultChecked
                           checked={
                             participants.filter(participant => participant.checked === true).length ===

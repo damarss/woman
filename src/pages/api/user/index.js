@@ -18,9 +18,7 @@ export default async function handle(req, res) {
     try {
       const user = await prisma.user.create({
         data
-      })
-
-      
+      })   
 
       return res.status(200).json(user)
     } catch (err) {
@@ -28,7 +26,7 @@ export default async function handle(req, res) {
         if (err.code === 'P2002') {
           
 
-          return res.status(400).json({ message: 'Email already in use' })
+          return res.status(400).json({ message: 'Email or NIP already in use' })
         }
       }
 

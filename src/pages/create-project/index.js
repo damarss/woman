@@ -14,7 +14,7 @@ const CreateProjectPage = ({ users }) => {
   return (
     <>
       <DatePickerWrapper>
-        <CreateProject users={users} />
+        <CreateProject users={JSON.parse(users)} />
       </DatePickerWrapper>
     </>
   )
@@ -42,33 +42,26 @@ export async function getServerSideProps(context) {
   }
 
   const user = await prisma.user.findMany({
+    where: {
+      id: {
+        not: 212
+      }
+    },
     include: {
       UserProject: true,
       taskToDo: true
     }
   })
 
-  const userView = []
-
-  user.forEach(user => {
-    userView.push({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      nip: user.nip,
-      role: user.role,
-      project: user.UserProject.length,
-      task: user.taskToDo.length
-    })
+  user.sort((a, b) => {
+    return a.taskToDo.length - b.taskToDo.length || a.UserProject.length - b.UserProject.length
   })
 
-  userView.sort((a, b) => {
-    return a.task - b.task || a.project - b.project
-  })
+  console.log(user)
 
   return {
     props: {
-      users: userView
+      users: JSON.stringify(user)
     }
   }
 }

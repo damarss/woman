@@ -27,13 +27,32 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }))
 
+const options = {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+
 const CardMembership = props => {
+  let startDate
+  let endDate
+  let link
+  if (props.data) {
+    startDate = new Date(props.data.startDate).toLocaleDateString("en-EN", options) + " at " + new Date(props.data.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    endDate = new Date(props.data.endDate).toLocaleDateString("en-EN", options) + " at " + new Date(props.data.endDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    link = props.data.link
+  } else {
+    
+  }
+
   const [listName, setListName] = useState('')
   useEffect(() => {
     const list = []
     props.data.UserMeet.map(row => list.push(row.user.name));
     setListName(list.join(" , "));
   },[])
+
   return (
     <Card>
       <CardContent sx={{ padding: theme => `${theme.spacing(3.25, 5.75, 6.25)} !important` }}>
@@ -63,16 +82,18 @@ const CardMembership = props => {
           </Grid>
           <Grid item xs={12} sm={7} md={8} lg={9}>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>{props.data.startDate}</Typography>
+              <Typography variant='body2'>{startDate}</Typography>
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>{props.data.endDate}</Typography>
+              <Typography variant='body2'>{endDate}</Typography>
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
               <Typography variant='body2'>{props.data.description}</Typography>
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
-              <Typography variant='body2'>{props.data.link}</Typography>
+              <a style={{ textDecoration: 'none'}} href={link}>
+                <Typography variant='body2'>{link}</Typography>
+              </a>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant='body2'>{listName}</Typography>
