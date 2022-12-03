@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
-import TaskHome from 'src/views/task/TaskHome'
+import TaskHomeDT from 'src/views/task/TaskHomeDT'
 import { useEffect, useState } from 'react'
 import prisma from 'src/pages/db'
 import { getToken } from 'next-auth/jwt'
@@ -24,11 +24,9 @@ const Task = ({ data }) => {
     JSON.parse(data).filter(task => new Date(task.duedate).toDateString() === new Date().toDateString())
   )
 
-  const NotFound = () => (
+  const NotFound = props => (
     <Grid container justifyContent='center' alignItems='center'>
-      <Grid item>
-        <Typography variant='h6'>Task Not Found</Typography>
-      </Grid>
+        <Typography variant='body1' sx={{marginBottom: 10}}>{props.title}</Typography>
     </Grid>
   )
 
@@ -40,13 +38,13 @@ const Task = ({ data }) => {
         <Grid item xs={12} mb={5}>
           <Card>
             <CardHeader title="Today's Task" titleTypographyProps={{ variant: 'h6' }} />
-            {tasks.length > 0 ? <TaskHome tasks={todayTasks} /> : <NotFound />}
+            {todayTasks.length > 0 ? <TaskHomeDT tasks={todayTasks} height='50vh'/> : <NotFound title='No Task Today'/>}
           </Card>
         </Grid>
         <Grid item xs={12}>
           <Card>
             <CardHeader title='All Task' titleTypographyProps={{ variant: 'h6' }} />
-            {tasks.length > 0 ? <TaskHome tasks={tasks} /> : <NotFound />}
+            {tasks.length > 0 ? <TaskHomeDT tasks={tasks} height={tasks.length>9 ? '87vh': tasks.length * 50 + 150}/> : <NotFound title='Not Found'/>}
           </Card>
         </Grid>
       </Grid>
