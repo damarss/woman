@@ -1,7 +1,5 @@
 import nodemailer from 'nodemailer'
-import fs from 'fs'
 import mustache from 'mustache'
-import path from 'path'
 
 const Gmail = nodemailer.createTransport({
   service: 'gmail',

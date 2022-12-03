@@ -63,6 +63,7 @@ const CreateProjectTask = props => {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
+
   const handleClose = () => {
     setOpen(false)
     Swal.fire('Cancelled', 'Task is not created!', 'error')
@@ -95,7 +96,6 @@ const CreateProjectTask = props => {
     e.preventDefault()
 
     try {
-      console.log(projectId)
       const res = await axios.post('/task', {
         title: values.t_title,
         duedate: endDate,
@@ -205,7 +205,7 @@ const CreateProjectTask = props => {
                   </TableCell>
                   <TableCell align='left'>
                     <Link href='#'>
-                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{row.duedate}</Typography>
+                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{new Date(row.duedate).toLocaleDateString('id-ID')}</Typography>
                     </Link>
                   </TableCell>
                   <TableCell>

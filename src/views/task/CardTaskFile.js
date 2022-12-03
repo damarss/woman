@@ -39,35 +39,44 @@ const CardTaskFileContent = props => {
 
   let button
   if (props.userInfo.task.status === 0) {
-    button = <DragAndDrop task={props.userInfo}/>;
-  } else if (props.userInfo.task.status === 1 || props.userInfo.task.status === 2 || props.userInfo.task.status === 4 || props.userInfo.task.status === 5 || props.userInfo.task.status === 6 || props.userInfo.task.status === 7) {
-    button = <Box>
-      <Typography variant='body2' sx={{ marginTop: 4 }}>
-        Being Reviewed
-      </Typography>
-      <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
-      <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
-      <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
-      <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
-        Unsubmit
-      </Button>
-    </Box>
+    button = <DragAndDrop task={props.userInfo} />
+  } else if (
+    props.userInfo.task.status === 1 ||
+    props.userInfo.task.status === 2 ||
+    props.userInfo.task.status === 4 ||
+    props.userInfo.task.status === 5 ||
+    props.userInfo.task.status === 6 ||
+    props.userInfo.task.status === 7
+  ) {
+    button = (
+      <Box>
+        <Typography variant='body2' sx={{ marginTop: 4 }}>
+          Being Reviewed
+        </Typography>
+        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
+        <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
+        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
+        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+          Unsubmit
+        </Button>
+      </Box>
+    )
   } else if (props.userInfo.task.status === 3) {
-    button = <Box>
-      <Typography variant='body2' sx={{ textColor: 'warning', marginTop: 4 }}>
-        Need Revision
-      </Typography>
-      <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
-      <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
-      <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
-      <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
-        Resubmit
-      </Button>
-    </Box>
+    button = (
+      <Box>
+        <Typography variant='body2' sx={{ textColor: 'warning', marginTop: 4 }}>
+          Need Revision
+        </Typography>
+        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
+        <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
+        <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
+        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+          Resubmit
+        </Button>
+      </Box>
+    )
   } else {
-    button = <Box>
-      Not Found
-    </Box>
+    button = <Box>Not Found</Box>
   }
 
   return (
@@ -135,10 +144,10 @@ const CardTaskFileContent = props => {
             <Button type='submit' variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
               Accept
             </Button>
-          </Box>)}
+          </Box>
+        )}
       </CardContent>
-      <CardActions className='card-action-dense'>
-      </CardActions>
+      <CardActions className='card-action-dense'></CardActions>
     </Card>
   )
 }
