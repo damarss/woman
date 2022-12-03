@@ -8,13 +8,14 @@ import Swal from 'sweetalert2'
 import { getToken } from 'next-auth/jwt'
 import { useState } from 'react'
 import prisma from 'src/services/db'
+import { getSession } from 'next-auth/react'
 
 const MeetingPage = ({ data }) => {
   const [meet, setMeet] = useState(JSON.parse(data))
 
   return (
     <>
-      <MeetingDetail data={meet} />
+      <MeetingDetail role={meet.role} data={meet.meet}/>
     </>
   )
 }
@@ -45,20 +46,41 @@ export async function getServerSideProps(context) {
     }
   })
 
-  if (meet.UserMeet.userId !== session.user.id && session.role !== 'admin') {
-    return {
-      redirect: {
-        destination: '/401',
-        permanent: false
-      }
-    }
+
+  // let roleU = session.role
+  // let idU = session.uid
+  // function getUser(item) {
+  //   if ((idU !== item.userId) && (roleU !== 'admin')) {
+  //     return {
+  //       redirect: {
+  //         destination: '/401',
+  //         permanent: false
+  //       }
+  //     }
+  //   }
+  // }
+  // meet.UserMeet.map(getUser)
+
+
+  // if (session.role !== 'admin') {
+  //   return {
+  //     redirect: {
+  //       destination: '/401',
+  //       permanent: false
+  //     }
+  //   }
+  // }
+
+  const data = {
+    meet: meet,
+    role: session.role
   }
 
-  console.log(meet)
+  console.log(session)
 
   return {
     props: {
-      data: JSON.stringify(meet)
+      data: JSON.stringify(data)
     }
   }
 }

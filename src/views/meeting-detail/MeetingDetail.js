@@ -21,7 +21,6 @@ import Swal from 'sweetalert2'
 import { useEffect, useState } from 'react'
 import axios from 'src/pages/api/axios'
 import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
 
 // Styled Box component
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -39,7 +38,6 @@ const options = {
 
 const CardMembership = props => {
   const router = useRouter()
-  const session = useSession()
   let startDate
   let endDate
   let link
@@ -137,7 +135,7 @@ const CardMembership = props => {
             </Box>
           </Grid>
         </Grid>
-        {session.data.role === 'admin' && (
+        {props.role === 'admin' && (
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
             <Button 
             onClick={e => router.push(`/edit-meeting/${props.data.id}`)}

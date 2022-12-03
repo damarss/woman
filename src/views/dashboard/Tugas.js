@@ -45,7 +45,7 @@ const Trophy = props => {
         <Typography variant='h1' sx={{ my: 2, color: 'primary.main' }}>
           {props.taskNumber}
         </Typography>
-        <Button size='medium' variant='contained' onClick={e => router.push('/task')}>
+        <Button size='medium' sx={{ zIndex:100}}   variant='contained' onClick={e => router.push('/task')}>
           Show tasks
         </Button>
         <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />
