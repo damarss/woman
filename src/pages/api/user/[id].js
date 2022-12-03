@@ -18,8 +18,7 @@ export default async function handle(req, res) {
 
     return res.status(200).json(user)
   } else if (req.method === 'PUT') {
-    const { name, password, nip } = req.body
-    const { role } = req.body
+    const { name, password, email, nip, role } = req.body
 
     if (role) {
       try {
@@ -44,9 +43,23 @@ export default async function handle(req, res) {
 
     let passwordHash
 
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        id: Number(id)
+      }
+    })
+
     const data = {
       name,
       nip
+    }
+
+    if (currentUser.email == email) {
+      data.email = email
+    }
+
+    if (currentUser.nip == nip) {
+      data.nip = nip
     }
 
     if (password) {
@@ -61,17 +74,26 @@ export default async function handle(req, res) {
         },
         data
       })
+
+      return res.status(200).json(user)
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
-          return res.status(400).json({ message: 'NIP already exists' })
-        }
-      }
-    }
+          console.log(error)
 
-    return res.json(user)
+          return res.status(400).json({ message: 'Email or NIP already exists' })
+        }
+
+        console.log(error)
+
+        return res.status(400).json({ message: error.message })
+      }
+
+      console.log(error)
+
+      return res.status(500).json({ message: error.message })
+    }
   } else if (req.method === 'DELETE') {
-    console.log(id)
     try {
       const user = await prisma.user.delete({
         where: {

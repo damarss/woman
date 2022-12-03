@@ -70,7 +70,8 @@ const PeopleTable = ({ rows }) => {
     showPassword: false,
     email: '',
     name: '',
-    nip: ''
+    nip: '',
+    uid: ''
   })
 
   const handleChange = prop => event => {
@@ -104,17 +105,18 @@ const PeopleTable = ({ rows }) => {
       })
   }
 
-  const handleEdit = async id => {
+  const handleEdit = async e => {
+    e.preventDefault()
+
     const data = {
       name: values.name,
       nip: values.nip,
       email: values.email,
-      password: values.password,
-      id: values.id
+      password: values.password
     }
 
     axios
-      .put(`user/${id}`, data)
+      .put(`user/${values.uid}`, data)
       .then(res => {
         if (res.status === 200) {
           Swal.fire({
@@ -125,6 +127,7 @@ const PeopleTable = ({ rows }) => {
           })
         }
 
+        setEditOpen(false)
         router.push('/people')
       })
       .catch(err => {
@@ -182,8 +185,27 @@ const PeopleTable = ({ rows }) => {
   const [editOpen, setEditOpen] = useState(false)
 
   // const handleEditOpen = () => setEditOpen(true)
-  const handleEditOpen = () => setEditOpen(true)
-  const handleEditClose = () => setEditOpen(false)
+  const handleEditOpen = user => {
+    setEditOpen(true)
+    setValues({
+      ...values,
+      name: user.name,
+      nip: user.nip,
+      email: user.email,
+      uid: user.id
+    })
+  }
+
+  const handleEditClose = () => {
+    setEditOpen(false)
+    setValues({
+      ...values,
+      name: '',
+      nip: '',
+      email: '',
+      uid: ''
+    })
+  }
 
   useEffect(() => {
     if (session.status === 'authenticated') {
@@ -198,7 +220,7 @@ const PeopleTable = ({ rows }) => {
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
           <Link passHref href='/add-people'>
             <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
-              Add People {role} {id}
+              Add People
             </Button>
           </Link>
         </CardActions>
@@ -260,12 +282,18 @@ const PeopleTable = ({ rows }) => {
                       </form>
                     </TableCell>
                     <TableCell align='center'>
-                      <Button type='submit' sx={{ mr: 1 }} color='info' variant='text' onClick={handleEditOpen}>
+                      <Button
+                        type='submit'
+                        sx={{ mr: 1 }}
+                        color='info'
+                        variant='text'
+                        onClick={e => handleEditOpen(user)}
+                      >
                         <PencilOutline />
                       </Button>
                       <Modal open={editOpen} onClose={handleEditClose}>
                         <Card sx={style}>
-                          {/* form edit task */}
+                          {/* form edit people */}
                           <CardContent>
                             <Typography variant='h6'>Edit people information</Typography>
                             <br></br>
@@ -277,6 +305,7 @@ const PeopleTable = ({ rows }) => {
                                     fullWidth
                                     id='name'
                                     label='Name'
+                                    value={values.name}
                                     sx={{ marginBottom: 4 }}
                                     onChange={handleChange('name')}
                                   />
@@ -285,6 +314,7 @@ const PeopleTable = ({ rows }) => {
                                   fullWidth
                                   type='email'
                                   label='Email'
+                                  value={values.email}
                                   sx={{ marginBottom: 4 }}
                                   onChange={handleChange('email')}
                                 />
@@ -292,14 +322,14 @@ const PeopleTable = ({ rows }) => {
                                   fullWidth
                                   id='nip'
                                   label='NIP'
+                                  value={values.nip}
                                   sx={{ marginBottom: 4 }}
                                   onChange={handleChange('nip')}
                                 />
                                 <FormControl fullWidth>
-                                  <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
+                                  <InputLabel htmlFor='auth-register-password'>Password (optional)</InputLabel>
                                   <OutlinedInput
-                                    label='Password'
-                                    value={values.password}
+                                    label='Password (optional)'
                                     id='auth-register-password'
                                     onChange={handleChange('password')}
                                     type={values.showPassword ? 'text' : 'password'}
@@ -321,34 +351,32 @@ const PeopleTable = ({ rows }) => {
                                     }
                                   />
                                 </FormControl>
+                                <br></br>
+                                <br></br>
+                                <CardActions style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
+                                  <Button
+                                    size='large'
+                                    color='secondary'
+                                    sx={{ mr: 2 }}
+                                    variant='outlined'
+                                    onClick={handleEditClose}
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    size='large'
+                                    type='submit'
+                                    sx={{ mr: 2 }}
+                                    variant='contained'
+                                    onClick={handleEdit}
+                                  >
+                                    Edit People
+                                  </Button>
+                                </CardActions>
                               </form>
                             </Grid>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <CardActions style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
-                              <Button
-                                size='large'
-                                color='secondary'
-                                sx={{ mr: 2 }}
-                                variant='outlined'
-                                onClick={handleEditClose}
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                size='large'
-                                type='submit'
-                                sx={{ mr: 2 }}
-                                variant='contained'
-                                onClick={handleEdit}
-                              >
-                                Edit Task
-                              </Button>
-                            </CardActions>
                           </CardContent>
-                          {/* end form edit task */}
+                          {/* end form edit people */}
                         </Card>
                       </Modal>
                       <Button
