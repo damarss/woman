@@ -1,6 +1,5 @@
 //  ** React
-import { useState } from 'react'
-
+import { useState, useEffect } from 'react'
 // ** Icon
 import Close from 'mdi-material-ui/Close'
 
@@ -9,8 +8,10 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 
-const DragAndDrop = () => {
-  const [files, setFile] = useState([])
+
+const DragAndDrop = props => {
+  const [files, setFiles] = useState([])
+  const [file, setFile] = useState(null)
 
   const [message, setMessage] = useState()
 
@@ -30,16 +31,18 @@ const DragAndDrop = () => {
     let file = e.target.files
 
     for (let i = 0; i < file.length; i++) {
-      setFile(files=>[...files, file[i]])
+      setFiles(files => [...files, file[i]])
     }
+    setFile(e.target.files[0])
   }
 
   const removeImage = i => {
     setIsFile(true)
     setShowUpload(true)
     setShowButton(false)
-    setFile(files.filter(x => x.name !== i))
-    inputRef.value=null
+    setFiles(files.filter(x => x.name !== i))
+    inputRef.value = null
+    setFile(null)
   }
 
   return (
@@ -48,7 +51,7 @@ const DragAndDrop = () => {
         <link rel='stylesheet' href='https://cdn.tailwindcss.com/3.0.12'></link>
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css' />
       </head>
-      <form action='#' className='dropzone'>
+     
         <div className='py-3 w-full rounded-md'>
           <span className='flex justify-center items-center bg-white text-[12px] mb-1 text-red-500'>{message}</span>
           <div
@@ -110,11 +113,11 @@ const DragAndDrop = () => {
             variant='contained'
             sx={{ padding: theme => theme.spacing(1.75, 5.5) }}
             style={{ display: showButton ? 'block' : 'none' }}
+            onClick=''
           >
             Submit
           </Button>
         </div>
-      </form>
     </>
   )
 }

@@ -49,11 +49,18 @@ export async function getServerSideProps(context) {
       id: parseInt(context.params.id)
     },
     include: {
-      project: true,
+      project: {
+        include: {
+          UserProject: {
+            include: {
+              user: true
+            }
+          }
+        }
+      },
       user: true
     }
   })
-  console.log(task.userId)
 
   if (((task.project.projectLeaderId !== token.uid) && (task.userId !== token.uid)) && (token.role !== 'admin')) {
     return {
