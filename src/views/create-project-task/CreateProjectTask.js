@@ -153,37 +153,58 @@ const CreateProjectTask = props => {
       }
     }
 
-    const handleEdit = async e => {
-      e.preventDefault()
+    const handleEdit = async (id) => {
+      // e.preventDefault()
 
-      try {
-        const res = await axios.put(`task/${id}`, {
-          title: values.t_title,
-          duedate: endDate,
-          priority: values.t_priority,
-          description: values.t_description,
-          userId: values.t_user
-        })
-
-        if (res.status === 201) {
-          setEditOpen(false)
-          Swal.fire({
-            title: 'Update Task Success',
-            text: 'Press OK to continue',
-            icon: 'success',
-            confirmButtonColor: '#68B92E',
-            confirmButtonText: 'OK'
-          })
+      axios
+      .put(`task/${id}`, {
+        title: values.t_title,
+        duedate: endDate,
+        priority: values.t_priority,
+        description: values.t_description,
+        userId: values.t_user
+      }, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      } catch (error) {
+      })
+      .then(res => {
         Swal.fire({
-          title: 'Update Task Failed',
-          text: error,
-          icon: 'error',
-          confirmButtonColor: '#d33',
-          confirmButtonText: 'OK'
+          icon: 'success',
+          title: 'Success',
+          text: 'Task has been updated'
         })
-      }
+        setEditOpen(false)
+      })
+
+      // try {
+      //   const res = await axios.put(`task/${id}`, {
+      //     title: values.t_title,
+      //     duedate: endDate,
+      //     priority: values.t_priority,
+      //     description: values.t_description,
+      //     userId: values.t_user
+      //   })
+
+      //   if (res.status === 201) {
+      //     setEditOpen(false)
+      //     Swal.fire({
+      //       title: 'Update Task Success',
+      //       text: 'Press OK to continue',
+      //       icon: 'success',
+      //       confirmButtonColor: '#68B92E',
+      //       confirmButtonText: 'OK'
+      //     })
+      //   }
+      // } catch (error) {
+      //   Swal.fire({
+      //     title: 'Update Task Failed',
+      //     text: error,
+      //     icon: 'error',
+      //     confirmButtonColor: '#d33',
+      //     confirmButtonText: 'OK'
+      //   })
+      // }
     }
 
     useEffect(() => {
@@ -369,7 +390,7 @@ const CreateProjectTask = props => {
                                     type='submit'
                                     sx={{ mr: 2 }}
                                     variant='contained'
-                                    // onClick={handleEdit}
+                                    onClick={e => handleEdit(row.id)}
                                   >
                                     Update Task
                                   </Button>
