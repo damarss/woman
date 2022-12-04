@@ -101,24 +101,28 @@ const NotificationDropdown = () => {
   }
 
   const handleRead = async id => {
-    const res = await axios.put(`notification/${id}`, {
-      userId: session.uid
-    })
+    if (session.status === 'authenticated') {
+      const res = await axios.put(`notification/${id}`, {
+        userId: session?.data?.uid
+      })
 
-    if (res.status === 200) {
-      getNotifcations()
+      if (res.status === 200) {
+        getNotifications()
+      }
     }
 
     handleDropdownClose()
   }
 
   const handleReadAll = async () => {
-    const res = await axios.put('notification', {
-      userId: session.uid
-    })
+    if (session.status === 'authenticated') {
+      const res = await axios.put('notification', {
+        userId: session?.data?.uid
+      })
 
-    if (res.status === 200) {
-      getNotifcations()
+      if (res.status === 200) {
+        getNotifications()
+      }
     }
 
     handleDropdownClose()
@@ -134,8 +138,8 @@ const NotificationDropdown = () => {
     }
   }
 
-  const getNotifcations = async () => {
-    const res = await axios.get(`notification?userid=${session.uid}`)
+  const getNotifications = async () => {
+    const res = await axios.get(`notification?userid=${session?.data?.uid}`)
     setNotifications(res.data.filter(notification => !notification.isRead))
   }
 
@@ -150,7 +154,8 @@ const NotificationDropdown = () => {
 
   useEffect(() => {
     if (session.status === 'authenticated') {
-      getNotifcations()
+      console.log(session)
+      getNotifications()
     }
   }, [session])
 

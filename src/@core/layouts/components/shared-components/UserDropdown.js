@@ -23,7 +23,7 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import axios from 'src/pages/api/axios'
 import { route } from 'next/dist/server/router'
 import Swal from 'sweetalert2'
@@ -43,24 +43,16 @@ const UserDropdown = props => {
   const [user, setUser] = useState({})
   const [anchorEl, setAnchorEl] = useState('')
 
+  const session = useSession()
+
   const getUser = async () => {
-    await axios
-      .get('/user/detail')
-      .then(res => {
-        if (res.status !== 200) {
-          router.push('/pages/login')
-        }
-        let name = res.data.name
-        let role = res.data.role
-        if (!name || !role) {
-          router.push('/pages/login')
-        }
-        setUser({ name, role })
-      })
-      .catch(err => {
-        console.log(err)
-        router.push('/pages/login')
-      })
+    setUser(prev => {
+      return {
+        ...prev,
+        name: session?.data?.user?.name,
+        role: session?.data?.role
+      }
+    })
   }
 
   const handleDropdownOpen = event => {
@@ -94,8 +86,10 @@ const UserDropdown = props => {
   }
 
   useEffect(() => {
-    getUser()
-  }, [])
+    if (session.status === 'authenticated') {
+      getUser()
+    }
+  }, [session])
 
   const styles = {
     py: 2,
