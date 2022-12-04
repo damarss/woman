@@ -2,7 +2,7 @@ import prisma from '../../../services/db'
 import nextConnect from 'next-connect'
 import multer from 'multer'
 import fs from 'fs'
-import {mailOptions,sendMailTaskSubmitted} from 'src/services/sendEmail'
+import {mailOptions,sendMailTaskSubmitted, sendMailTaskStatus} from 'src/services/sendEmail'
 
 const { promisify } = require('util')
 const bodyParser = require('body-parser')
@@ -155,6 +155,21 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
       }
     })
 
+    const userProject = await prisma.user.findUnique({
+      where: {
+        id: task.userId
+      }
+    })
+
+    mailOptions.to = userProject.email
+    mailOptions.user = userProject.name
+    mailOptions.title = task.title
+    mailOptions.link = `${process.env.BASE_URL}/task-detail/${task.id}`
+    mailOptions.status = 'Need Revision'
+    mailOptions.colorbg = '#EB891B'
+    mailOptions.subject = `Task Revision`
+    
+    sendMailTaskStatus(mailOptions)
     return res.status(200).json({ success: true, data: task })
   }
 
@@ -168,8 +183,24 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
         status: status
       }
     })
-
     
+    
+    const userProject = await prisma.user.findUnique({
+      where: {
+        id: task.userId
+      }
+    })
+    
+    mailOptions.to = userProject.email
+    mailOptions.user = userProject.name
+    mailOptions.title = task.title
+    mailOptions.link = `${process.env.BASE_URL}/task-detail/${task.id}`
+    mailOptions.status = 'Accepted'
+    mailOptions.colorbg = '#56CA00'
+    mailOptions.subject = `Task Accepted`
+
+    sendMailTaskStatus(mailOptions)
+
     return res.status(200).json({ success: true, data: task })
   }
 
