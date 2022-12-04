@@ -144,6 +144,7 @@ const CreateProjectTask = props => {
           confirmButtonColor: '#68B92E',
           confirmButtonText: 'OK'
         })
+        router.reload()
       }
     } catch (error) {
       Swal.fire({
@@ -168,12 +169,12 @@ const CreateProjectTask = props => {
         userId: values.t_user
       })
       .then(async res => {
+        setEditOpen(false)
         await Swal.fire({
           icon: 'success',
           title: 'Success',
           text: 'Task Updated'
         })
-        setEditOpen(false)
         router.reload()
       })
       .catch(err => {

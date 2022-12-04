@@ -50,7 +50,7 @@ const Meeting = ({ data }) => {
     <Paper>
       <Scheduler data={meetView} height={660}>
         <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
-        <WeekView startDayHour={7} endDayHour={21} />
+        <WeekView startDayHour={1} endDayHour={24} />
         <Toolbar />
         <DateNavigator />
         <TodayButton />
