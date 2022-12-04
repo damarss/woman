@@ -286,11 +286,13 @@ const DataGridPeopleTable = ({ rows }) => {
       flex: 1,
       renderCell: params => (
         <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
-      ),
-      align: 'left'
-    },
-    id == 1 &&
-      ({
+      )
+    }
+  ]
+
+  if (id == 1) {
+    columns.push(
+      {
         field: 'role',
         renderHeader: () => (
           <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Role</Typography>
@@ -442,8 +444,9 @@ const DataGridPeopleTable = ({ rows }) => {
           </>
         ),
         align: 'left'
-      })
-  ]
+      }
+    )
+  }
 
   return (
     <Card>
