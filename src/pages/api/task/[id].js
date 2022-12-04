@@ -4,6 +4,8 @@ import multer from 'multer'
 import fs from 'fs'
 import { mailOptions, sendMailTaskSubmitted, sendMailTaskStatus } from 'src/services/sendEmail'
 
+const bodyParser = require('body-parser')
+
 const { promisify } = require('util')
 
 const unlinkAsync = promisify(fs.unlink)
