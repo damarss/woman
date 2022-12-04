@@ -2,6 +2,7 @@ import prisma from '../../../services/db'
 import nextConnect from 'next-connect'
 import multer from 'multer'
 import fs from 'fs'
+import {mailOptions,sendMailTaskSubmitted} from 'src/services/sendEmail'
 
 const { promisify } = require('util')
 const bodyParser = require('body-parser')
@@ -33,6 +34,9 @@ apiRoute.post(upload.single('file'), async (req, res) => {
   const existTask = await prisma.task.findUnique({
     where: {
       id: Number(id)
+    }, 
+    include: {
+      project: true
     }
   })
 
@@ -61,7 +65,28 @@ apiRoute.post(upload.single('file'), async (req, res) => {
     }
   })
 
+  const projectLeader = await prisma.user.findUnique({
+    where: {
+      id: existTask.project.projectLeaderId
+    }
+  })
+
+  const userProject = await prisma.user.findUnique({
+    where: {
+      id: existTask.userId
+    }
+  })
+
   // tambahin logic untuk kirim email ke project leader
+  console.log(userProject)
+  mailOptions.to = projectLeader.email
+  mailOptions.subject = `New Task Submission`
+  mailOptions.title = existTask.title
+  mailOptions.user = userProject.name
+  mailOptions.leader = projectLeader.name
+  mailOptions.link = `${process.env.BASE_URL}/project-detail/${existTask.project.id}`
+  
+  sendMailTaskSubmitted(mailOptions)
 
   return res.status(200).json({ success: true, data: task })
 })
@@ -144,6 +169,7 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
       }
     })
 
+    
     return res.status(200).json({ success: true, data: task })
   }
 
