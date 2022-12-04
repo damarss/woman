@@ -55,6 +55,8 @@ const DragAndDrop = props => {
   const handleSubmitFile = e => {
     e.preventDefault()
 
+    console.log(file)
+
     const formData = new FormData()
     formData.append('file', file)
 
@@ -70,8 +72,7 @@ const DragAndDrop = props => {
           title: 'Success',
           text: 'Task has been submitted'
         })
-
-        router.reload()
+        router.push(`/task-detail/${props.task.task.id}`, undefined, )
       })
   }
 

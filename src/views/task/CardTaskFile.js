@@ -1,5 +1,5 @@
 //  ** React
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 // ** MUI Imports
 import Card from '@mui/material/Card'
@@ -33,10 +33,6 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 
 import DragAndDrop from 'src/views/task/DragAndDrop'
 import { color } from '@mui/system'
-import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
-import axios from 'src/pages/api/axios'
-import Swal from 'sweetalert2'
 
 const CardTaskFileContent = props => {
   const [isFile, setIsFile] = useState(true)
@@ -165,9 +161,10 @@ const CardTaskFileContent = props => {
   }
 
   let button
-  if (props.userInfo.task.status === 0 || props.userInfo.task.status === 1) {
+  if (props.userInfo.task.status === 0) {
     button = <DragAndDrop task={props.userInfo} />
   } else if (
+    props.userInfo.task.status === 1 ||
     props.userInfo.task.status === 2 ||
     props.userInfo.task.status === 4 ||
     props.userInfo.task.status === 5 ||
@@ -189,11 +186,10 @@ const CardTaskFileContent = props => {
             ? 'Completed'
             : 'Revise'}
         </Typography>
-        <Link href={`${process.env.BASE_URL}/uploads/${props.userInfo.task.taskfile}`} target='_blank'>
-          <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh', cursor: 'pointer' }} />
-        </Link>
+        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
         <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
+
         {session.status === 'authenticated' && session.data.uid == props.userInfo.task.userId && (
           <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }} onClick={handleUnsubmit}>
             Unsubmit
@@ -207,7 +203,7 @@ const CardTaskFileContent = props => {
         <Typography variant='body2' sx={{ textColor: 'warning', marginTop: 4 }}>
           Need Revision
         </Typography>
-        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh', cursor: 'pointer' }} />
+        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
         <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
         <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }} onClick={handleUnsubmit}>
