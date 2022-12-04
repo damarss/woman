@@ -227,7 +227,7 @@ const CardTaskFileContent = props => {
         <br></br>
 
         {(props.userInfo.idUser === props.userInfo.task.project.projectLeaderId ||
-          (session.status === 'authenticated' && session.data.uid == 212)) && (
+          (session.status === 'authenticated' && session.data.uid == 1)) && (
           <Box style={{ display: 'flex', justifyContent: 'space-around' }}>
             <Button
               type='submit'
