@@ -12,26 +12,21 @@ import VideoOutline from 'mdi-material-ui/VideoOutline'
 import axios from 'src/pages/api/axios'
 import { FormatLetterCase, GoogleCirclesExtended, CreditCardOutline, CubeOutline } from 'mdi-material-ui'
 import { Table } from '@mui/material'
+import { useSession } from 'next-auth/react'
 
 const Navigation = () => {
   const [userRole, setUserRole] = useState('')
+  const session = useSession()
 
   const getUserRole = async () => {
-    axios
-      .get('/user/detail')
-      .then(res => {
-        if (res.status === 200) {
-          setUserRole(res.data.role)
-        }
-      })
-      .catch(err => {
-        console.error(err)
-      })
+    setUserRole(session?.data?.role)
   }
 
   useEffect(() => {
-    getUserRole()
-  }, [])
+    if (session.status === 'authenticated') {
+      getUserRole()
+    }
+  }, [session])
 
   // ** for employee
   if (userRole === 'admin') {
