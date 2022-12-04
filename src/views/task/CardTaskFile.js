@@ -33,6 +33,10 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 
 import DragAndDrop from 'src/views/task/DragAndDrop'
 import { color } from '@mui/system'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
+import axios from 'src/pages/api/axios'
 
 const CardTaskFileContent = props => {
   const [isFile, setIsFile] = useState(true)
