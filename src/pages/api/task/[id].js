@@ -14,7 +14,7 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: './public/uploads',
     filename: (req, file, cb) => {
-      cb(null, file.originalname)
+      cb(null, `${new Date().getTime()}-${Math.random().toString(36).substring(7)}-${file.originalname}`)
     }
   })
 })
@@ -29,9 +29,7 @@ const apiRoute = nextConnect({
   }
 })
 
-apiRoute.use(upload.single('file'))
-
-apiRoute.post(async (req, res) => {
+apiRoute.post(upload.single('file'), async (req, res) => {
   const id = req.query.id
 
   const existTask = await prisma.task.findUnique({
@@ -47,7 +45,7 @@ apiRoute.post(async (req, res) => {
     return res.status(400).json({ success: false, message: 'Task not found' })
   }
 
-  const taskfile = req.file.originalname
+  const taskfile = req.file.filename
 
   // remove old file
   if (existTask.taskfile && existTask.taskfile != taskfile) {
@@ -63,7 +61,8 @@ apiRoute.post(async (req, res) => {
       id: Number(id)
     },
     data: {
-      taskfile: taskfile
+      taskfile: taskfile,
+      status: 2
     }
   })
 

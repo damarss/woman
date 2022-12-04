@@ -165,7 +165,7 @@ const CardTaskFileContent = props => {
   }
 
   let button
-  if (props.userInfo.task.status === 0) {
+  if (props.userInfo.task.status === 0 || props.userInfo.task.status === 1) {
     button = <DragAndDrop task={props.userInfo} />
   } else if (
     props.userInfo.task.status === 1 ||
@@ -191,7 +191,9 @@ const CardTaskFileContent = props => {
             : 'Revise'}
         </Typography>
         <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
-        <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
+        <Link href={`${process.env.BASE_URL}/uploads/${props.userInfo.task.taskfile}`} target='_blank'>
+          <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh', cursor: 'pointer' }} />
+        </Link>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
 
         {session.status === 'authenticated' && session.data.uid == props.userInfo.task.userId && (
@@ -207,7 +209,7 @@ const CardTaskFileContent = props => {
         <Typography variant='body2' sx={{ textColor: 'warning', marginTop: 4 }}>
           Need Revision
         </Typography>
-        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
+        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh', cursor: 'pointer' }} />
         <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
         <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }} onClick={handleUnsubmit}>
