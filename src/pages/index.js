@@ -102,6 +102,7 @@ export async function getServerSideProps(context) {
     dateMeet.push({
       date: date.meet.startDate,
       link: date.meet.link,
+      title: date.meet.title,
       id: date.meet.id
     })
   })

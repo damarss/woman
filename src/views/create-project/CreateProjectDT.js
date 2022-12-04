@@ -221,7 +221,7 @@ const CreateProject = props => {
     {
       field: 'project',
       renderHeader: () => (
-        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Number of Project</Typography>
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Project</Typography>
       ),
       minWidth: 200,
       flex: 1,
@@ -232,7 +232,7 @@ const CreateProject = props => {
     {
       field: 'task',
       renderHeader: () => (
-        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Number of Task</Typography>
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Task</Typography>
       ),
       minWidth: 200,
       flex: 1,
@@ -337,7 +337,7 @@ const CreateProject = props => {
               disableSelectionOnClick
               experimentalFeatures={{ newEditingApi: true }}
               sx={{
-                height: rows.length > 5 ? '70vh' : '45vh',
+                height: rows.length > 3 ? '70vh' : '45vh',
                 overflowY: 'auto',
                 width: '100%'
               }}

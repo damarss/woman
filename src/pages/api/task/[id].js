@@ -2,10 +2,9 @@ import prisma from '../../../services/db'
 import nextConnect from 'next-connect'
 import multer from 'multer'
 import fs from 'fs'
-import {mailOptions,sendMailTaskSubmitted, sendMailTaskStatus} from 'src/services/sendEmail'
+import { mailOptions, sendMailTaskSubmitted, sendMailTaskStatus } from 'src/services/sendEmail'
 
 const { promisify } = require('util')
-const bodyParser = require('body-parser')
 
 const unlinkAsync = promisify(fs.unlink)
 
@@ -13,7 +12,7 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: './public/uploads',
     filename: (req, file, cb) => {
-      cb(null, `${new Date().getTime()}-${Math.random().toString(36).substring(7)}-${file.originalname}`)
+      cb(null, file.originalname)
     }
   })
 })
@@ -28,13 +27,15 @@ const apiRoute = nextConnect({
   }
 })
 
-apiRoute.post(upload.single('file'), async (req, res) => {
+apiRoute.use(upload.single('file'))
+
+apiRoute.post(async (req, res) => {
   const id = req.query.id
 
   const existTask = await prisma.task.findUnique({
     where: {
       id: Number(id)
-    }, 
+    },
     include: {
       project: true
     }
@@ -44,7 +45,7 @@ apiRoute.post(upload.single('file'), async (req, res) => {
     return res.status(400).json({ success: false, message: 'Task not found' })
   }
 
-  const taskfile = req.file.filename
+  const taskfile = req.file.originalname
 
   // remove old file
   if (existTask.taskfile && existTask.taskfile != taskfile) {
@@ -60,8 +61,7 @@ apiRoute.post(upload.single('file'), async (req, res) => {
       id: Number(id)
     },
     data: {
-      taskfile: taskfile,
-      status: 2
+      taskfile: taskfile
     }
   })
 
@@ -85,7 +85,7 @@ apiRoute.post(upload.single('file'), async (req, res) => {
   mailOptions.user = userProject.name
   mailOptions.leader = projectLeader.name
   mailOptions.link = `${process.env.BASE_URL}/project-detail/${existTask.project.id}`
-  
+
   sendMailTaskSubmitted(mailOptions)
 
   return res.status(200).json({ success: true, data: task })
@@ -168,9 +168,9 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
     mailOptions.status = 'Need Revision'
     mailOptions.colorbg = '#EB891B'
     mailOptions.subject = `Task Revision`
-    
+
     sendMailTaskStatus(mailOptions)
-    
+
     return res.status(200).json({ success: true, data: task })
   }
 
@@ -184,14 +184,13 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
         status: status
       }
     })
-    
-    
+
     const userProject = await prisma.user.findUnique({
       where: {
         id: task.userId
       }
     })
-    
+
     mailOptions.to = userProject.email
     mailOptions.user = userProject.name
     mailOptions.title = task.title
@@ -258,8 +257,7 @@ apiRoute.delete(async (req, res) => {
 
   try {
     await unlinkAsync(`./public/uploads/${task.taskfile}`)
-  } catch (error) {
-  }
+  } catch (error) {}
 
   const deletedTask = await prisma.task.delete({
     where: {
