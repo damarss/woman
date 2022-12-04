@@ -55,7 +55,7 @@ const MeetingTable = props => {
         </Typography>
       ),
       minWidth: 230,
-      flex: 1.5,
+      flex: 1.2,
       renderCell: params => (
         <Link onClick={e => router.push(`/meeting-admin-detail/${params.row.id}`)} sx={{ cursor: 'pointer' }}>
           <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.row.title}</Typography>
