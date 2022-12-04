@@ -127,7 +127,7 @@ const CardMembership = props => {
             </Box>
             <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
               <a style={{ textDecoration: 'none' }} href={link}>
-                <Typography variant='body2'>{link}</Typography>
+                <Typography variant='body2' sx={{color: 'blue'}}>{link}</Typography>
               </a>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>

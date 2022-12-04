@@ -319,7 +319,7 @@ const CreateMeeting = props => {
               disableSelectionOnClick
               experimentalFeatures={{ newEditingApi: true }}
               sx={{
-                height: rows.length > 5 ? '70vh' : '45vh',
+                height: rows.length > 3 ? '70vh' : '45vh',
                 overflowY: 'auto',
                 width: '100%'
               }}
