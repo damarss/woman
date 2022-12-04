@@ -19,7 +19,6 @@ const MeetingPage = ({ data }) => {
 
   useEffect(() => {
     setMeet(JSON.parse(data))
-    console.log(JSON.parse(data))
   }, [])
 
   const NotFound = props => (

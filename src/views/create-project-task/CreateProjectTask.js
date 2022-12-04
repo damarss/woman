@@ -65,14 +65,43 @@ const CreateProjectTask = props => {
   const handleOpen = () => setOpen(true)
 
   const handleClose = () => {
+    setValues({
+      t_title: '',
+      t_description: '',
+      t_user: '',
+      t_priority: '0'
+    });
+    setDate(new Date);
     setOpen(false)
     Swal.fire('Cancelled', 'Task is not created!', 'error')
   }
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState(new Date)
+  const [uid, setUid] = useState(null)
 
   const [editOpen, setEditOpen] = useState(false)
-  const handleEditOpen = () => setEditOpen(true)
-  const handleEditClose = () => setEditOpen(false)
+  const handleEditOpen = async (data, e) => {
+    setValues({
+      t_title: data.title,
+      t_description: data.description,
+      t_user: data.userId,
+      t_priority: data.priority
+    });
+    setUid(data.id)
+    setDate(new Date(data.duedate));
+    setEditOpen(true);
+  }
+  const handleEditClose = () => {
+    setValues({
+      t_title: '',
+      t_description: '',
+      t_user: '',
+      t_priority: '0'
+    });
+    setDate(new Date)
+    setUid(null)
+    setEditOpen(false)
+    Swal.fire('Cancelled', 'Task is not updated!', 'error')
+  }
 
   // ** States
   const [endDate, setEDate] = useState(new Date())
@@ -89,7 +118,6 @@ const CreateProjectTask = props => {
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
-    console.log(event.target.value)
   }
 
   const handleTask = async e => {
@@ -127,35 +155,109 @@ const CreateProjectTask = props => {
     }
   }
 
+  const handleEdit = async e => {
+    e.preventDefault()
+
+    axios
+      .put(`task/${uid}`, {
+        title: values.t_title,
+        duedate: endDate,
+        priority: values.t_priority,
+        description: values.t_description,
+        userId: values.t_user
+      })
+      .then(async res => {
+        await Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Task Updated'
+        })
+        setEditOpen(false)
+        router.reload()
+      })
+      .catch(err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Something went wrong'
+        })
+      })
+
+    // try {
+    //   const res = await axios.put(`task/${id}`, {
+    //     title: values.t_title,
+    //     duedate: endDate,
+    //     priority: values.t_priority,
+    //     description: values.t_description,
+    //     userId: values.t_user
+    //   })
+
+    //   if (res.status === 201) {
+    //     setEditOpen(false)
+    //     Swal.fire({
+    //       title: 'Update Task Success',
+    //       text: 'Press OK to continue',
+    //       icon: 'success',
+    //       confirmButtonColor: '#68B92E',
+    //       confirmButtonText: 'OK'
+    //     })
+    //   }
+    // } catch (error) {
+    //   Swal.fire({
+    //     title: 'Update Task Failed',
+    //     text: error,
+    //     icon: 'error',
+    //     confirmButtonColor: '#d33',
+    //     confirmButtonText: 'OK'
+    //   })
+    // }
+  }
+
   useEffect(() => {
     setProjectId(props.data.id)
   }, [endDate, values])
 
   const handleDelete = async id => {
-    const data = {}
     axios
-      .delete(`task/${id}`, data)
-      .then(res => {
-        if (res.status === 200) {
-          Swal.fire({
-            title: 'Delete Task Success',
-            text: 'Press OK to continue',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-          })
-
-          router.push('/people')
-        }
+      .delete(`task/${id}`)
+      .then(async res => {
+        await Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Task Deleted'
+        })
+        router.reload()
       })
       .catch(err => {
         Swal.fire({
-          title: 'Delete Task Failed',
-          text: err.message,
           icon: 'error',
-          confirmButtonColor: '#d33',
-          confirmButtonText: 'OK'
+          title: 'Error',
+          text: 'Something went wrong'
         })
       })
+    // axios
+    //   .delete(`task/${id}`, data)
+    //   .then(res => {
+    //     if (res.status === 200) {
+    //       Swal.fire({
+    //         title: 'Delete Task Success',
+    //         text: 'Press OK to continue',
+    //         icon: 'success',
+    //         confirmButtonText: 'Ok'
+    //       })
+
+    //       router.push('/people')
+    //     }
+    //   })
+    //   .catch(err => {
+    //     Swal.fire({
+    //       title: 'Delete Task Failed',
+    //       text: err.message,
+    //       icon: 'error',
+    //       confirmButtonColor: '#d33',
+    //       confirmButtonText: 'OK'
+    //     })
+    //   })
   }
 
   return (
@@ -185,7 +287,7 @@ const CreateProjectTask = props => {
             </TableHead>
             <TableBody>
               {props.data.Task.map(row => (
-                <TableRow hover key={row.judul} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                   <TableCell align='left'>
                     <Link href='#'>
                       <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.title}</Typography>
@@ -211,12 +313,12 @@ const CreateProjectTask = props => {
                   <TableCell>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                       {/* Edit Task */}
-                      <Button type='submit' sx={{ mr: 1 }} color='info' variant='text' onClick={handleEditOpen}>
+                      <Button type='submit' sx={{ mr: 1 }} color='info' variant='text' onClick={e => handleEditOpen(row)}>
                         <PencilOutline />
                       </Button>
                       {/* Modal Edit Task */}
-                      <Modal open={editOpen} onClose={handleEditClose}>
-                        <Card sx={style}>
+                      <Modal open={editOpen} onClose={handleEditClose} aria-labelledby='modal-form'>
+                        <Card sx={style} id='modal-form'>
                           {/* form edit task */}
                           <form onSubmit={e => e.preventDefault()}>
                             <CardContent>
@@ -224,20 +326,27 @@ const CreateProjectTask = props => {
                               <br></br>
                               <Grid container spacing={5}>
                                 <Grid item xs={12} sm={12} lg={6}>
-                                  <TextField fullWidth label='Task Title' placeholder='Task A' />
+                                  <TextField
+                                    fullWidth
+                                    label='Task Title'
+                                    placeholder='Title'
+                                    value={values.t_title}
+                                    onChange={handleChange('t_title')}
+                                  />
                                 </Grid>
-                                <Grid item xs={12} sm={12} lg={6}>
+                                <Grid item xs={12} sm={6} lg={6}>
                                   <FormControl fullWidth>
                                     <InputLabel id='form-layouts-separator-asigned-label-edit'>Asigned To</InputLabel>
                                     <Select
                                       label='asigned to '
-                                      defaultValue=''
-                                      id='form-layouts-separator-asigned-edit'
-                                      labelId='form-layouts-separator-asigned-label-edit'
+                                      id='form-layouts-separator-asigned'
+                                      labelId='form-layouts-separator-asigned-label'
+                                      value={values.t_user}
+                                      onChange={handleChange('t_user')}
                                     >
                                       {props.data.UserProject.map(row => (
                                         <MenuItem key={row.userId} value={row.userId}>
-                                          {row.userId}
+                                          {row.user.name}
                                         </MenuItem>
                                       ))}
                                     </Select>
@@ -246,30 +355,32 @@ const CreateProjectTask = props => {
                                 <Grid item xs={12} sm={12} lg={6}>
                                   <DatePickerWrapper>
                                     <DatePicker
-                                      selected={date}
+                                      selected={endDate}
                                       showYearDropdown
                                       showMonthDropdown
                                       showTimeSelect
                                       dateFormat='Pp'
                                       placeholderText='DD-MM-YYYY, HH:MM'
                                       customInput={<CustomInputStart />}
-                                      id='tanggal-selesai-edit'
-                                      onChange={date => setDate(date)}
+                                      id='tanggal-selesai'
+                                      onChange={endDate => setEDate(endDate)}
                                     />
                                   </DatePickerWrapper>
                                 </Grid>
-                                <Grid item xs={12} sm={12} lg={6}>
+                                <Grid item xs={12} sm={6} lg={6}>
                                   <FormControl fullWidth>
-                                    <InputLabel id='form-layouts-separator-priority-label-edit'>Priority</InputLabel>
+                                    <InputLabel id='form-layouts-separator-select-label'>Priority</InputLabel>
                                     <Select
                                       label='priority'
-                                      defaultValue=''
                                       id='form-layouts-separator-priority'
-                                      labelId='form-layouts-separator-priority-label-edit'
+                                      labelId='form-layouts-separator-priority-label'
+                                      placeholder='Title'
+                                      value={values.t_priority}
+                                      onChange={handleChange('t_priority')}
                                     >
-                                      <MenuItem value='High'>High</MenuItem>
-                                      <MenuItem value='Medium'>Medium</MenuItem>
-                                      <MenuItem value='Low'>Low</MenuItem>
+                                      <MenuItem value='2'>High</MenuItem>
+                                      <MenuItem value='1'>Medium</MenuItem>
+                                      <MenuItem value='0'>Low</MenuItem>
                                     </Select>
                                   </FormControl>
                                 </Grid>
@@ -280,6 +391,8 @@ const CreateProjectTask = props => {
                                     minRows={5}
                                     label='Task Description'
                                     placeholder='Description'
+                                    value={values.t_description}
+                                    onChange={handleChange('t_description')}
                                   />
                                 </Grid>
                               </Grid>
@@ -299,10 +412,7 @@ const CreateProjectTask = props => {
                                   type='submit'
                                   sx={{ mr: 2 }}
                                   variant='contained'
-                                  onClick={() => {
-                                    setEditOpen(false)
-                                    Swal.fire('', 'Task Updated Succesfully!', 'success')
-                                  }}
+                                  onClick={handleEdit}
                                 >
                                   Update Task
                                 </Button>

@@ -157,7 +157,6 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
         duedate,
         priority: Number(priority),
         description,
-        status: Number(status),
         userId: Number(userId)
       }
     })
@@ -199,8 +198,9 @@ apiRoute.delete(async (req, res) => {
     return res.status(400).json({ success: false, message: 'Task not found' })
   }
 
-  if (task.taskfile) {
+  try {
     await unlinkAsync(`./public/uploads/${task.taskfile}`)
+  } catch (error) {
   }
 
   const deletedTask = await prisma.task.delete({

@@ -216,8 +216,6 @@ export async function getServerSideProps(context) {
     }
   })
 
-  console.log(project)
-
   if (!project) {
     return {
       redirect: {

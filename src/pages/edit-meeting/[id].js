@@ -55,6 +55,23 @@ export async function getServerSideProps(context) {
     }
   }
 
+  // const people = await prisma.user.findMany({
+  //   where: {
+  //     id: {
+  //       not: 212
+  //     }
+  //   },
+  //   include: {
+  //     UserMeet: true
+  //   }
+  // })
+
+  // const user = people.filter(person => !meet.UserMeet.map(user => user.userId).includes(person.id))
+
+  // user.sort((a, b) => {
+  //   return a.UserMeet.length - b.UserMeet.length
+  // })
+
   const data = {
     meet
   }
