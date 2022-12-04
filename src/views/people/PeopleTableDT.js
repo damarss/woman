@@ -226,6 +226,7 @@ const DataGridPeopleTable = ({ rows }) => {
     if (session.status === 'authenticated') {
       setRole(session.data.role)
       setId(session.data.uid)
+      console.log(session)
     }
   }, [session])
 
@@ -287,7 +288,7 @@ const DataGridPeopleTable = ({ rows }) => {
       flex: 1,
       align: 'left',
       renderCell: params =>
-        id == 212 && (
+        id == 1 && (
           <form onSubmit={e => e.preventDefault()}>
             <FormControl fullWidth>
               <InputLabel id='form-layouts-separator-select-label'>role</InputLabel>
@@ -430,7 +431,7 @@ const DataGridPeopleTable = ({ rows }) => {
 
   return (
     <Card>
-      {id == 212 && (
+      {id == 1 && (
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
           <Link passHref href='/add-people'>
             <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>

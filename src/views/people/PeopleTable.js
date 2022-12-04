@@ -228,7 +228,7 @@ const PeopleTable = ({ rows }) => {
 
   return (
     <Card>
-      {id == 212 && (
+      {id == 1 && (
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
           <Link passHref href='/add-people'>
             <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
@@ -250,7 +250,7 @@ const PeopleTable = ({ rows }) => {
               <TableCell align='center' style={{ width: '2rem' }}>
                 <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Number of Task</Typography>
               </TableCell>
-              {id == 212 && (
+              {id == 1 && (
                 <>
                   <TableCell align='center' style={{ width: '2rem' }}>
                     <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important' }}>Role</Typography>
@@ -274,7 +274,7 @@ const PeopleTable = ({ rows }) => {
                 <TableCell align='center' style={{ width: '16rem' }}>
                   {user.taskToDo.length}
                 </TableCell>
-                {id == 212 && (
+                {id == 1 && (
                   <>
                     <TableCell align='center'>
                       <form onSubmit={e => e.preventDefault()}>

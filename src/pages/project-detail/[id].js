@@ -123,7 +123,7 @@ const CardBasic = ({ data }) => {
       </Grid>
       <Grid item xs={12} sm={12} md={4} lg={4} alignItems='center' justify='center'>
         {session.status === 'authenticated' &&
-          (session.data.uid == project.projectLeaderId || session.data.uid == 212) && (
+          (session.data.uid == project.projectLeaderId || session.data.uid == 1) && (
             <Button
               sx={{ height: '100%' }}
               fullWidth
