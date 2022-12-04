@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography'
 import { useSession } from 'next-auth/react'
 import moment from 'moment'
 import { useRouter } from 'next/dist/client/router'
+import axios from 'src/pages/api/axios'
 
 const statusObj = {
   0: { color: 'secondary', status: 'Assigned' },
@@ -32,7 +33,8 @@ const DataGridProjectDetailTask = props => {
     title: row.title,
     priority: priorities[row.priority],
     status: row.status,
-    deadline: row.duedate
+    deadline: row.duedate,
+    userId: row.userId,
   }))
 
   const columns = [
@@ -43,13 +45,27 @@ const DataGridProjectDetailTask = props => {
       ),
       minWidth: 250,
       flex: 1.5,
-      renderCell: params => 
+      renderCell: params =>
         session.status === 'authenticated' &&
-          (session.data.uid == props.project.projectLeaderId || session.data.role === 'admin') ? (
-            <Link onClick={e => router.push(`/task-detail/${params.row.id}`)} sx={{ cursor: 'pointer' }}>
-              <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.row.title}</Typography>
-            </Link>
-          ): <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.row.title}</Typography>,
+        (session.data.uid == props.project.projectLeaderId || session.data.role === 'admin') ? (
+          <Link
+            onClick={async e => {
+              if (session.status === 'authenticated' && session.data.uid == params.row.userId) {
+                if (params.row.status === 0) {
+                  await axios.put(`task/${params.row.id}`, { status: 1, helper: 'onprogress' })
+                }
+              }
+
+              console.log()
+              router.push(`/task-detail/${params.row.id}`)
+            }}
+            sx={{ cursor: 'pointer' }}
+          >
+            <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.row.title}</Typography>
+          </Link>
+        ) : (
+          <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.row.title}</Typography>
+        ),
       align: 'left'
     },
     {
@@ -128,7 +144,11 @@ const DataGridProjectDetailTask = props => {
           rowsPerPpriorityOptions={[5]}
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
-          sx={{ height: props.project.Task.length>9 ? '90vh': props.project.Task.length * 50 + 150, overflowY: 'auto', width: '100%'}}
+          sx={{
+            height: props.project.Task.length > 9 ? '90vh' : props.project.Task.length * 50 + 150,
+            overflowY: 'auto',
+            width: '100%'
+          }}
         />
       </Box>
     </Card>
