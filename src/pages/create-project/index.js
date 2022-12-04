@@ -57,8 +57,6 @@ export async function getServerSideProps(context) {
     return a.taskToDo.length - b.taskToDo.length || a.UserProject.length - b.UserProject.length
   })
 
-  console.log(user)
-
   return {
     props: {
       users: JSON.stringify(user)

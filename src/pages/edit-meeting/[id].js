@@ -71,8 +71,6 @@ export async function getServerSideProps(context) {
   //   return a.UserMeet.length - b.UserMeet.length
   // })
 
-  // console.log(user)
-
   const data = {
     meet
   }

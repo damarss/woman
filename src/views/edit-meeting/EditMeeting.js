@@ -55,7 +55,6 @@ const CustomInput2 = forwardRef((props, ref) => {
 
 const CreateMeeting = props => {
   // ** States
-  console.log(props.data.meet)
   const [startDate, setSDate] = useState(new Date(props.data.meet.startDate))
   const [endDate, setEDate] = useState(new Date(props.data.meet.endDate))
 
@@ -124,7 +123,6 @@ const CreateMeeting = props => {
   }
 
   // useEffect(() => {
-  //   console.log(participants)
   // }, [endDate, startDate, values])
 
 

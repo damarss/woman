@@ -89,7 +89,6 @@ const CreateProjectTask = props => {
     setUid(data.id)
     setDate(new Date(data.duedate));
     setEditOpen(true);
-    console.log(data.id)
   }
   const handleEditClose = () => {
     setValues({
@@ -119,7 +118,6 @@ const CreateProjectTask = props => {
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
-    console.log(event.target.value)
   }
 
   const handleTask = async e => {
@@ -220,7 +218,6 @@ const CreateProjectTask = props => {
   }, [endDate, values])
 
   const handleDelete = async id => {
-    console.log(id)
     axios
       .delete(`task/${id}`)
       .then(async res => {
