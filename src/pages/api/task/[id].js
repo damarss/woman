@@ -134,7 +134,6 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
         duedate,
         priority: Number(priority),
         description,
-        status: Number(status),
         userId: Number(userId)
       }
     })
