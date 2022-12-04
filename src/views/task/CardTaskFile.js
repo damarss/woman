@@ -1,5 +1,5 @@
 //  ** React
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Card from '@mui/material/Card'
@@ -33,15 +33,59 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 
 import DragAndDrop from 'src/views/task/DragAndDrop'
 import { color } from '@mui/system'
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
+import axios from 'src/pages/api/axios'
+import Swal from 'sweetalert2'
 
 const CardTaskFileContent = props => {
   const [isFile, setIsFile] = useState(true)
 
+  const session = useSession()
+
+  const router = useRouter()
+
+  const handleUnsubmit = async e => {
+    e.preventDefault()
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to undo this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then(result => {
+      if (result.isConfirmed) {
+        axios
+          .put(`task/${props.userInfo.task.id}`, {
+            status: 1,
+            taskfile: ''
+          })
+          .then(async res => {
+            await Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Task unsubmitted'
+            })
+
+            router.reload()
+          })
+          .catch(err => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Something went wrong'
+            })
+          })
+      }
+    })
+  }
+
   let button
-  if (props.userInfo.task.status === 0) {
+  if (props.userInfo.task.status === 0 || props.userInfo.task.status === 1) {
     button = <DragAndDrop task={props.userInfo} />
   } else if (
-    props.userInfo.task.status === 1 ||
     props.userInfo.task.status === 2 ||
     props.userInfo.task.status === 4 ||
     props.userInfo.task.status === 5 ||
@@ -53,10 +97,12 @@ const CardTaskFileContent = props => {
         <Typography variant='body2' sx={{ marginTop: 4 }}>
           Being Reviewed
         </Typography>
-        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
+        <Link href={`${process.env.BASE_URL}/uploads/${props.userInfo.task.taskfile}`} target='_blank'>
+          <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh', cursor: 'pointer' }} />
+        </Link>
         <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
-        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }} onClick={handleUnsubmit}>
           Unsubmit
         </Button>
       </Box>
@@ -67,7 +113,7 @@ const CardTaskFileContent = props => {
         <Typography variant='body2' sx={{ textColor: 'warning', marginTop: 4 }}>
           Need Revision
         </Typography>
-        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
+        <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh', cursor: 'pointer' }} />
         <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
         <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
@@ -131,7 +177,8 @@ const CardTaskFileContent = props => {
           {button}
         </Box> */}
 
-        {props.userInfo.idUser === props.userInfo.task.project.projectLeaderId && (
+        {(props.userInfo.idUser === props.userInfo.task.project.projectLeaderId ||
+          (session.status === 'authenticated' && session.data.uid == 212)) && (
           <Box style={{ display: 'flex', justifyContent: 'space-around' }}>
             <Button
               type='submit'

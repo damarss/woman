@@ -11,6 +11,8 @@ import Divider from '@mui/material/Divider'
 
 // ** Import multer
 import axios from 'src/pages/api/axios'
+import Swal from 'sweetalert2'
+import { useRouter } from 'next/router'
 
 const DragAndDrop = props => {
   const [files, setFiles] = useState([])
@@ -24,7 +26,7 @@ const DragAndDrop = props => {
 
   const [isFile, setIsFile] = useState(true)
 
-  // const upload = multer({ dest: '../../public/uploads/' })
+  const router = useRouter()
 
   let inputRef
 
@@ -53,32 +55,24 @@ const DragAndDrop = props => {
   const handleSubmitFile = e => {
     e.preventDefault()
 
-    console.log(file)
-
     const formData = new FormData()
     formData.append('file', file)
 
-    axios.post(`task/${props.task.task.id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    axios
+      .post(`task/${props.task.task.id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(res => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Task has been submitted'
+        })
 
-    // if (file) {
-    //   const formData = new FormData()
-    //   formData.append('file', file)
-    //   console.log(formData.get('file'))
-    //   axios
-    //     .post(`task/${props.task.task.id}`, { formData }, { headers: { 'Content-Type': 'multipart/form-data' } })
-    //     .then(res => {
-    //       console.log(res)
-    //     })
-    //     .catch(err => {
-    //       console.log(err)
-    //     })
-    // } else {
-    //   setMessage('Please select a file')
-    // }
+        router.reload()
+      })
   }
 
   return (

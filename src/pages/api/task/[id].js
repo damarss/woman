@@ -4,6 +4,7 @@ import multer from 'multer'
 import fs from 'fs'
 
 const { promisify } = require('util')
+const bodyParser = require('body-parser')
 
 const unlinkAsync = promisify(fs.unlink)
 
@@ -11,7 +12,7 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: './public/uploads',
     filename: (req, file, cb) => {
-      cb(null, file.originalname)
+      cb(null, `${new Date().getTime()}-${Math.random().toString(36).substring(7)}-${file.originalname}`)
     }
   })
 })
@@ -26,11 +27,8 @@ const apiRoute = nextConnect({
   }
 })
 
-apiRoute.use(upload.single('file'))
-
-apiRoute.post(async (req, res) => {
+apiRoute.post(upload.single('file'), async (req, res) => {
   const id = req.query.id
-  console.log(req.file)
 
   const existTask = await prisma.task.findUnique({
     where: {
@@ -42,11 +40,15 @@ apiRoute.post(async (req, res) => {
     return res.status(400).json({ success: false, message: 'Task not found' })
   }
 
-  const taskfile = req.file.originalname
+  const taskfile = req.file.filename
 
   // remove old file
   if (existTask.taskfile && existTask.taskfile != taskfile) {
-    await unlinkAsync(`./public/uploads/${existTask.taskfile}`)
+    try {
+      await unlinkAsync(`./public/uploads/${existTask.taskfile}`)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const task = await prisma.task.update({
@@ -54,13 +56,80 @@ apiRoute.post(async (req, res) => {
       id: Number(id)
     },
     data: {
-      taskfile: taskfile
+      taskfile: taskfile,
+      status: 2
     }
   })
 
   // tambahin logic untuk kirim email ke project leader
 
   return res.status(200).json({ success: true, data: task })
+})
+
+apiRoute.put(bodyParser.json(), async (req, res) => {
+  const id = req.query.id
+
+  // const { title, duedate, priority, description, status, userId } = req.body
+  const title = req.body?.title
+  const duedate = req.body?.duedate
+  const priority = req.body?.priority
+  const description = req.body?.description
+  const status = req.body?.status
+  const userId = req.body?.userId
+  const taskfile = req.body?.taskfile
+  console.log(req.body)
+
+  console.log('status: ' + status)
+  console.log('taskfile: ' + taskfile)
+
+  // untuk unsubmit task
+  if (status && taskfile == '') {
+    const existTask = await prisma.task.findUnique({
+      where: {
+        id: Number(id)
+      }
+    })
+
+    try {
+      await unlinkAsync(`./public/uploads/${existTask.taskfile}`)
+    } catch (error) {
+      console.log(error)
+    }
+
+    const task = await prisma.task.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        status: status,
+        taskfile: ''
+      }
+    })
+
+    return res.status(200).json({ success: true, data: task })
+  }
+
+  try {
+    const task = await prisma.task.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        title,
+        duedate,
+        priority: Number(priority),
+        description,
+        status: Number(status),
+        userId: Number(userId)
+      }
+    })
+
+    return res.status(200).json({ success: true, data: task })
+  } catch (error) {
+    console.log(error)
+
+    return res.status(400).json({ success: false })
+  }
 })
 
 apiRoute.get(async (req, res) => {
