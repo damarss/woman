@@ -55,12 +55,13 @@ export default async function handler(req, res) {
           new Date(startDate).getHours() +
           ':' +
           (new Date(startDate).getMinutes() < 10 ? '0' : '') +
-          new Date(endDate).getMinutes()
+          new Date(startDate).getMinutes()
         mailOptions.endtime =
           new Date(endDate).getHours() +
           ':' +
           (new Date(endDate).getMinutes() < 10 ? '0' : '') +
-          new Date(endDate).getMinutes()
+          new Date(endDate).getMinutes() + ' WIB'
+        console.log(mailOptions.starttime)
         mailOptions.enddate = new Date(endDate).toLocaleDateString('id-ID')
         mailOptions.link = link
         mailOptions.duration = duration
