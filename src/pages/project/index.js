@@ -1,15 +1,35 @@
 // ** MUI Imports
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
+import Collapse from '@mui/material/Collapse'
+import CardMedia from '@mui/material/CardMedia'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import prisma from '../../services/db'
 import { getToken } from 'next-auth/jwt'
 import { useEffect, useState } from 'react'
+import IconButton from '@mui/material/IconButton'
+import CardContent from '@mui/material/CardContent'
+import CardActions from '@mui/material/CardActions'
+
+// ** Icons Imports
+import ChevronUp from 'mdi-material-ui/ChevronUp'
+import ChevronDown from 'mdi-material-ui/ChevronDown'
 
 // ** Demo Components Imports
 import CardProject from 'src/views/cards/CardProject'
 
 const Project = ({ data }) => {
   const [projects, setProjects] = useState([])
+
+  // ** State
+  const [collapse, setCollapse] = useState(false)
+
+  const handleClick = () => {
+    setCollapse(!collapse)
+  }
 
   const NotFound = () => (
     <Grid container justifyContent='center' alignItems='center'>
@@ -34,6 +54,42 @@ const Project = ({ data }) => {
       ) : (
         <NotFound />
       )}
+
+      <Grid item xs={12}>
+      <Divider sx={{ marginTop: '1em' }} />
+        <CardActions className='card-action-dense'>
+          <Box
+            sx={{
+              width: '100%',
+              marginTop:'2em',
+              alignItems: 'center',
+            }}
+          >
+            <Button onClick={handleClick}>
+              <Typography variant='h6'>Archived Projects</Typography>
+            </Button>
+            <IconButton size='small' onClick={handleClick}>
+              {collapse ? <ChevronUp sx={{ fontSize: '1.875rem' }} /> : <ChevronDown sx={{ fontSize: '1.875rem' }} />}
+            </IconButton>
+          </Box>
+        </CardActions>
+      </Grid>
+      <Grid item xs={12}>
+        <Collapse in={collapse}>
+            <Grid container spacing={6}>
+              {projects.length > 0 ? (
+                projects.map(project => (
+                  <Grid key={project.project.id} item xs={12} md={6}>
+                    <CardProject project={project.project} />
+                  </Grid>
+                ))
+              ) : (
+                <NotFound />
+              )}
+            </Grid>
+          
+        </Collapse>
+      </Grid>
     </Grid>
   )
 }

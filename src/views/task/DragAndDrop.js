@@ -1,5 +1,6 @@
 //  ** React
 import { useState, useEffect } from 'react'
+
 // ** Icon
 import Close from 'mdi-material-ui/Close'
 
@@ -8,6 +9,10 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 
+// ** Import multer
+import axios from 'src/pages/api/axios'
+import Swal from 'sweetalert2'
+import { useRouter } from 'next/router'
 
 const DragAndDrop = props => {
   const [files, setFiles] = useState([])
@@ -21,7 +26,9 @@ const DragAndDrop = props => {
 
   const [isFile, setIsFile] = useState(true)
 
-  let inputRef;
+  const router = useRouter()
+
+  let inputRef
 
   const handleFile = e => {
     setIsFile(false)
@@ -45,13 +52,38 @@ const DragAndDrop = props => {
     setFile(null)
   }
 
+  const handleSubmitFile = e => {
+    e.preventDefault()
+
+    console.log(file)
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    axios
+      .post(`task/${props.task.task.id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(res => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Task has been submitted'
+        })
+        router.push(`/task-detail/${props.task.task.id}`, undefined, )
+      })
+  }
+
   return (
     <>
       <head>
         <link rel='stylesheet' href='https://cdn.tailwindcss.com/3.0.12'></link>
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css' />
       </head>
-     
+
+      <form onSubmit={e => e.preventDefault()} encType='multipart/form-data'>
         <div className='py-3 w-full rounded-md'>
           <span className='flex justify-center items-center bg-white text-[12px] mb-1 text-red-500'>{message}</span>
           <div
@@ -62,7 +94,8 @@ const DragAndDrop = props => {
               type='file'
               onChange={handleFile}
               className='h-full w-full bg-green-200 opacity-0 z-10 absolute cursor-pointer'
-              ref={refParam => inputRef = refParam}
+              name='upfile'
+              ref={refParam => (inputRef = refParam)}
             />
             <div className='h-full w-full absolute z-1 flex justify-center items-center top-0 cursor-pointer'>
               <div className='flex flex-col'>
@@ -113,11 +146,12 @@ const DragAndDrop = props => {
             variant='contained'
             sx={{ padding: theme => theme.spacing(1.75, 5.5) }}
             style={{ display: showButton ? 'block' : 'none' }}
-            onClick=''
+            onClick={handleSubmitFile}
           >
             Submit
           </Button>
         </div>
+      </form>
     </>
   )
 }

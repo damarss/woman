@@ -21,9 +21,17 @@ import { useRouter } from 'next/dist/client/router'
 // Styled Box component
 const StyledBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
-    borderRight: `1px solid ${theme.palette.divider}`
+    
   }
 }))
+
+function truncateString(str, num) {
+  if (str.length > num) {
+    return str.slice(0, num) + "...";
+  } else {
+    return str;
+  }
+}
 
 const CardMembership = props => {
   const router = useRouter()
@@ -38,7 +46,7 @@ const CardMembership = props => {
             <Typography variant='h5' sx={{ marginBottom: 3.5, fontWeight: 600 }}>
               {props.project.title.toUpperCase()} {props.project.isArchived && <Typography variant='body2' sx={{ marginBottom: 3.5, fontWeight: 500, color: 'common.white', backgroundColor: 'primary.main', display: 'inline-block', padding: '4px 12px', borderRadius: '1rem'}}>ARCHIVED</Typography>}
             </Typography>
-            <Typography variant='body2'>{props.project.description}</Typography>
+            <Typography variant='body2'>{truncateString(props.project.description, 86)}</Typography>
             <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
             <Grid container spacing={4}>
               <Grid item xs={12} sm={6}>

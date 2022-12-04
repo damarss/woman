@@ -8,6 +8,15 @@ import Typography from '@mui/material/Typography'
 
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
+import Button from '@mui/material/Button'
+import Collapse from '@mui/material/Collapse'
+import IconButton from '@mui/material/IconButton'
+import CardContent from '@mui/material/CardContent'
+import CardActions from '@mui/material/CardActions'
+
+// ** Icons Imports
+import ChevronUp from 'mdi-material-ui/ChevronUp'
+import ChevronDown from 'mdi-material-ui/ChevronDown'
 
 // ** Demo Components Imports
 import TaskHomeDT from 'src/views/task/TaskHomeDT'
@@ -24,9 +33,18 @@ const Task = ({ data }) => {
     JSON.parse(data).filter(task => new Date(task.duedate).toDateString() === new Date().toDateString())
   )
 
+  // ** State
+  const [collapse, setCollapse] = useState(false)
+
+  const handleClick = () => {
+    setCollapse(!collapse)
+  }
+
   const NotFound = props => (
     <Grid container justifyContent='center' alignItems='center'>
-        <Typography variant='body1' sx={{marginBottom: 10}}>{props.title}</Typography>
+      <Typography variant='body1' sx={{ marginBottom: 10 }}>
+        {props.title}
+      </Typography>
     </Grid>
   )
 
@@ -38,13 +56,30 @@ const Task = ({ data }) => {
         <Grid item xs={12} mb={5}>
           <Card>
             <CardHeader title="Today's Task" titleTypographyProps={{ variant: 'h6' }} />
-            {todayTasks.length > 0 ? <TaskHomeDT tasks={todayTasks} height='50vh'/> : <NotFound title='No Task Today'/>}
+            {todayTasks.length > 0 ? (
+              <TaskHomeDT tasks={todayTasks} height='50vh' />
+            ) : (
+              <NotFound title='No Task Today' />
+            )}
           </Card>
         </Grid>
         <Grid item xs={12}>
           <Card>
-            <CardHeader title='All Task' titleTypographyProps={{ variant: 'h6' }} />
-            {tasks.length > 0 ? <TaskHomeDT tasks={tasks} height={tasks.length>9 ? '87vh': tasks.length * 50 + 150}/> : <NotFound title='Not Found'/>}
+            <Button onClick={handleClick} sx={{textTransform:'capitalize'}}>
+            <CardHeader title="All Task" titleTypographyProps={{ variant: 'h6' }} sx={{padding:'1em'}}/>
+            </Button>
+            <IconButton size='small' onClick={handleClick}>
+              {collapse ? <ChevronUp sx={{ fontSize: '1.875rem' }} /> : <ChevronDown sx={{ fontSize: '1.875rem' }} />}
+            </IconButton>
+            <Collapse in={collapse}>
+              <Grid container spacing={6} sx={{margin:'0'}}>
+                {tasks.length > 0 ? (
+                  <TaskHomeDT tasks={tasks} height={tasks.length > 9 ? '87vh' : tasks.length * 50 + 150} width='80%'/>
+                ) : (
+                  <NotFound title='Not Found' />
+                )}
+              </Grid>
+            </Collapse>
           </Card>
         </Grid>
       </Grid>

@@ -41,46 +41,47 @@ const DataGridDemo = props => {
           Task Title
         </Typography>
       ),
-      width: 290,
+      minWidth: 250,
+      flex: 1.5,
       renderCell: params => (
         <Link onClick={e => router.push(`/task-detail/${params.row.id}`)} sx={{ cursor: 'pointer' }}>
           <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.row.title}</Typography>
         </Link>
       ),
-      align: 'left',
-      editable: true
+      align: 'left'
     },
     {
       field: 'project',
       renderHeader: () => (
         <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Project</Typography>
       ),
-      width: 220,
+      minWidth: 150,
+      flex: 1,
       renderCell: params => (
         <Link onClick={e => router.push(`/project-detail/${params.row.projectid}`)} sx={{ cursor: 'pointer' }}>
           <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
         </Link>
       ),
-      align: 'left',
-      editable: true
+      align: 'left'
     },
     {
       field: 'priority',
       renderHeader: () => (
         <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Priority</Typography>
       ),
-      width: 220,
+      minWidth: 150,
+      flex: 1,
       renderCell: params => (
         <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
-      ),
-      editable: true
+      )
     },
     {
       field: 'status',
       renderHeader: () => (
         <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Status</Typography>
       ),
-      width: 170,
+      minWidth: 150,
+      flex: 1,
       align: 'left',
       renderCell: params => (
         <Chip
@@ -93,20 +94,18 @@ const DataGridDemo = props => {
             '& .MuiChip-label': { fontWeight: 500 }
           }}
         />
-      ),
-      editable: true
+      )
     },
     {
       field: 'deadline',
       renderHeader: () => (
         <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Deadline</Typography>
       ),
-      width: 150,
+      minWidth: 150,
       renderCell: params => (
         <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{moment(params.value).format('DD/MM/YYYY')}</Typography>
       ),
-      align: 'left',
-      editable: true
+      align: 'left'
     }
   ]
 
@@ -124,7 +123,7 @@ const DataGridDemo = props => {
         rowsPerPpriorityOptions={[5]}
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
-        sx={{ height: props.height, overflowY: 'auto', width: '100%' }}
+        sx={{ height: props.height, overflowY: 'auto', width: '100%', paddingRight: '30px'}}
       />
     </Box>
   )

@@ -27,7 +27,7 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
 import Select from '@mui/material/Select'
 import Link from '@mui/material/Link'
-import Paper from '@mui/material/Paper'
+import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
@@ -38,6 +38,7 @@ import TableContainer from '@mui/material/TableContainer'
 // ** Third Party Imports
 import DatePicker from 'react-datepicker'
 import Swal from 'sweetalert2'
+import { DataGrid } from '@mui/x-data-grid'
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
@@ -131,6 +132,117 @@ const CreateProject = props => {
 
   useEffect(() => {}, [endDate, participants, startDate, values])
 
+  const rows = participants.map(user => ({
+    id: user.id,
+    username: user.name,
+    nip: user.nip,
+    project: user.UserProject.length,
+    task: user.taskToDo.length,
+    checked: user.checked
+  }))
+
+  const columns = [
+    {
+      field: 'checked',
+      sortable: false,
+      renderHeader: () => (
+        <FormControlLabel
+          control={
+            <Checkbox
+              defaultChecked
+              checked={participants.filter(participant => participant.checked === true).length === participants.length}
+              onChange={e => {
+                let checked = e.target.checked
+                setParticipants(
+                  participants.map(participant => {
+                    return {
+                      ...participant,
+                      checked: checked
+                    }
+                  })
+                )
+              }}
+            />
+          }
+          label='All'
+        />
+      ),
+      minWidth: 30,
+      renderCell: params => (
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={params.value}
+              onChange={e => {
+                let checked = e.target.checked
+                setParticipants(
+                  participants.map(participant => {
+                    if (participant.id === params.user.id) {
+                      participant.checked = checked
+                    }
+
+                    return participant
+                  })
+                )
+              }}
+            />
+          }
+          label=''
+        />
+      ),
+      align: 'left'
+    },
+    {
+      field: 'nip',
+      renderHeader: () => (
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
+          NIP
+        </Typography>
+      ),
+      minWidth: 150,
+      flex: 0.8,
+      renderCell: params => (
+        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
+      ),
+      align: 'left'
+    },
+    {
+      field: 'username',
+      renderHeader: () => (
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Name</Typography>
+      ),
+      minWidth: 200,
+      flex: 1,
+      renderCell: params => (
+        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
+      )
+    },
+    {
+      field: 'project',
+      renderHeader: () => (
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Number of Project</Typography>
+      ),
+      minWidth: 200,
+      flex: 1,
+      renderCell: params => (
+        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
+      )
+    },
+    {
+      field: 'task',
+      renderHeader: () => (
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Number of Task</Typography>
+      ),
+      minWidth: 200,
+      flex: 1,
+      renderCell: params => (
+        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
+          {params.value}
+        </Typography>
+      )
+    }
+  ]
+
   return (
     <Card>
       <form onSubmit={e => e.preventDefault()}>
@@ -197,97 +309,39 @@ const CreateProject = props => {
                 id='form-layouts-separator-select'
                 labelId='form-layouts-separator-select-label'
               >
-                {props.users
-                  .map(user => (
-                    <MenuItem key={user.id} value={user.id}>
-                      {user.name}
-                    </MenuItem>
-                  ))}
+                {props.users.map(user => (
+                  <MenuItem key={user.id} value={user.id}>
+                    {user.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
           <br></br>
           <Typography variant='h6'>Project Participant</Typography>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 50 }} aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell align='left'>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          defaultChecked
-                          checked={
-                            participants.filter(participant => participant.checked === true).length ===
-                            participants.length
-                          }
-                          onChange={e => {
-                            let checked = e.target.checked
-                            setParticipants(
-                              participants.map(participant => {
-                                return {
-                                  ...participant,
-                                  checked: checked
-                                }
-                              })
-                            )
-                          }}
-                        />
-                      }
-                      label='All'
-                    />
-                  </TableCell>
-                  <TableCell align='center'>NIP</TableCell>
-                  <TableCell align='center'>Name</TableCell>
-                  <TableCell align='center'>Number of Project</TableCell>
-                  <TableCell align='center'>Number of Task</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {participants.map(user => (
-                  <TableRow
-                    key={user.name}
-                    sx={{
-                      '&:last-of-type td, &:last-of-type th': {
-                        border: 0
-                      }
-                    }}
-                  >
-                    <TableCell align='left'>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={user.checked}
-                            onChange={e => {
-                              let checked = e.target.checked
-                              setParticipants(
-                                participants.map(participant => {
-                                  if (participant.id === user.id) {
-                                    participant.checked = checked
-                                  }
-
-                                  return participant
-                                })
-                              )
-                            }}
-                          />
-                        }
-                        label=''
-                      />
-                    </TableCell>
-                    <TableCell align='center'>{user.nip}</TableCell>
-                    <TableCell component='th' scope='row' align='center'>
-                      {user.name}
-                    </TableCell>
-                    <TableCell align='center'>{user.UserProject.length}</TableCell>
-                    <TableCell component='th' scope='row' align='center'>
-                      {user.taskToDo.length}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Box sx={{ width: '100%' }}>
+            <DataGrid
+              initialState={{
+                sorting: {
+                  sortModel: [
+                    { field: 'project', sort: 'asc' },
+                    { field: 'task', sort: 'asc' }
+                  ]
+                }
+              }}
+              rows={rows}
+              columns={columns}
+              pprioritySize={5}
+              rowsPerPpriorityOptions={[5]}
+              disableSelectionOnClick
+              experimentalFeatures={{ newEditingApi: true }}
+              sx={{
+                height: rows.length > 5 ? '70vh' : '45vh',
+                overflowY: 'auto',
+                width: '100%'
+              }}
+            />
+          </Box>
         </CardContent>
 
         <Divider sx={{ margin: 0 }} />

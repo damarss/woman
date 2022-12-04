@@ -54,7 +54,8 @@ const MeetingTable = props => {
           Meeting Title
         </Typography>
       ),
-      width: 250,
+      minWidth: 230,
+      flex: 1.5,
       renderCell: params => (
         <Link onClick={e => router.push(`/meeting-admin-detail/${params.row.id}`)} sx={{ cursor: 'pointer' }}>
           <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.row.title}</Typography>
@@ -68,7 +69,8 @@ const MeetingTable = props => {
       renderHeader: () => (
         <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Start Date</Typography>
       ),
-      width: 300,
+      minWidth: 290,
+      flex: 1,
       renderCell: params => (
         <Link onClick={e => router.push(`/meeting-admin-detail/${params.row.id}`)} sx={{ cursor: 'pointer' }}>
           <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
@@ -82,7 +84,8 @@ const MeetingTable = props => {
       renderHeader: () => (
         <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>End Date</Typography>
       ),
-      width: 300,
+      minWidth: 290,
+      flex: 1,
       renderCell: params => (
         <Link onClick={e => router.push(`/meeting-admin-detail/${params.row.id}`)} sx={{ cursor: 'pointer' }}>
           <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
@@ -95,7 +98,8 @@ const MeetingTable = props => {
       renderHeader: () => (
         <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Meeting Link</Typography>
       ),
-      width: 300,
+      width: 150,
+      flex: 0.8,
       renderCell: params => (
         <Link href={params.value}>
           <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
