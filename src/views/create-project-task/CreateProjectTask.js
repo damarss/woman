@@ -70,26 +70,26 @@ const CreateProjectTask = props => {
       t_description: '',
       t_user: '',
       t_priority: '0'
-    });
-    setDate(new Date);
+    })
+    setDate(new Date())
     setOpen(false)
     Swal.fire('Cancelled', 'Task is not created!', 'error')
   }
-  const [date, setDate] = useState(new Date)
+  const [date, setDate] = useState(new Date())
   const [uid, setUid] = useState(null)
 
   const [editOpen, setEditOpen] = useState(false)
-  
+
   const handleEditOpen = async (data, e) => {
     setValues({
       t_title: data.title,
       t_description: data.description,
       t_user: data.userId,
       t_priority: data.priority
-    });
+    })
     setUid(data.id)
-    setDate(new Date(data.duedate));
-    setEditOpen(true);
+    setDate(new Date(data.duedate))
+    setEditOpen(true)
   }
   const handleEditClose = () => {
     setValues({
@@ -97,8 +97,8 @@ const CreateProjectTask = props => {
       t_description: '',
       t_user: '',
       t_priority: '0'
-    });
-    setDate(new Date)
+    })
+    setDate(new Date())
     setUid(null)
     setEditOpen(false)
     Swal.fire('Cancelled', 'Task is not updated!', 'error')
@@ -309,13 +309,21 @@ const CreateProjectTask = props => {
                   </TableCell>
                   <TableCell align='left'>
                     <Link href='#'>
-                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>{new Date(row.duedate).toLocaleDateString('id-ID')}</Typography>
+                      <Typography sx={{ fontWeight: 300, fontSize: '0.875rem !important' }}>
+                        {new Date(row.duedate).toLocaleDateString('id-ID')}
+                      </Typography>
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                       {/* Edit Task */}
-                      <Button type='submit' sx={{ mr: 1 }} color='info' variant='text' onClick={e => handleEditOpen(row)}>
+                      <Button
+                        type='submit'
+                        sx={{ mr: 1 }}
+                        color='info'
+                        variant='text'
+                        onClick={e => handleEditOpen(row)}
+                      >
                         <PencilOutline />
                       </Button>
                       {/* Modal Edit Task */}

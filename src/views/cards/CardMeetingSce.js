@@ -20,10 +20,12 @@ const CardSupport = props => {
   let date
   let time
   let link
+  let title
   if (props.meet) {
     date = new Date(props.meet.date).toLocaleDateString()
     time = new Date(props.meet.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     link = props.meet.link
+    title = props.meet.title
   } else {
     date = 'No Upcoming Meeting'
   }
@@ -61,8 +63,11 @@ const CardSupport = props => {
         <Typography variant='body2' sx={{ marginBottom: 2.75 }}>
           {date}
         </Typography>
-        <Typography variant='h4' sx={{ marginBottom: 6 }}>
+        <Typography variant='h4' sx={{ marginBottom: 2.75 }}>
           {time}
+        </Typography>
+        <Typography variant='h6' sx={{ marginBottom: 6}}>
+          {title}
         </Typography>
         <a style={{ textDecoration: 'none', display: date !== 'No Upcoming Meeting' ? 'block' : 'none' }} href={link}>
           <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
