@@ -79,6 +79,7 @@ const CreateProjectTask = props => {
   const [uid, setUid] = useState(null)
 
   const [editOpen, setEditOpen] = useState(false)
+  
   const handleEditOpen = async (data, e) => {
     setValues({
       t_title: data.title,
