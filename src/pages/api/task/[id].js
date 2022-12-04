@@ -77,13 +77,10 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
   const status = req.body?.status
   const userId = req.body?.userId
   const taskfile = req.body?.taskfile
-  console.log(req.body)
-
-  console.log('status: ' + status)
-  console.log('taskfile: ' + taskfile)
+  const helper = req.body?.helper
 
   // untuk unsubmit task
-  if (status && taskfile == '') {
+  if (status && helper == 'unsubmit') {
     const existTask = await prisma.task.findUnique({
       where: {
         id: Number(id)
@@ -108,6 +105,24 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
 
     return res.status(200).json({ success: true, data: task })
   }
+
+  // untuk on progress task
+  if (status && helper == 'onprogress') {
+    const task = await prisma.task.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        status: status
+      }
+    })
+
+    return res.status(200).json({ success: true, data: task })
+  }
+
+  // untuk revise task
+
+  // untuk accept task
 
   try {
     const task = await prisma.task.update({

@@ -6,6 +6,8 @@ import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/dist/client/router'
 import moment from 'moment'
+import axios from 'src/pages/api/axios'
+import { useSession } from 'next-auth/react'
 
 const statusObj = {
   0: { color: 'secondary', status: 'Assigned' },
@@ -23,6 +25,8 @@ const priorities = ['Low', 'Medium', 'High']
 const DataGridDemo = props => {
   const router = useRouter()
 
+  const session = useSession()
+
   const rows = props.tasks.map(row => ({
     id: row.id,
     project: row.project.title,
@@ -30,7 +34,8 @@ const DataGridDemo = props => {
     title: row.title,
     priority: priorities[row.priority],
     status: row.status,
-    deadline: row.duedate
+    deadline: row.duedate,
+    userId: row.userId,
   }))
 
   const columns = [
@@ -44,7 +49,17 @@ const DataGridDemo = props => {
       minWidth: 250,
       flex: 1.5,
       renderCell: params => (
-        <Link onClick={e => router.push(`/task-detail/${params.row.id}`)} sx={{ cursor: 'pointer' }}>
+        <Link
+          onClick={async e => {
+            if (session.status === 'authenticated' && session.data.uid == params.row.userId) {
+              if (params.row.status === 0) {
+                await axios.put(`task/${params.row.id}`, { status: 1, helper: 'onprogress' })
+              }
+            }
+            router.push(`/task-detail/${params.row.id}`)
+          }}
+          sx={{ cursor: 'pointer' }}
+        >
           <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.row.title}</Typography>
         </Link>
       ),
@@ -103,7 +118,9 @@ const DataGridDemo = props => {
       ),
       minWidth: 150,
       renderCell: params => (
-        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{moment(params.value).format('DD/MM/YYYY')}</Typography>
+        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>
+          {moment(params.value).format('DD/MM/YYYY')}
+        </Typography>
       ),
       align: 'left'
     }
@@ -123,7 +140,7 @@ const DataGridDemo = props => {
         rowsPerPpriorityOptions={[5]}
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
-        sx={{ height: props.height, overflowY: 'auto', width: '100%', paddingRight: '30px'}}
+        sx={{ height: props.height, overflowY: 'auto', width: '100%', paddingRight: '30px' }}
       />
     </Box>
   )

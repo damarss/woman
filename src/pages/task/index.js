@@ -65,16 +65,16 @@ const Task = ({ data }) => {
         </Grid>
         <Grid item xs={12}>
           <Card>
-            <Button onClick={handleClick} sx={{textTransform:'capitalize'}}>
-            <CardHeader title="All Task" titleTypographyProps={{ variant: 'h6' }} sx={{padding:'1em'}}/>
+            <Button onClick={handleClick} sx={{ textTransform: 'capitalize' }}>
+              <CardHeader title='All Task' titleTypographyProps={{ variant: 'h6' }} sx={{ padding: '1em' }} />
             </Button>
             <IconButton size='small' onClick={handleClick}>
               {collapse ? <ChevronUp sx={{ fontSize: '1.875rem' }} /> : <ChevronDown sx={{ fontSize: '1.875rem' }} />}
             </IconButton>
             <Collapse in={collapse}>
-              <Grid container spacing={6} sx={{margin:'0'}}>
+              <Grid container spacing={6} sx={{ margin: '0' }}>
                 {tasks.length > 0 ? (
-                  <TaskHomeDT tasks={tasks} height={tasks.length > 9 ? '87vh' : tasks.length * 50 + 150} width='80%'/>
+                  <TaskHomeDT tasks={tasks} height={tasks.length > 9 ? '87vh' : tasks.length * 50 + 150} width='80%' />
                 ) : (
                   <NotFound title='Not Found' />
                 )}
