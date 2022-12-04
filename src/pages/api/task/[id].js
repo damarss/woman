@@ -227,7 +227,7 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
   }
 })
 
-apiRoute.get(async (req, res) => {
+apiRoute.get(bodyParser.json(), async (req, res) => {
   const id = req.query.id
 
   const task = await prisma.task.findUnique({
@@ -243,7 +243,7 @@ apiRoute.get(async (req, res) => {
   return res.status(200).json({ success: true, data: task })
 })
 
-apiRoute.delete(async (req, res) => {
+apiRoute.delete(bodyParser.json(), async (req, res) => {
   const id = req.query.id
 
   const task = await prisma.task.findUnique({
