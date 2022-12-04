@@ -76,7 +76,6 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
   const description = req.body?.description
   const status = req.body?.status
   const userId = req.body?.userId
-  const taskfile = req.body?.taskfile
   const helper = req.body?.helper
 
   // untuk unsubmit task
@@ -121,8 +120,32 @@ apiRoute.put(bodyParser.json(), async (req, res) => {
   }
 
   // untuk revise task
+  if (status && helper == 'revise') {
+    const task = await prisma.task.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        status: status
+      }
+    })
+
+    return res.status(200).json({ success: true, data: task })
+  }
 
   // untuk accept task
+  if (status && helper == 'accept') {
+    const task = await prisma.task.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        status: status
+      }
+    })
+
+    return res.status(200).json({ success: true, data: task })
+  }
 
   try {
     const task = await prisma.task.update({
