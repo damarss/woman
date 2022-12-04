@@ -198,8 +198,9 @@ apiRoute.delete(async (req, res) => {
     return res.status(400).json({ success: false, message: 'Task not found' })
   }
 
-  if (task.taskfile) {
+  try {
     await unlinkAsync(`./public/uploads/${task.taskfile}`)
+  } catch (error) {
   }
 
   const deletedTask = await prisma.task.delete({
