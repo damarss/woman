@@ -12,7 +12,9 @@ module.exports = {
   },
   env: {
     BASE_URL: process.env.BASE_URL,
-    JWT_SECRET: process.env.JWT_SECRET
+    JWT_SECRET: process.env.JWT_SECRET,
+    EMAIL_SECRET: process.env.EMAIL_SECRET,
+    DATABASE_URL: process.env.DATABASE_URL
   },
   webpack: config => {
     config.resolve.alias = {
