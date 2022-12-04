@@ -37,6 +37,129 @@ import { color } from '@mui/system'
 const CardTaskFileContent = props => {
   const [isFile, setIsFile] = useState(true)
 
+  const session = useSession()
+
+  const router = useRouter()
+
+  // const handleUnsubmit = async e => {
+  //   Swal.fire({
+  //     title: 'Are you sure?',
+  //     text: 'You will not be able to recover this file!',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33'
+  //   }).then(async result => {
+  //     if (result.isConfirmed) {
+  //       await axios
+  //         .put(`task/${props.taskId}`, { status: 1, helper: 'resubmit' })
+  //         .then(res => {
+  //           if (res.status === 200) {
+  //             router.reload()
+  //           }
+  //         })
+  //         .catch(err => {
+  //           Swal.fire({
+  //             icon: 'error',
+  //             title: 'Oops...',
+  //             text: 'Something went wrong!'
+  //           })
+  //         })
+
+  //       Swal.fire('Unsubmitted!', 'Your work has been unsubmitted.', 'success')
+  //     }
+  //   })
+  // }
+
+  const handleRevise = async e => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'User will be notified!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then(async result => {
+      if (result.isConfirmed) {
+        axios
+          .put(`task/${props.userInfo.task.id}`, {
+            status: 3,
+            helper: 'revise'
+          })
+          .then(res => {
+            Swal.fire('Revised!', 'User has been notified.', 'success')
+            router.back()
+          })
+          .catch(err => {
+            Swal.fire('Error', 'Something went wrong.', 'error')
+          })
+      }
+    })
+  }
+
+  const handleAccept = async e => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'User will be notified!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then(async result => {
+      if (result.isConfirmed) {
+        axios
+          .put(`task/${props.userInfo.task.id}`, {
+            status: 4,
+            helper: 'accept'
+          })
+          .then(res => {
+            Swal.fire('Accepted!', 'User has been notified.', 'success')
+            router.back()
+          })
+          .catch(err => {
+            Swal.fire('Error', 'Something went wrong.', 'error')
+          })
+      }
+    })
+  }
+
+  const handleUnsubmit = async e => {
+    e.preventDefault()
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to undo this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then(result => {
+      if (result.isConfirmed) {
+        axios
+          .put(`task/${props.userInfo.task.id}`, {
+            status: 1,
+            helper: 'unsubmit'
+          })
+          .then(async res => {
+            await Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Task unsubmitted'
+            })
+
+            router.reload()
+          })
+          .catch(err => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Something went wrong'
+            })
+          })
+      }
+    })
+  }
+
   let button
   if (props.userInfo.task.status === 0) {
     button = <DragAndDrop task={props.userInfo} />
@@ -51,14 +174,27 @@ const CardTaskFileContent = props => {
     button = (
       <Box>
         <Typography variant='body2' sx={{ marginTop: 4 }}>
-          Being Reviewed
+          {props.userInfo.task.status === 1
+            ? 'Being Reviewed'
+            : props.userInfo.task.status === 2
+            ? 'Submitted'
+            : props.userInfo.task.status === 4
+            ? 'Accepted'
+            : props.userInfo.task.status === 5
+            ? 'Rejected'
+            : props.userInfo.task.status === 6
+            ? 'Completed'
+            : 'Revise'}
         </Typography>
         <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
         <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
-        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
-          Unsubmit
-        </Button>
+
+        {session.status === 'authenticated' && session.data.uid == props.userInfo.task.userId && (
+          <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }} onClick={handleUnsubmit}>
+            Unsubmit
+          </Button>
+        )}
       </Box>
     )
   } else if (props.userInfo.task.status === 3) {
@@ -70,7 +206,7 @@ const CardTaskFileContent = props => {
         <InsertDriveFileIcon fontSize='large' sx={{ height: '15vh' }} />
         <Typography variant='body2'>{props.userInfo.task.taskfile}</Typography>
         <Divider sx={{ marginTop: 6.5, marginBottom: 6.75 }} />
-        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+        <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }} onClick={handleUnsubmit}>
           Resubmit
         </Button>
       </Box>
@@ -131,17 +267,24 @@ const CardTaskFileContent = props => {
           {button}
         </Box> */}
 
-        {props.userInfo.idUser === props.userInfo.task.project.projectLeaderId && (
+        {(props.userInfo.idUser === props.userInfo.task.project.projectLeaderId ||
+          (session.status === 'authenticated' && session.data.uid == 1)) && (
           <Box style={{ display: 'flex', justifyContent: 'space-around' }}>
             <Button
               type='submit'
               variant='contained'
               sx={{ padding: theme => theme.spacing(1.75, 5.5) }}
               style={{ marginRight: 3 }}
+              onClick={handleRevise}
             >
               Revise
             </Button>
-            <Button type='submit' variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+            <Button
+              type='submit'
+              variant='contained'
+              sx={{ padding: theme => theme.spacing(1.75, 5.5) }}
+              onClick={handleAccept}
+            >
               Accept
             </Button>
           </Box>

@@ -2,6 +2,7 @@ import prisma from '../../../services/db'
 import nextConnect from 'next-connect'
 import multer from 'multer'
 import fs from 'fs'
+import { mailOptions, sendMailTaskSubmitted, sendMailTaskStatus } from 'src/services/sendEmail'
 
 const { promisify } = require('util')
 
@@ -34,6 +35,9 @@ apiRoute.post(async (req, res) => {
   const existTask = await prisma.task.findUnique({
     where: {
       id: Number(id)
+    },
+    include: {
+      project: true
     }
   })
 
@@ -61,9 +65,165 @@ apiRoute.post(async (req, res) => {
     }
   })
 
+  const projectLeader = await prisma.user.findUnique({
+    where: {
+      id: existTask.project.projectLeaderId
+    }
+  })
+
+  const userProject = await prisma.user.findUnique({
+    where: {
+      id: existTask.userId
+    }
+  })
+
   // tambahin logic untuk kirim email ke project leader
+  console.log(userProject)
+  mailOptions.to = projectLeader.email
+  mailOptions.subject = `New Task Submission`
+  mailOptions.title = existTask.title
+  mailOptions.user = userProject.name
+  mailOptions.leader = projectLeader.name
+  mailOptions.link = `${process.env.BASE_URL}/project-detail/${existTask.project.id}`
+
+  sendMailTaskSubmitted(mailOptions)
 
   return res.status(200).json({ success: true, data: task })
+})
+
+apiRoute.put(bodyParser.json(), async (req, res) => {
+  const id = req.query.id
+
+  // const { title, duedate, priority, description, status, userId } = req.body
+  const title = req.body?.title
+  const duedate = req.body?.duedate
+  const priority = req.body?.priority
+  const description = req.body?.description
+  const status = req.body?.status
+  const userId = req.body?.userId
+  const helper = req.body?.helper
+
+  // untuk unsubmit task
+  if (status && helper == 'unsubmit') {
+    const existTask = await prisma.task.findUnique({
+      where: {
+        id: Number(id)
+      }
+    })
+
+    try {
+      await unlinkAsync(`./public/uploads/${existTask.taskfile}`)
+    } catch (error) {
+      console.log(error)
+    }
+
+    const task = await prisma.task.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        status: status,
+        taskfile: ''
+      }
+    })
+
+    return res.status(200).json({ success: true, data: task })
+  }
+
+  // untuk on progress task
+  if (status && helper == 'onprogress') {
+    const task = await prisma.task.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        status: status
+      }
+    })
+
+    return res.status(200).json({ success: true, data: task })
+  }
+
+  // untuk revise task
+  if (status && helper == 'revise') {
+    const task = await prisma.task.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        status: status
+      }
+    })
+
+    const userProject = await prisma.user.findUnique({
+      where: {
+        id: task.userId
+      }
+    })
+
+    mailOptions.to = userProject.email
+    mailOptions.user = userProject.name
+    mailOptions.title = task.title
+    mailOptions.link = `${process.env.BASE_URL}/task-detail/${task.id}`
+    mailOptions.status = 'Need Revision'
+    mailOptions.colorbg = '#EB891B'
+    mailOptions.subject = `Task Revision`
+
+    sendMailTaskStatus(mailOptions)
+
+    return res.status(200).json({ success: true, data: task })
+  }
+
+  // untuk accept task
+  if (status && helper == 'accept') {
+    const task = await prisma.task.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        status: status
+      }
+    })
+
+    const userProject = await prisma.user.findUnique({
+      where: {
+        id: task.userId
+      }
+    })
+
+    mailOptions.to = userProject.email
+    mailOptions.user = userProject.name
+    mailOptions.title = task.title
+    mailOptions.link = `${process.env.BASE_URL}/task-detail/${task.id}`
+    mailOptions.status = 'Accepted'
+    mailOptions.colorbg = '#56CA00'
+    mailOptions.subject = `Task Accepted`
+
+    sendMailTaskStatus(mailOptions)
+
+    return res.status(200).json({ success: true, data: task })
+  }
+
+  try {
+    const task = await prisma.task.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        title,
+        duedate,
+        priority: Number(priority),
+        description,
+        userId: Number(userId)
+      }
+    })
+
+    return res.status(200).json({ success: true, data: task })
+  } catch (error) {
+    console.log(error)
+
+    return res.status(400).json({ success: false })
+  }
 })
 
 apiRoute.get(async (req, res) => {
@@ -95,9 +255,9 @@ apiRoute.delete(async (req, res) => {
     return res.status(400).json({ success: false, message: 'Task not found' })
   }
 
-  if (task.taskfile) {
+  try {
     await unlinkAsync(`./public/uploads/${task.taskfile}`)
-  }
+  } catch (error) {}
 
   const deletedTask = await prisma.task.delete({
     where: {

@@ -226,12 +226,14 @@ const DataGridPeopleTable = ({ rows }) => {
     if (session.status === 'authenticated') {
       setRole(session.data.role)
       setId(session.data.uid)
+      console.log(session)
     }
   }, [session])
 
   const rowsDT = rows.map(row => ({
     id: row.id,
     username: row.name,
+    nip: row.nip,
     project: row.UserProject.length,
     task: row.taskToDo.length,
     role: row.role,
@@ -252,13 +254,23 @@ const DataGridPeopleTable = ({ rows }) => {
       align: 'left'
     },
     {
+      field: 'nip',
+      renderHeader: () => (
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>NIP</Typography>
+      ),
+      minWidth: 120,
+      flex: 1,
+      renderCell: params => (
+        <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
+      ),
+      align: 'left'
+    },
+    {
       field: 'project',
       renderHeader: () => (
-        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
-          Number of Project
-        </Typography>
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Project</Typography>
       ),
-      minWidth: 200,
+      minWidth: 120,
       flex: 1,
       renderCell: params => (
         <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
@@ -268,26 +280,27 @@ const DataGridPeopleTable = ({ rows }) => {
     {
       field: 'task',
       renderHeader: () => (
-        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>
-          Number of Task
-        </Typography>
+        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Task</Typography>
       ),
-      minWidth: 200,
+      minWidth: 120,
       flex: 1,
       renderCell: params => (
         <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{params.value}</Typography>
       )
-    },
-    {
-      field: 'role',
-      renderHeader: () => (
-        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Role</Typography>
-      ),
-      minWidth: 150,
-      flex: 1,
-      align: 'left',
-      renderCell: params =>
-        id == 212 && (
+    }
+  ]
+
+  if (id == 1) {
+    columns.push(
+      {
+        field: 'role',
+        renderHeader: () => (
+          <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Role</Typography>
+        ),
+        minWidth: 180,
+        flex: 1,
+        align: 'left',
+        renderCell: params => (
           <form onSubmit={e => e.preventDefault()}>
             <FormControl fullWidth>
               <InputLabel id='form-layouts-separator-select-label'>role</InputLabel>
@@ -304,133 +317,140 @@ const DataGridPeopleTable = ({ rows }) => {
             </FormControl>
           </form>
         )
-    },
-    {
-      field: 'action',
-      renderHeader: () => (
-        <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Action</Typography>
-      ),
-      minWidth: 150,
-      flex: 1,
-      renderCell: params => (
-        <>
-          <Button type='submit' sx={{ mr: 1 }} color='info' variant='text' onClick={e => handleEditOpen(params.value)}>
-            <PencilOutline />
-          </Button>
-          <Modal open={editOpen} onClose={handleEditClose}>
-            <Card sx={style}>
-              {/* form edit people */}
-              <CardContent>
-                <Typography variant='h6'>Edit people information</Typography>
-                <br></br>
-                <Grid container spacing={2}>
-                  <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-                    <Grid item xs={12} sm={12} lg={12}>
+      },
+      {
+        field: 'action',
+        renderHeader: () => (
+          <Typography sx={{ fontWeight: 900, fontSize: '0.875rem !important', textAlign: 'center' }}>Action</Typography>
+        ),
+        minWidth: 160,
+        flex: 1,
+        renderCell: params => (
+          <>
+            <Button
+              type='submit'
+              sx={{ mr: 1 }}
+              color='info'
+              variant='text'
+              onClick={e => handleEditOpen(params.value)}
+            >
+              <PencilOutline />
+            </Button>
+            <Modal open={editOpen} onClose={handleEditClose}>
+              <Card sx={style}>
+                {/* form edit people */}
+                <CardContent>
+                  <Typography variant='h6'>Edit people information</Typography>
+                  <br></br>
+                  <Grid container spacing={2}>
+                    <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
+                      <Grid item xs={12} sm={12} lg={12}>
+                        <TextField
+                          autoFocus
+                          fullWidth
+                          id='name'
+                          label='Name'
+                          value={values.name}
+                          sx={{ marginBottom: 4 }}
+                          onChange={handleChange('name')}
+                        />
+                      </Grid>
                       <TextField
-                        autoFocus
                         fullWidth
-                        id='name'
-                        label='Name'
-                        value={values.name}
+                        type='email'
+                        label='Email'
+                        value={values.email}
                         sx={{ marginBottom: 4 }}
-                        onChange={handleChange('name')}
+                        onChange={handleChange('email')}
                       />
-                    </Grid>
-                    <TextField
-                      fullWidth
-                      type='email'
-                      label='Email'
-                      value={values.email}
-                      sx={{ marginBottom: 4 }}
-                      onChange={handleChange('email')}
-                    />
-                    <TextField
-                      fullWidth
-                      id='nip'
-                      label='NIP'
-                      value={values.nip}
-                      sx={{ marginBottom: 4 }}
-                      onChange={handleChange('nip')}
-                    />
-                    <FormControl fullWidth>
-                      <InputLabel htmlFor='auth-register-password'>Password (optional)</InputLabel>
-                      <OutlinedInput
-                        label='Password (optional)'
-                        id='auth-register-password'
-                        onChange={handleChange('password')}
-                        type={values.showPassword ? 'text' : 'password'}
-                        endAdornment={
-                          <InputAdornment position='end'>
-                            <IconButton
-                              edge='end'
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                              aria-label='toggle password visibility'
-                            >
-                              {values.showPassword ? (
-                                <EyeOutline fontSize='small' />
-                              ) : (
-                                <EyeOffOutline fontSize='small' />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        }
+                      <TextField
+                        fullWidth
+                        id='nip'
+                        label='NIP'
+                        value={values.nip}
+                        sx={{ marginBottom: 4 }}
+                        onChange={handleChange('nip')}
                       />
-                    </FormControl>
-                    <br></br>
-                    <br></br>
-                    <CardActions style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
-                      <Button
-                        size='large'
-                        color='secondary'
-                        sx={{ mr: 2 }}
-                        variant='outlined'
-                        onClick={handleEditClose}
-                      >
-                        Cancel
-                      </Button>
-                      <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleEdit}>
-                        Edit People
-                      </Button>
-                    </CardActions>
-                  </form>
-                </Grid>
-              </CardContent>
-              {/* end form edit people */}
-            </Card>
-          </Modal>
-          <Button
-            type='submit'
-            sx={{ mr: 1 }}
-            color='error'
-            variant='text'
-            onClick={e => {
-              Swal.fire({
-                title: 'Delete Member?',
-                text: 'Click "Delete Member" for Delete member',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Delete Member'
-              }).then(result => {
-                if (result.isConfirmed) {
-                  handleDelete(params.row.id)
-                }
-              })
-            }}
-          >
-            <DeleteOutline />
-          </Button>
-        </>
-      ),
-      align: 'left'
-    }
-  ]
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor='auth-register-password'>Password (optional)</InputLabel>
+                        <OutlinedInput
+                          label='Password (optional)'
+                          id='auth-register-password'
+                          onChange={handleChange('password')}
+                          type={values.showPassword ? 'text' : 'password'}
+                          endAdornment={
+                            <InputAdornment position='end'>
+                              <IconButton
+                                edge='end'
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                aria-label='toggle password visibility'
+                              >
+                                {values.showPassword ? (
+                                  <EyeOutline fontSize='small' />
+                                ) : (
+                                  <EyeOffOutline fontSize='small' />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          }
+                        />
+                      </FormControl>
+                      <br></br>
+                      <br></br>
+                      <CardActions style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
+                        <Button
+                          size='large'
+                          color='secondary'
+                          sx={{ mr: 2 }}
+                          variant='outlined'
+                          onClick={handleEditClose}
+                        >
+                          Cancel
+                        </Button>
+                        <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained' onClick={handleEdit}>
+                          Edit People
+                        </Button>
+                      </CardActions>
+                    </form>
+                  </Grid>
+                </CardContent>
+                {/* end form edit people */}
+              </Card>
+            </Modal>
+            <Button
+              type='submit'
+              sx={{ mr: 1 }}
+              color='error'
+              variant='text'
+              onClick={e => {
+                Swal.fire({
+                  title: 'Delete Member?',
+                  text: 'Click "Delete Member" for Delete member',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Delete Member'
+                }).then(result => {
+                  if (result.isConfirmed) {
+                    handleDelete(params.row.id)
+                  }
+                })
+              }}
+            >
+              <DeleteOutline />
+            </Button>
+          </>
+        ),
+        align: 'left'
+      }
+    )
+  }
 
   return (
     <Card>
-      {id == 212 && (
+      {id == 1 && (
         <CardActions style={{ display: 'flex', justifyContent: 'end' }}>
           <Link passHref href='/add-people'>
             <Button size='large' type='submit' sx={{ mr: 2 }} variant='contained'>
@@ -443,7 +463,10 @@ const DataGridPeopleTable = ({ rows }) => {
         <DataGrid
           initialState={{
             sorting: {
-              sortModel: [{ field: 'project', sort: 'desc' },{ field: 'task', sort: 'desc' }]
+              sortModel: [
+                { field: 'project', sort: 'desc' },
+                { field: 'task', sort: 'desc' }
+              ]
             }
           }}
           rows={rowsDT}
@@ -454,7 +477,7 @@ const DataGridPeopleTable = ({ rows }) => {
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
           sx={{
-            height: rows.length>4? '100vh': '75vh',
+            height: rows.length > 4 ? '100vh' : '75vh',
             overflowY: 'auto',
             width: '100%'
           }}

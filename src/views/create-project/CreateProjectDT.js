@@ -130,7 +130,8 @@ const CreateProject = props => {
     }
   }
 
-  useEffect(() => {}, [endDate, participants, startDate, values])
+  useEffect(() => {
+  }, [endDate, participants, startDate, values])
 
   const rows = participants.map(user => ({
     id: user.id,
@@ -177,7 +178,7 @@ const CreateProject = props => {
                 let checked = e.target.checked
                 setParticipants(
                   participants.map(participant => {
-                    if (participant.id === params.user.id) {
+                    if (participant.id === params.id) {
                       participant.checked = checked
                     }
 

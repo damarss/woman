@@ -134,10 +134,8 @@ export async function getServerSideProps(context) {
   }
 
   const nearestDates = dateMeet[nearestDate(dateMeet)]
-  console.log(nearestDates)
 
   const data = { projects: [...projects], tasks: [...tasks], meet: nearestDates }
-  console.log(data)
 
   return {
     props: {

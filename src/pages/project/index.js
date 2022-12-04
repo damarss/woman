@@ -46,23 +46,25 @@ const Project = ({ data }) => {
   return (
     <Grid container spacing={6}>
       {projects.length > 0 ? (
-        projects.map(project => (
-          <Grid key={project.project.id} item xs={12} md={6}>
-            <CardProject project={project.project} />
-          </Grid>
-        ))
+        projects
+          .filter(project => !project.project.isArchived)
+          .map(project => (
+            <Grid key={project.project.id} item xs={12} md={6}>
+              <CardProject project={project.project} />
+            </Grid>
+          ))
       ) : (
         <NotFound />
       )}
 
       <Grid item xs={12}>
-      <Divider sx={{ marginTop: '1em' }} />
+        <Divider sx={{ marginTop: '1em' }} />
         <CardActions className='card-action-dense'>
           <Box
             sx={{
               width: '100%',
-              marginTop:'2em',
-              alignItems: 'center',
+              marginTop: '2em',
+              alignItems: 'center'
             }}
           >
             <Button onClick={handleClick}>
@@ -76,18 +78,19 @@ const Project = ({ data }) => {
       </Grid>
       <Grid item xs={12}>
         <Collapse in={collapse}>
-            <Grid container spacing={6}>
-              {projects.length > 0 ? (
-                projects.map(project => (
+          <Grid container spacing={6}>
+            {projects.length > 0 ? (
+              projects
+                .filter(project => project.project.isArchived)
+                .map(project => (
                   <Grid key={project.project.id} item xs={12} md={6}>
                     <CardProject project={project.project} />
                   </Grid>
                 ))
-              ) : (
-                <NotFound />
-              )}
-            </Grid>
-          
+            ) : (
+              <NotFound />
+            )}
+          </Grid>
         </Collapse>
       </Grid>
     </Grid>
@@ -128,11 +131,6 @@ export async function getServerSideProps(context) {
         }
       }
     })
-
-    // jika bukan admin maka hanya tampilkan project yang belum diarsipkan
-    projects = projects.filter(project => {
-      return !project.project.isArchived
-    })
   } else {
     const key = []
     projects = []
@@ -170,7 +168,7 @@ export async function getServerSideProps(context) {
     let done = 0
 
     project.project.Task.map(task => {
-      if (task.status == 7) {
+      if (task.status == 4) {
         done++
       }
     })

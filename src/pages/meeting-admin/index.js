@@ -7,9 +7,6 @@ import CardHeader from '@mui/material/CardHeader'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 
-
-
-
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -22,18 +19,20 @@ const MeetingPage = ({ data }) => {
 
   useEffect(() => {
     setMeet(JSON.parse(data))
-    console.log(JSON.parse(data))
   }, [])
+
   const NotFound = props => (
     <Grid container justifyContent='center' alignItems='center'>
-      <Typography variant='body1' sx={{ marginBottom: 10 }}>{props.title}</Typography>
+      <Typography variant='body1' sx={{ marginBottom: 10 }}>
+        {props.title}
+      </Typography>
     </Grid>
   )
 
   return (
     <>
       <Card>
-        <CardHeader title="Meeting Schedule" titleTypographyProps={{ variant: 'h6' }} />
+        <CardHeader title='Meeting Schedule' titleTypographyProps={{ variant: 'h6' }} />
         {meet.length > 0 ? <MeetingTable data={meet} height='70vh' /> : <NotFound title='No Meeting Schedule' />}
       </Card>
     </>

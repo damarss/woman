@@ -56,7 +56,7 @@ export async function getServerSideProps(context) {
   const people = await prisma.user.findMany({
     where: {
       id: {
-        not: 212
+        not: 1
       }
     },
     include: {
