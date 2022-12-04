@@ -33,57 +33,6 @@ import DeleteOutline from 'mdi-material-ui/DeleteOutline'
 import DatePicker from 'react-datepicker'
 import Swal from 'sweetalert2'
 
-const rows = [
-  {
-    name: 'Make Cakae inn',
-    priority: 'highger',
-    date: '22/12/2022',
-    asigned: 'Humas Utama'
-  },
-  {
-    priority: 'highn',
-    date: '22/12/2022',
-    name: 'Make Cakae  Bowers',
-    asigned: 'Manajer'
-  },
-  {
-    asigned: 'Divisi Umum',
-    date: '22/12/2022',
-    name: 'Make Cakae oy',
-    priority: 'high'
-  },
-  {
-    priority: 'highr admin',
-    date: '22/12/2022',
-    name: 'Make Cakae onard',
-    asigned: 'Pencacah Utama'
-  },
-  {
-    priority: 'high',
-    date: '22/12/2022',
-    name: 'Make Cakae rtin',
-    asigned: 'Divisi TI'
-  },
-  {
-    name: 'Make Cakae Day',
-    priority: 'highger',
-    date: '22/12/2022',
-    asigned: 'Divisi IT'
-  },
-  {
-    name: 'Make Cakae kson',
-    date: '22/12/2022',
-    priority: 'highger',
-    asigned: 'Divisi Logistik'
-  },
-  {
-    name: 'Make Cakae harp',
-    priority: 'high',
-    date: '22/12/2022',
-    asigned: 'Divisi Umum'
-  }
-]
-
 const style = {
   position: 'absolute',
   top: '50%',
@@ -101,6 +50,7 @@ const CustomInputStart = forwardRef((props, ref) => {
 const EditProjectTask = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
+
   const handleClose = () => {
     setOpen(false)
     Swal.fire('Cancelled', 'Task is not created!', 'error')

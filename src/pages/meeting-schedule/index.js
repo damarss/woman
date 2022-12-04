@@ -24,6 +24,7 @@ import {
 
 const Meeting = ({ data }) => {
   const [currentDate, setCurrentDate] = useState(new Date())
+
   const currentDateChange = currentDate => {
     setCurrentDate(currentDate)
   }

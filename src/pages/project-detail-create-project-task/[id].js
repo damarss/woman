@@ -55,7 +55,7 @@ export async function getServerSideProps(context) {
     }
   })
   
-  if (token.uid != project.projectLeaderId && token.uid != 212) {
+  if (token.uid != project.projectLeaderId && token.uid != 1) {
     return {
       redirect: {
         destination: '/401',

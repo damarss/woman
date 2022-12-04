@@ -34,7 +34,7 @@ const Task = ({ data }) => {
   )
 
   // ** State
-  const [collapse, setCollapse] = useState(false)
+  const [collapse, setCollapse] = useState(true)
 
   const handleClick = () => {
     setCollapse(!collapse)

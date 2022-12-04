@@ -76,8 +76,6 @@ export async function getServerSideProps(context) {
     role: session.role
   }
 
-  console.log(session)
-
   return {
     props: {
       data: JSON.stringify(data)

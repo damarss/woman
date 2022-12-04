@@ -17,7 +17,7 @@ import EditMeeting from 'src/views/edit-meeting/EditMeeting'
 import { getSession } from 'next-auth/react'
 import prisma from 'src/services/db'
 
-const EditMeetingPage = ({data}) => {
+const EditMeetingPage = ({ data }) => {
   return (
     <>
       <DatePickerWrapper>
@@ -29,6 +29,7 @@ const EditMeetingPage = ({data}) => {
     </>
   )
 }
+
 export async function getServerSideProps(context) {
   const session = await getSession(context)
 
@@ -70,8 +71,6 @@ export async function getServerSideProps(context) {
   // user.sort((a, b) => {
   //   return a.UserMeet.length - b.UserMeet.length
   // })
-
-  // console.log(user)
 
   const data = {
     meet

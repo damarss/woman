@@ -91,7 +91,6 @@ export async function getServerSideProps(context) {
     comments,
     idUser: token.uid
   }
-  console.log(data)
 
   return {
     props: {

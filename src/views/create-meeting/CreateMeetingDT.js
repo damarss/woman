@@ -132,7 +132,6 @@ const CreateMeeting = props => {
   }
 
   useEffect(() => {
-    console.log(participants)
   }, [endDate, participants, startDate, values])
 
   const rows = participants.map(user => ({
